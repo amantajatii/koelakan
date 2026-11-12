@@ -20,30 +20,30 @@ interface Props {
 export function ActivityPanel({ actions, apiDown, participations, items }: Props) {
   return (
     <Panel aria-labelledby="activity">
-      <SectionTitle><span id="activity">My agent activity</span></SectionTitle>
-      <h3 className="text-sm font-bold">What the agent did</h3>
+      <SectionTitle><span id="activity">What your agent did</span></SectionTitle>
+      <h3 className="text-sm font-bold">Decisions, round by round</h3>
       {apiDown ? (
-        <p className="mt-2 text-sm text-muted">Agent service offline. Its action log is unavailable; the rounds below come straight from the chain.</p>
+        <p className="mt-2 text-sm text-muted">The agent service is offline, so its log is unavailable. The rounds below come straight from the blockchain and are still up to date.</p>
       ) : !actions || actions.length === 0 ? (
         <p className="mt-2 text-sm text-muted">Nothing yet. Once you save a standing order, each round shows up here as joined or skipped, with the reason.</p>
       ) : (
         <ul className="mt-2 divide-y divide-line text-sm">
           {actions.map((a) => (
             <li key={`${a.round_id}-${a.at}`} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5">
-              <Chip tone={a.action === "joined" ? "good" : "neutral"}>{a.action}</Chip>
+              <Chip tone={a.action === "joined" ? "good" : "neutral"}>{a.action === "joined" ? "Joined" : "Skipped"}</Chip>
               <Link href={`/rounds/${a.round_id}`} className={linkClass}>Round #{a.round_id}</Link>
               {a.qty !== null && <span className="num">{a.qty} kg</span>}
               {a.reason && <span className="text-muted">{a.reason}</span>}
               <span className="ml-auto text-xs text-muted">{formatDateTime(Date.parse(a.at))}</span>
-              {a.tx && <a className={`num text-xs ${linkClass}`} target="_blank" rel="noreferrer" href={txUrl(a.tx)}>tx</a>}
+              {a.tx && <a className={`num text-xs ${linkClass}`} target="_blank" rel="noreferrer" href={txUrl(a.tx)}>receipt</a>}
             </li>
           ))}
         </ul>
       )}
 
-      <h3 className="mt-7 text-sm font-bold">Rounds you took part in (from the chain)</h3>
+      <h3 className="mt-7 text-sm font-bold">Your rounds, from the blockchain</h3>
       {participations.length === 0 ? (
-        <p className="mt-2 text-sm text-muted">No rounds yet.</p>
+        <p className="mt-2 text-sm text-muted">No rounds yet. Once your agent joins one, it shows here with what you paid and what came back.</p>
       ) : (
         <TableWrap className="mt-2">
           <table className={`${tableClass} min-w-[34rem]`}>

@@ -126,10 +126,10 @@ export function TxResult({ result }: { result: CallResult | null }) {
   if (!result) return null;
   return (
     <Notice tone={result.ok ? "ok" : "error"}>
-      {result.ok ? "Transaction succeeded." : result.error ?? "Transaction failed."}{" "}
+      {result.ok ? "Done. It is saved on the blockchain." : result.error ?? "That did not go through. Try again."}{" "}
       {result.hash && (
         <a className={`num ${linkClass}`} target="_blank" rel="noreferrer" href={txUrl(result.hash)}>
-          view on nearblocks
+          see it on nearblocks
         </a>
       )}
     </Notice>

@@ -1,6 +1,6 @@
 import type { Policy } from "./types";
 
-export type StepId = "signin" | "faucet" | "deposit" | "policy" | "delegate" | "order";
+export type StepId = "signin" | "funds" | "limits" | "order";
 export type StepStatus = "done" | "next" | "todo" | "locked";
 
 export interface FlowInput {
@@ -21,7 +21,7 @@ export interface FlowStep {
   status: StepStatus;
 }
 
-export const STEP_ORDER: readonly StepId[] = ["signin", "faucet", "deposit", "policy", "delegate", "order"];
+export const STEP_ORDER: readonly StepId[] = ["signin", "funds", "limits", "order"];
 
 export const hasDemand = (demand: FlowInput["demand"]): boolean => demand !== null && Object.values(demand).some((q) => q > 0);
 
@@ -29,14 +29,10 @@ function isDone(id: StepId, i: FlowInput): boolean {
   switch (id) {
     case "signin":
       return i.accountId !== null;
-    case "faucet":
-      return (i.tidr ?? 0n) > 0n || (i.available ?? 0n) > 0n || (i.held ?? 0n) > 0n;
-    case "deposit":
+    case "funds":
       return (i.available ?? 0n) > 0n || (i.held ?? 0n) > 0n;
-    case "policy":
-      return i.policy !== null;
-    case "delegate":
-      return i.delegated === true;
+    case "limits":
+      return i.policy !== null && i.delegated === true;
     case "order":
       return hasDemand(i.demand);
   }
@@ -64,3 +60,8 @@ export function computeSteps(input: FlowInput): FlowStep[] {
 export const nextStep = (steps: readonly FlowStep[]): StepId | null => steps.find((s) => s.status === "next")?.id ?? null;
 
 export const isReady = (steps: readonly FlowStep[]): boolean => steps.every((s) => s.status === "done");
+
+/** Which half of "limits and permission" the chain is still missing (the step can resume after a half-done approval). */
+export function limitsMissing(input: Pick<FlowInput, "policy" | "delegated">): { policy: boolean; delegation: boolean } {
+  return { policy: input.policy === null, delegation: input.delegated !== true };
+}

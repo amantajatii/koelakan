@@ -8,6 +8,7 @@ import { config } from "./config";
 import type { AddKeySpec, DeleteKeySpec } from "./delegation";
 import { SIGN_MESSAGE_HINT, type SignRequest, type SignedResult } from "./nep413";
 import { explainFailure, outcomeFailure, outcomeHash, type OutcomeLike } from "./outcome";
+import type { ActionSpec, TxSpec } from "./batch";
 import type { FunctionCallSpec } from "./tx";
 
 export interface CallResult {
@@ -29,6 +30,11 @@ interface WalletState {
   keyAction: (spec: AddKeySpec | DeleteKeySpec) => Promise<CallResult>;
   /** NEP-413 signature. `redirected` means the wallet left the page and the result comes back in the URL hash. */
   signMessage: (req: SignRequest) => Promise<SignOutcome>;
+  /**
+   * Several transactions behind one wallet approval (`signAndSendTransactions`). Wallets without it
+   * get the same transactions one after another.
+   */
+  callBatch: (txs: TxSpec[]) => Promise<CallResult>;
 }
 
 export type SignOutcome =
@@ -150,6 +156,40 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     }
   }, [accountId]);
 
+  const callBatch = useCallback(async (txs: TxSpec[]): Promise<CallResult> => {
+    const selector = selectorRef.current;
+    if (!selector || !accountId) return { ok: false, hash: null, error: "Sign in with a NEAR wallet first." };
+    if (txs.length === 0) return { ok: false, hash: null, error: "There is nothing to approve." };
+    try {
+      const [{ actionCreators }, { utils }] = await Promise.all([import("@near-wallet-selector/core"), import("near-api-js")]);
+      const toAction = (spec: ActionSpec) =>
+        spec.type === "FunctionCall"
+          ? actionCreators.functionCall(spec.methodName, spec.args, BigInt(spec.gas), BigInt(spec.deposit))
+          : actionCreators.addKey(
+              utils.PublicKey.from(spec.publicKey) as unknown as Parameters<typeof actionCreators.addKey>[0],
+              actionCreators.functionCallAccessKey(spec.receiverId, spec.methodNames, BigInt(spec.allowanceYocto)),
+            );
+      const transactions = txs.map((t) => ({ signerId: accountId, receiverId: t.receiverId, actions: t.actions.map(toAction) }));
+      const wallet = await selector.wallet();
+      let outcomes: Array<OutcomeLike | void>;
+      if (typeof wallet.signAndSendTransactions === "function") {
+        const sent = (await wallet.signAndSendTransactions({ transactions, callbackUrl: `${window.location.origin}/warung` } as Parameters<typeof wallet.signAndSendTransactions>[0])) as Array<OutcomeLike> | void;
+        outcomes = Array.isArray(sent) ? sent : [];
+      } else {
+        outcomes = [];
+        for (const tx of transactions) outcomes.push((await wallet.signAndSendTransaction(tx)) as OutcomeLike | void);
+      }
+      for (const o of outcomes) {
+        const failure = outcomeFailure(o ?? null);
+        if (failure) return { ok: false, hash: outcomeHash(o ?? null), error: explainFailure(failure) };
+      }
+      const last = outcomes[outcomes.length - 1];
+      return { ok: true, hash: outcomeHash(last ?? null), error: null };
+    } catch (e) {
+      return { ok: false, hash: null, error: errorMessage(e) };
+    }
+  }, [accountId]);
+
   const signMessage = useCallback(async (req: SignRequest): Promise<SignOutcome> => {
     const selector = selectorRef.current;
     if (!selector || !accountId) return { status: "failed", error: "Sign in with a NEAR wallet first." };
@@ -170,8 +210,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   }, [accountId]);
 
   const value = useMemo<WalletState>(
-    () => ({ ready, initError, accountId, walletId, signIn, signOut, call, keyAction, signMessage }),
-    [ready, initError, accountId, walletId, signIn, signOut, call, keyAction, signMessage],
+    () => ({ ready, initError, accountId, walletId, signIn, signOut, call, callBatch, keyAction, signMessage }),
+    [ready, initError, accountId, walletId, signIn, signOut, call, callBatch, keyAction, signMessage],
   );
   return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
 }

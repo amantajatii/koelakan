@@ -16,3 +16,14 @@ export function itemLabel(item: Pick<Item, "id" | "name"> | undefined, fallbackI
   if (!item) return DISPLAY_NAMES[fallbackId] ?? fallbackId;
   return DISPLAY_NAMES[item.id] ?? item.name;
 }
+
+const PLAIN_NAMES: Readonly<Record<string, string>> = {
+  "beras-medium": "medium rice",
+  "gula-pasir": "granulated sugar",
+  "telur-ayam": "eggs",
+  "minyak-curah": "cooking oil",
+};
+
+/** Lower-case name for running sentences ("12 kg medium rice"). */
+export const itemPlainName = (item: Pick<Item, "id" | "name"> | undefined, fallbackId = ""): string =>
+  PLAIN_NAMES[item?.id ?? fallbackId] ?? itemLabel(item, fallbackId).toLowerCase();

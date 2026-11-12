@@ -32,7 +32,8 @@ export function ChatLive({ initial }: { initial: Overview | null }) {
   const params = useSearchParams();
   const requested = Number(params.get("round"));
   const [roundChoice, setRoundChoice] = useState<number | null>(Number.isInteger(requested) && params.has("round") ? requested : null);
-  const [warungChoice, setWarungChoice] = useState<string | null>(null);
+  const requestedWarung = params.get("warung");
+  const [warungChoice, setWarungChoice] = useState<string | null>(requestedWarung);
 
   const withParticipants = useMemo(() => (data?.rounds ?? []).filter((r) => r.participants.length > 0), [data]);
   const round = useMemo(() => {

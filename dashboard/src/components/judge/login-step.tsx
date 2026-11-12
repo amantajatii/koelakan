@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Notice } from "@/components/ui/notice";
 import { linkClass } from "@/components/ui/panel";
 import { StepCard } from "@/components/judge/step-card";
+import { TechNote, codeClass } from "@/components/warung/tech-note";
 import { accountUrl, config } from "@/lib/config";
 import { useWallet } from "@/lib/wallet";
 
@@ -13,14 +14,9 @@ export function LoginStep({ index = "1" }: { index?: string }) {
     <StepCard
       index={index}
       stepId="signin"
-      title="Sign in"
+      title="Sign in with a wallet"
       state={accountId ? "done" : "ready"}
-      intro={
-        <>
-          Your NEAR wallet creates a <strong className="text-ink">restricted key</strong> in your browser: it can only call{" "}
-          <code className="font-mono text-xs text-ink">join_round</code> on <code className="font-mono text-xs text-ink">{config.marketId}</code>, with no deposit.
-        </>
-      }
+      intro={<>Sign in with a NEAR wallet. It is free, and there is nothing to remember: the wallet is your login.</>}
     >
       {initError && <Notice tone="error" role="alert">The wallet failed to load: {initError}</Notice>}
       {accountId ? (
@@ -38,10 +34,15 @@ export function LoginStep({ index = "1" }: { index?: string }) {
             {ready ? "Sign in with a NEAR wallet" : "Loading wallet"}
           </Button>
           <p className="text-xs text-muted">
-            Options: MyNearWallet, Meteor, HOT, Intear. Use a testnet account; no real money needed.
+            Works with MyNearWallet, Meteor, HOT and Intear. Use a testnet account; no real money is involved.
           </p>
         </>
       )}
+      <TechNote>
+        <p>
+          Sign-in asks the wallet to create a restricted browser key: receiver <code className={codeClass}>{config.marketId}</code>, method <code className={codeClass}>join_round</code> only, no deposit. Owner actions still need your full-access key.
+        </p>
+      </TechNote>
     </StepCard>
   );
 }

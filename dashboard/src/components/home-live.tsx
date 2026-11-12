@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Info } from "lucide-react";
+import { ArrowRight, Eye, Info } from "lucide-react";
 import { BannerLine, HeroBanner } from "@/components/hero-banner";
 import { HowItWorks } from "@/components/how-it-works";
 import { ItemCard } from "@/components/item-card";
@@ -12,6 +12,7 @@ import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
 import { EmptyState, ErrorNote, Skeleton } from "@/components/ui/states";
 import { useLive } from "@/hooks/use-live";
 import { useNow } from "@/hooks/use-now";
+import { demoHref } from "@/lib/demo";
 import { int, percent, rupiah } from "@/lib/format";
 import { marketSnapshots } from "@/lib/item-summary";
 import { fetchOverview, type Overview } from "@/lib/overview";
@@ -27,6 +28,7 @@ function Banner({ agg, loading }: { agg: Aggregate | null; loading: boolean }) {
       actions={
         <>
           <Link href="/warung" className={buttonClass("onBrand", "px-5")}>Run your warung</Link>
+          <Link href={demoHref()} className={buttonClass("ghost", "gap-2 bg-white/10 px-5 text-white hover:bg-white/20 hover:text-white")}><Eye className="size-4" aria-hidden /> See a warung in action</Link>
           <Link href="/rounds" className={buttonClass("ghost", "bg-white/10 px-5 text-white hover:bg-white/20 hover:text-white")}>View rounds</Link>
         </>
       }

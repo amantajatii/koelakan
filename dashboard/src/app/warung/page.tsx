@@ -1,10 +1,16 @@
+import { Suspense } from "react";
 import { WarungFlow } from "@/components/warung/warung-flow";
+import { Skeleton } from "@/components/ui/states";
 
 export const metadata = {
   title: "Run your warung",
-  description: "Sign in, fund your balance, set price limits and let the Koelakan agent restock your warung 24/7 on NEAR testnet.",
+  description: "Add test money, set your limits and let the Koelakan agent restock your warung around the clock on NEAR testnet. Or look at a live demo warung without a wallet.",
 };
 
 export default function WarungPage() {
-  return <WarungFlow />;
+  return (
+    <Suspense fallback={<Skeleton className="h-72" />}>
+      <WarungFlow />
+    </Suspense>
+  );
 }
