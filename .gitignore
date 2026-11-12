@@ -10,3 +10,8 @@ CLAUDE.md
 agents/.keys/
 agents/.state/
 agents/out/
+
+# dashboard
+dashboard/.next/
+dashboard/screenshots/
+dashboard/next-env.d.ts
