@@ -92,12 +92,12 @@ describe("crossCheck", () => {
 });
 
 describe("buildWa", () => {
-  it("writes Indonesian WhatsApp messages addressed to owners", () => {
+  it("writes English WhatsApp messages addressed to owners", () => {
     const wa = buildWa(makeRun());
     const join = wa.find((m) => m.kind === "joined" && m.account === W1);
-    expect(join?.text).toBe("Pak Budi, Beras medium (tipe II) 60 kg sudah dipesan lewat ronde #9, harga maks Rp1.000/kg.");
-    expect(wa.some((m) => m.kind === "settled" && m.text.includes("Rp900/kg") && m.text.includes("Rp6.000"))).toBe(true);
-    expect(wa.some((m) => m.kind === "bond_forfeited" && m.text.includes("grosir-5") && m.text.includes("Rp3.000"))).toBe(true);
+    expect(join?.text).toBe("Pak Budi, you're in round #9 with 60 kg of Medium rice (type II), max price Rp1,000/kg.");
+    expect(wa.some((m) => m.kind === "settled" && m.text.includes("Rp900/kg") && m.text.includes("Rp6,000"))).toBe(true);
+    expect(wa.some((m) => m.kind === "bond_forfeited" && m.text.includes("grosir-5") && m.text.includes("Rp3,000"))).toBe(true);
     expect(wa.some((m) => m.kind === "owner_confirm" && m.direction === "owner_to_agent")).toBe(true);
     expect(wa.some((m) => m.kind === "auto_accepted" && m.account === W2)).toBe(true);
   });

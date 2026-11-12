@@ -22,17 +22,17 @@ describe("buildRoundChat", () => {
     expect(kinds).toContain("announce");
     expect(kinds).toContain("joined");
     expect(first.find((m) => m.kind === "joined")?.text).toBe(
-      "Pak Budi, Beras medium (tipe II) 10 kg sudah dipesan lewat ronde #1, harga maks Rp16.650/kg. Saldo Rp166.500 dikunci sampai ronde selesai.",
+      "Pak Budi, you're in round #1 with 10 kg of Medium rice (type II), max price Rp16,650/kg. Rp166,500 is held until the round settles.",
     );
   });
   it("reports the clearing result with saving and refund of the difference", () => {
     const settled = first.find((m) => m.kind === "settled")!;
-    expect(settled.text).toContain("grosir-1 menang dengan harga Rp12.000/kg");
-    expect(settled.text).toContain("hemat Rp4.650/kg dari harga pasar PIHPS Rp16.650");
-    expect(settled.text).toContain("Selisih Rp46.500 sudah kembali");
+    expect(settled.text).toContain("grosir-1 won at Rp12,000/kg");
+    expect(settled.text).toContain("Rp4,650/kg below the PIHPS market price of Rp16,650");
+    expect(settled.text).toContain("The difference of Rp46,500 went back");
   });
-  it("splits the forfeited bond pro rata (Rp1.000 over 10 and 30 kg)", () => {
-    expect(first.find((m) => m.kind === "bond_forfeited")?.text).toContain("Bagian Anda Rp250 masuk saldo");
+  it("splits the forfeited bond pro rata (Rp1,000 over 10 and 30 kg)", () => {
+    expect(first.find((m) => m.kind === "bond_forfeited")?.text).toContain("Your share, Rp250, was added to your balance");
     const second = filterByAccount(chat, "warung-02.koelakan.testnet");
     expect(second.find((m) => m.kind === "bond_forfeited")?.text).toContain("grosir-5");
     expect(second.find((m) => m.kind === "bond_forfeited")?.text).toContain("Rp750");
@@ -40,7 +40,7 @@ describe("buildRoundChat", () => {
   it("renders a confirmed delivery as an owner reply plus an agent receipt", () => {
     const owner = first.find((m) => m.kind === "owner_confirm");
     expect(owner?.direction).toBe("owner_to_agent");
-    expect(first.find((m) => m.kind === "delivery_confirmed")?.text).toContain("Rp120.000 diteruskan ke grosir-1");
+    expect(first.find((m) => m.kind === "delivery_confirmed")?.text).toContain("Rp120,000 was released to grosir-1");
   });
   it("renders silence as an automatic acceptance after the delivery deadline", () => {
     const auto = filterByAccount(chat, "warung-02.koelakan.testnet").find((m) => m.kind === "auto_accepted")!;
@@ -56,7 +56,7 @@ describe("buildRoundChat for other states", () => {
   it("tells every buyer a failed round refunded everything", () => {
     const chat = buildRoundChat(makeRound({ state: "Failed", phase: "Failed" }), BERAS);
     expect(chat.filter((m) => m.kind === "failed")).toHaveLength(2);
-    expect(chat.find((m) => m.kind === "failed")?.text).toContain("Seluruh saldo dikembalikan");
+    expect(chat.find((m) => m.kind === "failed")?.text).toContain("Your full balance was refunded");
   });
   it("shows disputes and their resolution", () => {
     const base = closedRound();

@@ -23,5 +23,5 @@ export const GAS = {
 
 export const ONE_YOCTO = "1";
 
-/** Demo durations (seconds) for "Buka ronde". Each must be 30 s .. 30 days on-chain. */
+/** Demo durations (seconds) for "Open round". Each must be 30 s .. 30 days on-chain. */
 export const DEMO_DURATIONS = { join: 120, commit: 60, reveal: 60, delivery: 120 } as const;

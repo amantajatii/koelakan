@@ -1,10 +1,10 @@
 export function DemoNote() {
   return (
-    <aside className="rounded-lg border-2 border-kunyit bg-kunyit-soft/60 p-4 text-sm" aria-label="Catatan data demo">
+    <aside className="rounded-lg border-2 border-kunyit bg-kunyit-soft/60 p-4 text-sm" aria-label="Demo data note">
       <p>
-        <strong>Yang nyata dan yang asumsi.</strong> Harga acuan PIHPS 11 Nov 2026 dan HET adalah data resmi. Biaya dan margin
-        grosir di demo adalah <strong>asumsi</strong> (0,85 sampai 0,97 kali HET), bukan harga kulak sungguhan. Warung dan grosir
-        di bawah adalah akun uji coba di testnet; nama pemilik fiktif.
+        <strong>What is real and what is assumed.</strong> The PIHPS reference prices (11 Nov 2026) and HET are official data.
+        Grosir costs and margins in the demo are <strong>assumptions</strong> (0.85 to 0.97 times HET), not real wholesale
+        prices. The warungs and grosirs below are test accounts on testnet; the owner names are fictional.
       </p>
     </aside>
   );

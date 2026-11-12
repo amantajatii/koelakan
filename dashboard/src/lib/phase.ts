@@ -27,25 +27,25 @@ export function derivePhase(round: Deadlines, nowMs: number): Phase {
 }
 
 export const PHASE_LABEL: Record<Phase, string> = {
-  Join: "Pendaftaran",
-  Commit: "Tawaran tersegel",
-  Reveal: "Buka tawaran",
-  ReadyToSettle: "Siap diselesaikan",
-  Delivery: "Pengiriman",
-  AwaitingFinalize: "Menunggu finalisasi",
-  Failed: "Gagal",
-  Closed: "Selesai",
+  Join: "Joining",
+  Commit: "Sealed bids",
+  Reveal: "Reveal bids",
+  ReadyToSettle: "Ready to settle",
+  Delivery: "Delivery",
+  AwaitingFinalize: "Awaiting finalize",
+  Failed: "Failed",
+  Closed: "Closed",
 };
 
 export const PHASE_HINT: Record<Phase, string> = {
-  Join: "Warung boleh ikut dan mengunci saldo.",
-  Commit: "Grosir mengirim hash tawaran dan jaminan.",
-  Reveal: "Grosir membuka harga tawarannya.",
-  ReadyToSettle: "Siapa saja boleh memanggil settle.",
-  Delivery: "Barang dikirim, pembeli konfirmasi terima.",
-  AwaitingFinalize: "Siapa saja boleh memanggil finalize.",
-  Failed: "Semua dana dikembalikan.",
-  Closed: "Pembayaran sudah diteruskan ke grosir.",
+  Join: "Warungs can join and lock their balance.",
+  Commit: "Grosirs submit a bid hash and a bond.",
+  Reveal: "Grosirs reveal their bid prices.",
+  ReadyToSettle: "Anyone can call settle.",
+  Delivery: "Goods are delivered; buyers confirm receipt.",
+  AwaitingFinalize: "Anyone can call finalize.",
+  Failed: "All funds were refunded.",
+  Closed: "Payment has been released to the grosir.",
 };
 
 /** A phase is "live" while the clock can still change what actions are possible. */
@@ -72,11 +72,11 @@ export function buildTimeline(round: RoundView, nowMs: number): TimelineStep[] {
   };
   const current = idx(phase);
   const steps: Array<Omit<TimelineStep, "status"> & { at: number }> = [
-    { key: "join", label: "Pendaftaran warung", deadlineMs: nsToMs(round.join_deadline), at: 0 },
-    { key: "commit", label: "Tawaran tersegel", deadlineMs: nsToMs(round.commit_deadline), at: 1 },
-    { key: "reveal", label: "Buka tawaran", deadlineMs: nsToMs(round.reveal_deadline), at: 2 },
-    { key: "settle", label: "Penentuan pemenang", deadlineMs: nsToMs(round.reveal_deadline), at: 3 },
-    { key: "delivery", label: "Pengiriman dan konfirmasi", deadlineMs: nsToMs(round.delivery_deadline), at: 4 },
+    { key: "join", label: "Warungs join", deadlineMs: nsToMs(round.join_deadline), at: 0 },
+    { key: "commit", label: "Sealed bids", deadlineMs: nsToMs(round.commit_deadline), at: 1 },
+    { key: "reveal", label: "Reveal bids", deadlineMs: nsToMs(round.reveal_deadline), at: 2 },
+    { key: "settle", label: "Pick the winner", deadlineMs: nsToMs(round.reveal_deadline), at: 3 },
+    { key: "delivery", label: "Delivery and confirmation", deadlineMs: nsToMs(round.delivery_deadline), at: 4 },
   ];
   return steps.map(({ at, ...step }) => {
     let status: StepStatus = at < current ? "done" : at === current ? "current" : "upcoming";

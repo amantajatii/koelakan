@@ -35,36 +35,36 @@ export const MAX_PARTICIPANTS = 50;
 /** Mirror of the checks in `join_round` (RULES §3, §5.2), returning every reason a join would fail. */
 export function checkJoin(input: JoinInput): JoinProblem[] {
   const { round, policy, balance, qty, nowMs, account } = input;
-  if (round === null) return [{ code: "no_round", message: "Pilih ronde yang masih terbuka." }];
+  if (round === null) return [{ code: "no_round", message: "Pick a round that is still open." }];
   const problems: JoinProblem[] = [];
   const add = (code: JoinProblem["code"], message: string): void => {
     problems.push({ code, message });
   };
 
-  if (derivePhase(round, nowMs) !== "Join") add("not_open", "Ronde ini sudah tidak menerima pendaftaran.");
-  if (!Number.isInteger(qty) || qty < 1) add("bad_qty", "Jumlah minimal 1.");
-  if (round.participants.some((p) => p.account_id === account)) add("already_joined", "Akun ini sudah ikut ronde ini.");
-  if (round.participants.length >= MAX_PARTICIPANTS) add("full", "Ronde penuh (maks 50 warung).");
+  if (derivePhase(round, nowMs) !== "Join") add("not_open", "This round is no longer accepting joins.");
+  if (!Number.isInteger(qty) || qty < 1) add("bad_qty", "Quantity must be at least 1.");
+  if (round.participants.some((p) => p.account_id === account)) add("already_joined", "This account has already joined this round.");
+  if (round.participants.length >= MAX_PARTICIPANTS) add("full", "Round is full (max 50 warungs).");
 
   if (policy === null) {
-    add("no_policy", 'Belum ada kebijakan. Atur dulu lewat "Atur kebijakan".');
+    add("no_policy", 'No policy yet. Set one first in "Set your policy".');
     return problems;
   }
   const max = policy.max_price[round.item];
   if (max === undefined) {
-    add("item_not_in_policy", "Barang ini belum ada di kebijakan Anda.");
+    add("item_not_in_policy", "This item is not in your policy.");
   } else if (BigInt(round.ceiling_price) > BigInt(max)) {
-    add("ceiling_above_max", `Harga maks ronde ${rupiah(round.ceiling_price)} melebihi batas Anda ${rupiah(max)}.`);
+    add("ceiling_above_max", `The round max price ${rupiah(round.ceiling_price)} is above your limit ${rupiah(max)}.`);
   }
-  if (!policy.auto_join) add("needs_owner", "auto_join mati: hanya kunci penuh yang bisa ikut, kunci terbatas ditolak.");
+  if (!policy.auto_join) add("needs_owner", "auto_join is off: only the full-access key can join; the restricted key is rejected.");
 
   if (Number.isInteger(qty) && qty >= 1) {
     const cost = BigInt(round.ceiling_price) * BigInt(qty);
     if (input.spent !== null && input.spent + cost > BigInt(policy.weekly_budget)) {
-      add("budget", `Anggaran mingguan terlampaui: terpakai ${rupiah(input.spent)} + ${rupiah(cost)} > ${rupiah(policy.weekly_budget)}.`);
+      add("budget", `Weekly budget exceeded: spent ${rupiah(input.spent)} + ${rupiah(cost)} > ${rupiah(policy.weekly_budget)}.`);
     }
     if (balance !== null && BigInt(balance.available) < cost) {
-      add("balance", `Saldo tersedia ${rupiah(balance.available)} kurang dari ${rupiah(cost)} yang harus dikunci.`);
+      add("balance", `Available balance ${rupiah(balance.available)} is less than the ${rupiah(cost)} that must be locked.`);
     }
   }
   return problems;

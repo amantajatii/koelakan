@@ -8,6 +8,7 @@ import { EmptyState, ErrorNote, Skeleton } from "@/components/ui/states";
 import { useLive } from "@/hooks/use-live";
 import { useNow } from "@/hooks/use-now";
 import { int, percent, rupiah } from "@/lib/format";
+import { itemLabel } from "@/lib/items";
 import { fetchOverview, type Overview } from "@/lib/overview";
 import { currentDeadlineMs, derivePhase } from "@/lib/phase";
 import { isSettled, itemOf, savingOf, savingPercent } from "@/lib/stats";
@@ -20,11 +21,11 @@ export function RoundsLive({ initial, renderedAt }: { initial: Overview | null; 
 
   if (!data) {
     return loading
-      ? <div role="status" aria-label="Memuat ronde" className="space-y-3"><Skeleton className="h-14" /><Skeleton className="h-14" /><Skeleton className="h-14" /></div>
-      : <ErrorNote message={error ?? "Tidak ada balasan."} onRetry={refresh} />;
+      ? <div role="status" aria-label="Loading rounds" className="space-y-3"><Skeleton className="h-14" /><Skeleton className="h-14" /><Skeleton className="h-14" /></div>
+      : <ErrorNote message={error ?? "No response."} onRetry={refresh} />;
   }
   if (data.rounds.length === 0) {
-    return <EmptyState title="Belum ada ronde">Buka ronde pertama dari halaman <Link className="underline" href="/coba">Coba sendiri</Link>.</EmptyState>;
+    return <EmptyState title="No rounds yet">Open the first round from the <Link className="underline" href="/try">Try it yourself</Link> page.</EmptyState>;
   }
   const rounds = [...data.rounds].reverse();
   return (
@@ -35,16 +36,16 @@ export function RoundsLive({ initial, renderedAt }: { initial: Overview | null; 
       </div>
       <div className="hidden overflow-x-auto rounded-lg border-2 border-ink bg-cream shadow-[3px_3px_0_0_rgba(42,33,24,0.85)] md:block">
         <table className="w-full text-left text-sm">
-          <caption className="sr-only">Semua ronde Koelakan</caption>
+          <caption className="sr-only">All Koelakan rounds</caption>
           <thead>
             <tr className="border-b-2 border-ink text-xs uppercase tracking-wider text-ink-soft">
-              <th scope="col" className="px-4 py-3 font-semibold">Ronde</th>
-              <th scope="col" className="py-3 pr-3 font-semibold">Barang</th>
-              <th scope="col" className="py-3 pr-3 font-semibold">Fase</th>
-              <th scope="col" className="py-3 pr-3 text-right font-semibold">Warung</th>
+              <th scope="col" className="px-4 py-3 font-semibold">Round</th>
+              <th scope="col" className="py-3 pr-3 font-semibold">Item</th>
+              <th scope="col" className="py-3 pr-3 font-semibold">Phase</th>
+              <th scope="col" className="py-3 pr-3 text-right font-semibold">Warungs</th>
               <th scope="col" className="py-3 pr-3 text-right font-semibold">Total</th>
-              <th scope="col" className="py-3 pr-3 text-right font-semibold">Harga menang</th>
-              <th scope="col" className="py-3 pr-4 text-right font-semibold">Hemat vs PIHPS</th>
+              <th scope="col" className="py-3 pr-3 text-right font-semibold">Winning price</th>
+              <th scope="col" className="py-3 pr-4 text-right font-semibold">Saved vs PIHPS</th>
             </tr>
           </thead>
           <tbody>
@@ -57,7 +58,7 @@ export function RoundsLive({ initial, renderedAt }: { initial: Overview | null; 
                   <th scope="row" className="px-4 py-3 font-normal">
                     <Link href={`/rounds/${r.id}`} className="num font-semibold underline decoration-rule underline-offset-4 hover:text-chili">#{r.id}</Link>
                   </th>
-                  <td className="py-3 pr-3">{item?.name ?? r.item}</td>
+                  <td className="py-3 pr-3">{itemLabel(item, r.item)}</td>
                   <td className="py-3 pr-3">
                     <PhaseBadge phase={phase} />
                     {deadline !== null && <span className="ml-2 text-xs text-ink-soft"><Countdown deadlineMs={deadline} nowMs={now} /></span>}

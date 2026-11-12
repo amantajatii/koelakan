@@ -5,11 +5,11 @@ export function SiteFooter() {
     <footer className="border-t-2 border-ink bg-paper-deep/70">
       <div className="mx-auto grid max-w-6xl gap-3 px-4 py-6 text-sm text-ink-soft sm:px-6 md:grid-cols-2">
         <p>
-          Koelakan berjalan di <strong className="text-ink">NEAR testnet</strong>. tIDR adalah rupiah uji coba, bukan uang
-          sungguhan. Harga acuan dari PIHPS Nasional; biaya grosir di demo adalah asumsi.
+          Koelakan runs on <strong className="text-ink">NEAR testnet</strong>. tIDR is test rupiah, not real money. Reference
+          prices come from PIHPS (national food price monitor); grosir costs in the demo are assumptions.
         </p>
         <p className="md:text-right">
-          Kontrak:{" "}
+          Contracts:{" "}
           <a className="num underline decoration-rule underline-offset-4 hover:text-ink" href={accountUrl(config.marketId)} target="_blank" rel="noreferrer">
             {config.marketId}
           </a>

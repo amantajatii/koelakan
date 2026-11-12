@@ -4,6 +4,8 @@ const config: NextConfig = {
   reactStrictMode: true,
   // A stray lockfile above the repo would otherwise be picked as the workspace root.
   turbopack: { root: import.meta.dirname },
+  // The judge page used to live at /coba.
+  redirects: async () => [{ source: "/coba", destination: "/try", permanent: true }],
 };
 
 export default config;

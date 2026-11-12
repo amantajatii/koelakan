@@ -11,14 +11,14 @@ export function ForfeitBox({ round }: { round: RoundView }) {
   return (
     <div className="rounded-lg border-2 border-chili bg-chili-soft/50 p-4">
       <p className="font-semibold">
-        Jaminan hangus <span className="num">{rupiah(total)}</span> dari {names}
+        Bond forfeited: <span className="num">{rupiah(total)}</span> from {names}
       </p>
       <p className="mt-1 text-sm text-ink-soft">
-        Tidak membuka tawaran di fase buka, jadi jaminannya dibagi ke {int(round.participants.length)} warung sesuai jumlah
-        pesanan. Sisa pembulatan masuk ke pembeli dengan jumlah terbesar.
+        Did not reveal a bid in the reveal phase, so the bond is split among the {int(round.participants.length)} warungs in
+        proportion to their quantity. Rounding dust goes to the buyer with the largest quantity.
       </p>
       <details className="mt-3 text-sm">
-        <summary className="cursor-pointer font-semibold underline underline-offset-4">Lihat pembagian per warung</summary>
+        <summary className="cursor-pointer font-semibold underline underline-offset-4">See the split per warung</summary>
         <ul className="mt-2 grid gap-x-6 gap-y-1 sm:grid-cols-2">
           {round.participants.map((p, i) => (
             <li key={p.account_id} className="flex justify-between border-b border-dashed border-rule py-0.5">

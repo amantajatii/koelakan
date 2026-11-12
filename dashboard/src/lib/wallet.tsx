@@ -10,7 +10,7 @@ import type { FunctionCallSpec } from "./tx";
 export interface CallResult {
   ok: boolean;
   hash: string | null;
-  /** Indonesian message when `ok` is false. */
+  /** English message when `ok` is false. */
   error: string | null;
 }
 
@@ -77,7 +77,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         unsubscribe.push(() => sub.unsubscribe());
         setReady(true);
       } catch (e) {
-        if (!cancelled) setInitError(e instanceof Error ? e.message : "Dompet gagal dimuat.");
+        if (!cancelled) setInitError(e instanceof Error ? e.message : "The wallet failed to load.");
       }
     }
     void init();
@@ -98,7 +98,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
   const call = useCallback(async (spec: FunctionCallSpec): Promise<CallResult> => {
     const selector = selectorRef.current;
-    if (!selector || !accountId) return { ok: false, hash: null, error: "Masuk dulu dengan dompet NEAR." };
+    if (!selector || !accountId) return { ok: false, hash: null, error: "Sign in with a NEAR wallet first." };
     try {
       const { actionCreators } = await import("@near-wallet-selector/core");
       const wallet = await selector.wallet();

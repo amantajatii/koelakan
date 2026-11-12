@@ -1,4 +1,4 @@
-/** WhatsApp-style messages (Indonesian) from agents to warung owners, built from a finished round. */
+/** WhatsApp-style messages (English) from agents to warung owners, built from a finished round. */
 import type { ActionRecord } from "./chain/recorder.js";
 import { proRataShares } from "./sim-bridge.js";
 import { rupiah } from "./util.js";
@@ -25,6 +25,15 @@ export function ownerName(account: string): string {
   return OWNER_NAMES[(n - 1 + OWNER_NAMES.length) % OWNER_NAMES.length] ?? "Pak/Bu";
 }
 
+/** English display names by on-chain item id (chain names are Indonesian); falls back to the chain name. */
+const ITEM_NAMES: Readonly<Record<string, string>> = {
+  "beras-medium": "Medium rice (type II)",
+  "gula-pasir": "Local granulated sugar",
+  "telur-ayam": "Chicken eggs",
+  "minyak-curah": "Bulk cooking oil",
+};
+const itemName = (item: { readonly id: string; readonly name: string }): string => ITEM_NAMES[item.id] ?? item.name;
+
 const find = (actions: readonly ActionRecord[], method: string, actor?: string): ActionRecord | undefined =>
   actions.find((a) => a.method === method && a.status === "ok" && (actor === undefined || a.actor === actor));
 
@@ -35,7 +44,7 @@ function joinMessages(run: RoundRun): WaMessage[] {
   return r.participants.flatMap((p) => {
     const rec = find(actions, "join_round", p.account_id);
     if (rec === undefined) return [];
-    const text = `${ownerName(p.account_id)}, ${item.name} ${p.qty} ${item.unit} sudah dipesan lewat ronde #${r.id}, harga maks ${rupiah(r.ceiling_price)}/${item.unit}.`;
+    const text = `${ownerName(p.account_id)}, you're in round #${r.id} with ${p.qty} ${item.unit} of ${itemName(item)}, max price ${rupiah(r.ceiling_price)}/${item.unit}.`;
     return [msg({ t: rec.timestamp, direction: "agent_to_owner", account: p.account_id, kind: "joined", text, tx_hash: rec.tx_hash })];
   });
 }
@@ -44,7 +53,7 @@ function skipMessages(run: RoundRun): WaMessage[] {
   return run.actions.filter((a) => a.method === "join_round" && a.status === "skipped").map((a) =>
     msg({
       t: a.timestamp, direction: "agent_to_owner", account: a.actor, kind: "skipped", tx_hash: null,
-      text: `${ownerName(a.actor)}, agen tidak ikut ronde #${run.roundId}: ${a.note ?? "tidak memenuhi syarat"}.`,
+      text: `${ownerName(a.actor)}, your agent did not join round #${run.roundId}: ${a.note ?? "not eligible"}.`,
     }),
   );
 }
@@ -65,16 +74,16 @@ function settleMessages(run: RoundRun): WaMessage[] {
       const diff = BigInt(r.ceiling_price) - BigInt(r.clearing_price);
       const vsRef = BigInt(r.ref_price) - BigInt(r.clearing_price);
       out.push(msg({ ...base, kind: "settled", text:
-        `${owner}, ronde #${r.id} selesai. ${winner.split(".")[0]} menang dengan harga ${rupiah(r.clearing_price)}/${item.unit} ` +
-        `(hemat ${rupiah(vsRef)}/${item.unit} dari harga pasar PIHPS ${rupiah(r.ref_price)}). ` +
-        `Selisih ${rupiah(diff * BigInt(p.qty))} sudah kembali ke saldo patungan. Barang akan dikirim grosir.` }));
+        `${owner}, round #${r.id} is settled. ${winner.split(".")[0]} won at ${rupiah(r.clearing_price)}/${item.unit} ` +
+        `(${rupiah(vsRef)}/${item.unit} below the PIHPS market price of ${rupiah(r.ref_price)}). ` +
+        `The difference of ${rupiah(diff * BigInt(p.qty))} went back to your pooled balance. The grosir will deliver the goods.` }));
     } else {
-      out.push(msg({ ...base, kind: "failed", text: `${owner}, ronde #${r.id} tidak jadi (permintaan atau tawaran kurang). Seluruh saldo dikembalikan.` }));
+      out.push(msg({ ...base, kind: "failed", text: `${owner}, round #${r.id} did not go ahead (not enough demand or bids). Your full balance was refunded.` }));
     }
     if (forfeited > 0n) {
       const names = forfeitedBids.map((b) => b.seller_id.split(".")[0]).join(", ");
       out.push(msg({ ...base, kind: "bond_forfeited", text:
-        `${owner}, ${names} tidak membuka tawarannya, jadi jaminannya hangus dan dibagi ke pembeli. Bagian Anda ${rupiah(shares[i] ?? 0n)} masuk saldo.` }));
+        `${owner}, ${names} did not reveal a bid, so the bond is forfeited and split among buyers. Your share, ${rupiah(shares[i] ?? 0n)}, was added to your balance.` }));
     }
     return out;
   });
@@ -87,9 +96,9 @@ function confirmMessages(run: RoundRun): WaMessage[] {
     const paid = (a.events.find((e) => e.event === "delivery_confirmed")?.data as { paid?: string } | undefined)?.paid ?? "0";
     return [
       msg({ t: a.timestamp, direction: "owner_to_agent", account: a.actor, kind: "owner_confirm", tx_hash: a.tx_hash,
-        text: "Barang sudah sampai, terima kasih." }),
+        text: "The goods arrived, thank you." }),
       msg({ t: a.timestamp, direction: "agent_to_owner", account: a.actor, kind: "delivery_confirmed", tx_hash: a.tx_hash,
-        text: `${ownerName(a.actor)}, konfirmasi terima ${p?.qty ?? ""} ${run.item.unit} tercatat. ${rupiah(paid)} diteruskan ke ${seller}.` }),
+        text: `${ownerName(a.actor)}, receipt of ${p?.qty ?? ""} ${run.item.unit} is confirmed. ${rupiah(paid)} was released to ${seller}.` }),
     ];
   });
 }
@@ -99,7 +108,7 @@ function silentMessages(run: RoundRun): WaMessage[] {
   const fin = find(run.actions, "finalize");
   if (acc === null || fin === undefined) return [];
   return [msg({ t: fin.timestamp, direction: "agent_to_owner", account: acc, kind: "auto_accepted", tx_hash: fin.tx_hash,
-    text: `${ownerName(acc)}, belum ada konfirmasi sampai batas waktu. Sesuai aturan, barang dianggap diterima dan pembayaran diteruskan ke grosir.` })];
+    text: `${ownerName(acc)}, no confirmation by the deadline. Per the rules, the goods count as received and payment was released to the grosir.` })];
 }
 
 export function buildWa(run: RoundRun): WaMessage[] {

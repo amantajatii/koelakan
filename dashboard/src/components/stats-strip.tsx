@@ -15,10 +15,10 @@ function Stat({ label, value, hint }: { label: string; value: string; hint?: str
 export function StatsStrip({ agg }: { agg: Aggregate }) {
   return (
     <dl className="grid overflow-hidden rounded-lg border-2 border-ink bg-cream shadow-[3px_3px_0_0_rgba(42,33,24,0.85)] sm:grid-cols-4">
-      <Stat label="Ronde selesai" value={int(agg.settledRounds)} hint={`${agg.failedRounds} gagal, ${agg.liveRounds} berjalan`} />
-      <Stat label="Total barang" value={int(agg.totalQty)} hint="kg, di semua ronde selesai" />
-      <Stat label="Hemat vs PIHPS" value={rupiah(agg.totalSaving)} hint="(harga acuan - harga menang) x jumlah" />
-      <Stat label="Rata-rata di bawah PIHPS" value={percent(agg.avgPercentBelow)} hint="rata-rata tertimbang jumlah" />
+      <Stat label="Rounds settled" value={int(agg.settledRounds)} hint={`${agg.failedRounds} failed, ${agg.liveRounds} live`} />
+      <Stat label="Total quantity" value={int(agg.totalQty)} hint="kg, across all settled rounds" />
+      <Stat label="Saved vs PIHPS" value={rupiah(agg.totalSaving)} hint="(reference price - winning price) x quantity" />
+      <Stat label="Avg. below PIHPS" value={percent(agg.avgPercentBelow)} hint="quantity-weighted average" />
     </dl>
   );
 }

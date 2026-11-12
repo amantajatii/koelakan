@@ -8,14 +8,14 @@ export function BidsTable({ round }: { round: RoundView }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[36rem] text-left text-sm">
-        <caption className="sr-only">Tawaran grosir ronde #{round.id}</caption>
+        <caption className="sr-only">Grosir bids for round #{round.id}</caption>
         <thead>
           <tr className="border-b-2 border-ink text-xs uppercase tracking-wider text-ink-soft">
             <th scope="col" className="py-2 pr-3 font-semibold">Grosir</th>
             <th scope="col" className="py-2 pr-3 font-semibold">Status</th>
-            <th scope="col" className="py-2 pr-3 text-right font-semibold">Harga</th>
-            <th scope="col" className="py-2 pr-3 text-right font-semibold">Jaminan</th>
-            <th scope="col" className="py-2 font-semibold">Hash komitmen</th>
+            <th scope="col" className="py-2 pr-3 text-right font-semibold">Price</th>
+            <th scope="col" className="py-2 pr-3 text-right font-semibold">Bond</th>
+            <th scope="col" className="py-2 font-semibold">Commit hash</th>
           </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@ export function BidsTable({ round }: { round: RoundView }) {
                   </a>
                 </th>
                 <td className="py-2 pr-3"><Stamp tone={st.tone}>{st.text}</Stamp></td>
-                <td className="num py-2 pr-3 text-right">{b.revealed_price === null ? "tersegel" : rupiah(b.revealed_price)}</td>
+                <td className="num py-2 pr-3 text-right">{b.revealed_price === null ? "sealed" : rupiah(b.revealed_price)}</td>
                 <td className="num py-2 pr-3 text-right">{rupiah(b.bond)}</td>
                 <td className="num py-2 text-xs text-ink-soft" title={b.hash}>{shortHash(b.hash)}</td>
               </tr>

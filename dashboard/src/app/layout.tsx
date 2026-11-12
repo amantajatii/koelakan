@@ -11,26 +11,26 @@ const sans = Instrument_Sans({ subsets: ["latin"], variable: "--font-sans-body" 
 const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mono-num" });
 
 export const metadata: Metadata = {
-  title: "Koelakan: kulakan bareng, harga grosir untuk warung",
+  title: "Koelakan: group restocking, wholesale prices for warungs",
   description:
-    "Agen warung patungan jadi satu pesanan, agen grosir bersaing lewat lelang tawaran tersegel, kontrak NEAR menahan dana dan menegakkan batas pemilik.",
+    "Warung agents pool their orders into one round, grosir (wholesaler) agents compete in a sealed-bid auction, and a NEAR contract escrows the funds and enforces owner limits.",
 };
 
 export const viewport: Viewport = { themeColor: "#ecdfc5", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
       <body>
         <WalletProvider>
           <a
-            href="#isi"
+            href="#content"
             className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded focus:bg-ink focus:px-3 focus:py-2 focus:text-cream"
           >
-            Lompat ke isi halaman
+            Skip to content
           </a>
           <SiteHeader />
-          <main id="isi" className="mx-auto w-full max-w-6xl px-4 pb-20 pt-6 sm:px-6 sm:pt-10">
+          <main id="content" className="mx-auto w-full max-w-6xl px-4 pb-20 pt-6 sm:px-6 sm:pt-10">
             {children}
           </main>
           <SiteFooter />

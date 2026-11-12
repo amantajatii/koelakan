@@ -4,20 +4,20 @@ import type { ChatMessage } from "@/lib/wa";
 
 function Ticks() {
   return (
-    <svg viewBox="0 0 18 10" className="inline size-3.5 text-ledger" aria-label="Terbaca" role="img">
+    <svg viewBox="0 0 18 10" className="inline size-3.5 text-ledger" aria-label="Read" role="img">
       <path d="M1 5.5 4 8.5 10 1.5M7.5 8.5 14 1.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
 const KIND_TAG: Partial<Record<ChatMessage["kind"], string>> = {
-  settled: "Hasil ronde",
-  failed: "Ronde gagal",
-  bond_forfeited: "Jaminan hangus",
-  delivery_confirmed: "Pengiriman",
-  auto_accepted: "Diterima otomatis",
-  disputed: "Sengketa",
-  dispute_resolved: "Sengketa",
+  settled: "Round result",
+  failed: "Round failed",
+  bond_forfeited: "Bond forfeited",
+  delivery_confirmed: "Delivery",
+  auto_accepted: "Auto-accepted",
+  disputed: "Dispute",
+  dispute_resolved: "Dispute",
 };
 
 export function Bubble({ message, showSender }: { message: ChatMessage; showSender: boolean }) {
@@ -33,7 +33,7 @@ export function Bubble({ message, showSender }: { message: ChatMessage; showSend
       >
         {showSender && (
           <p className="mb-0.5 text-xs font-bold text-ledger">
-            Agen {shortAccount(message.account)} <span className="font-normal text-ink-soft">untuk {message.owner}</span>
+            Agent {shortAccount(message.account)} <span className="font-normal text-ink-soft">for {message.owner}</span>
           </p>
         )}
         {mine && <p className="mb-0.5 text-xs font-bold text-pandan">{message.owner}</p>}

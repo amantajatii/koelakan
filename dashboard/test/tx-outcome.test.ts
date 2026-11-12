@@ -47,8 +47,8 @@ describe("outcome parsing", () => {
     expect(outcomeHash(failing)).toBe("abc");
     expect(outcomeHash({ transaction_outcome: { id: "xyz" } })).toBe("xyz");
   });
-  it("explains the faucet cooldown in Indonesian", () => {
-    expect(explainFailure("Smart contract panicked: faucet: wait one hour between claims")).toMatch(/sekali per jam/);
+  it("explains the faucet cooldown in English", () => {
+    expect(explainFailure("Smart contract panicked: faucet: wait one hour between claims")).toMatch(/once per hour/);
     expect(explainFailure("something unknown")).toBe("something unknown");
   });
 });

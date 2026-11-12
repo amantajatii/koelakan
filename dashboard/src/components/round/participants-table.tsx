@@ -10,15 +10,15 @@ export function ParticipantsTable({ round, unit }: { round: RoundView; unit: str
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[36rem] text-left text-sm">
-        <caption className="sr-only">Warung peserta ronde #{round.id}</caption>
+        <caption className="sr-only">Participating warungs in round #{round.id}</caption>
         <thead>
           <tr className="border-b-2 border-ink text-xs uppercase tracking-wider text-ink-soft">
             <th scope="col" className="py-2 pr-3 font-semibold">Warung</th>
-            <th scope="col" className="py-2 pr-3 text-right font-semibold">Jumlah ({unit})</th>
-            <th scope="col" className="py-2 pr-3 text-right font-semibold">Dikunci</th>
-            {settled && <th scope="col" className="py-2 pr-3 text-right font-semibold">Dibayar</th>}
-            <th scope="col" className="py-2 pr-3 text-right font-semibold">Masih ditahan</th>
-            {settled && <th scope="col" className="py-2 font-semibold">Pengiriman</th>}
+            <th scope="col" className="py-2 pr-3 text-right font-semibold">Quantity ({unit})</th>
+            <th scope="col" className="py-2 pr-3 text-right font-semibold">Locked</th>
+            {settled && <th scope="col" className="py-2 pr-3 text-right font-semibold">Paid</th>}
+            <th scope="col" className="py-2 pr-3 text-right font-semibold">Still held</th>
+            {settled && <th scope="col" className="py-2 font-semibold">Delivery</th>}
           </tr>
         </thead>
         <tbody>

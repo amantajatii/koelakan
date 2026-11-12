@@ -20,14 +20,14 @@ export function FaucetStep({ accountId, tidr, marketAvailable, onDone }: Props) 
   return (
     <StepCard
       index="2"
-      title="Ambil tIDR"
+      title="Get tIDR"
       state={state}
-      intro={<>Faucet memberi <span className="num">Rp1.000.000</span> tIDR (rupiah uji coba), sekali per jam per akun, dan mendaftarkan akun Anda di token. Perlu tanda tangan dompet penuh.</>}
+      intro={<>The faucet gives <span className="num">Rp1,000,000</span> tIDR (test rupiah), once per hour per account, and registers your account on the token. Needs a full wallet signature.</>}
     >
       {accountId && (
         <>
-          <p className="text-sm">Saldo tIDR di dompet: <strong className="num">{tidr === null ? "memuat" : rupiah(tidr)}</strong></p>
-          <Button onClick={() => void tx.run(faucetCall())} busy={tx.busy}>Ambil tIDR</Button>
+          <p className="text-sm">tIDR in wallet: <strong className="num">{tidr === null ? "loading" : rupiah(tidr)}</strong></p>
+          <Button onClick={() => void tx.run(faucetCall())} busy={tx.busy}>Get tIDR</Button>
           <TxResult result={tx.result} />
         </>
       )}

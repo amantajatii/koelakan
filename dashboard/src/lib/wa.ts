@@ -1,5 +1,5 @@
 /**
- * "Chat agen": messages from a warung's agent to its owner, generated deterministically
+ * "Agent chat": messages from a warung's agent to its owner, generated deterministically
  * from on-chain round data. Wording follows agents/src/wa.ts.
  *
  * The contract does not store per-event timestamps, so message times are estimates placed
@@ -7,6 +7,7 @@
  */
 import { nsToMs } from "./json";
 import { ownerName, rupiah, shortAccount } from "./format";
+import { itemLabel } from "./items";
 import { forfeitedBids, isSettled, proRataShares, winnerBid } from "./stats";
 import type { Delivery, Item, Participant, RoundView } from "./types";
 
@@ -66,13 +67,14 @@ function openingMessages(ctx: Ctx, p: Participant, i: number): ChatMessage[] {
   const { round: r, item } = ctx;
   const t = slot(ctx.opened, ctx.joinEnd, i);
   const owner = ownerName(p.account_id);
+  const name = itemLabel(item);
   return [
     make(ctx, p, "announce", "agent_to_owner", t,
-      `${owner}, ronde #${r.id} dibuka: ${item.name}. Harga maks ${rupiah(r.ceiling_price)}/${item.unit}, harga pasar PIHPS ${rupiah(r.ref_price)}/${item.unit}. ` +
-      `Ikut patungan ${p.qty} ${item.unit}? Sesuai kebijakan Anda, saya jawab YA.`),
+      `${owner}, round #${r.id} is open: ${name}. Max price ${rupiah(r.ceiling_price)}/${item.unit}, PIHPS market price ${rupiah(r.ref_price)}/${item.unit}. ` +
+      `Join with ${p.qty} ${item.unit}? Within your policy, so I said YES.`),
     make(ctx, p, "joined", "agent_to_owner", t + 1_000,
-      `${owner}, ${item.name} ${p.qty} ${item.unit} sudah dipesan lewat ronde #${r.id}, harga maks ${rupiah(r.ceiling_price)}/${item.unit}. ` +
-      `Saldo ${rupiah(BigInt(r.ceiling_price) * BigInt(p.qty))} dikunci sampai ronde selesai.`),
+      `${owner}, you're in round #${r.id} with ${p.qty} ${item.unit} of ${name}, max price ${rupiah(r.ceiling_price)}/${item.unit}. ` +
+      `${rupiah(BigInt(r.ceiling_price) * BigInt(p.qty))} is held until the round settles.`),
   ];
 }
 
@@ -85,17 +87,17 @@ function settleMessages(ctx: Ctx, p: Participant, i: number, shares: bigint[], f
     const diff = BigInt(r.ceiling_price) - BigInt(r.clearing_price);
     const vsRef = BigInt(r.ref_price) - BigInt(r.clearing_price);
     out.push(make(ctx, p, "settled", "agent_to_owner", ctx.settleAt,
-      `${owner}, ronde #${r.id} selesai. ${shortAccount(winner.seller_id)} menang dengan harga ${rupiah(r.clearing_price)}/${item.unit} ` +
-      `(hemat ${rupiah(vsRef)}/${item.unit} dari harga pasar PIHPS ${rupiah(r.ref_price)}). ` +
-      `Selisih ${rupiah(diff * BigInt(p.qty))} sudah kembali ke saldo patungan. Barang akan dikirim grosir.`));
+      `${owner}, round #${r.id} is settled. ${shortAccount(winner.seller_id)} won at ${rupiah(r.clearing_price)}/${item.unit} ` +
+      `(${rupiah(vsRef)}/${item.unit} below the PIHPS market price of ${rupiah(r.ref_price)}). ` +
+      `The difference of ${rupiah(diff * BigInt(p.qty))} went back to your pooled balance. The grosir will deliver the goods.`));
   } else {
     out.push(make(ctx, p, "failed", "agent_to_owner", ctx.settleAt,
-      `${owner}, ronde #${r.id} tidak jadi (permintaan atau tawaran kurang). Seluruh saldo dikembalikan.`));
+      `${owner}, round #${r.id} did not go ahead (not enough demand or bids). Your full balance was refunded.`));
   }
   const share = shares[i] ?? 0n;
   if (forfeitedNames !== "") {
     out.push(make(ctx, p, "bond_forfeited", "agent_to_owner", ctx.settleAt + 1_000,
-      `${owner}, ${forfeitedNames} tidak membuka tawarannya, jadi jaminannya hangus dan dibagi ke pembeli. Bagian Anda ${rupiah(share)} masuk saldo.`));
+      `${owner}, ${forfeitedNames} did not reveal a bid, so the bond is forfeited and split among buyers. Your share, ${rupiah(share)}, was added to your balance.`));
   }
   return out;
 }
@@ -111,30 +113,30 @@ function deliveryMessages(ctx: Ctx, p: Participant, i: number, sellerName: strin
   const d: Delivery = p.delivery;
   if (d === "Confirmed") {
     return [
-      make(ctx, p, "owner_confirm", "owner_to_agent", t, "Barang sudah sampai, terima kasih."),
+      make(ctx, p, "owner_confirm", "owner_to_agent", t, "The goods arrived, thank you."),
       make(ctx, p, "delivery_confirmed", "agent_to_owner", t + 1_000,
-        `${owner}, konfirmasi terima ${p.qty} ${item.unit} tercatat. ${rupiah(paidOf(r, p))} diteruskan ke ${sellerName}.`),
+        `${owner}, receipt of ${p.qty} ${item.unit} is confirmed. ${rupiah(paidOf(r, p))} was released to ${sellerName}.`),
     ];
   }
   if (d === "Accepted") {
     return [make(ctx, p, "auto_accepted", "agent_to_owner", ctx.deliveryEnd + LEAD_MS,
-      `${owner}, belum ada konfirmasi sampai batas waktu. Sesuai aturan, barang dianggap diterima dan pembayaran diteruskan ke ${sellerName}.`)];
+      `${owner}, no confirmation by the deadline. Per the rules, the goods count as received and payment was released to ${sellerName}.`)];
   }
   if (d === "Disputed") {
     return [
-      make(ctx, p, "owner_dispute", "owner_to_agent", t, "Barangnya belum sampai."),
+      make(ctx, p, "owner_dispute", "owner_to_agent", t, "The goods have not arrived."),
       make(ctx, p, "disputed", "agent_to_owner", t + 1_000,
-        `${owner}, sengketa diajukan. ${rupiah(paidOf(r, p))} dibekukan sampai arbiter memutuskan.`),
+        `${owner}, dispute filed. ${rupiah(paidOf(r, p))} is frozen until the arbiter decides.`),
     ];
   }
   if (d === "Pending") {
     return [make(ctx, p, "delivering", "agent_to_owner", ctx.settleAt + 2_000,
-      `${owner}, ${sellerName} sedang menyiapkan ${p.qty} ${item.unit}. Konfirmasi "sudah sampai" sebelum batas pengiriman agar pembayaran diteruskan.`)];
+      `${owner}, ${sellerName} is preparing ${p.qty} ${item.unit}. Confirm "received" before the delivery deadline so payment can be released.`)];
   }
   const refunded = d === "DefaultRefunded" || (typeof d === "object" && d.Resolved.refunded);
   const text = refunded
-    ? `${owner}, sengketa selesai: ${rupiah(paidOf(r, p))} dikembalikan ke saldo Anda.`
-    : `${owner}, sengketa selesai: arbiter memutuskan pembayaran diteruskan ke ${sellerName}.`;
+    ? `${owner}, dispute resolved: ${rupiah(paidOf(r, p))} was refunded to your balance.`
+    : `${owner}, dispute resolved: the arbiter decided payment goes to ${sellerName}.`;
   return [make(ctx, p, "dispute_resolved", "agent_to_owner", ctx.deliveryEnd + LEAD_MS, text)];
 }
 

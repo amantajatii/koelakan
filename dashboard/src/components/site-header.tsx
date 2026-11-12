@@ -7,10 +7,10 @@ import { shortAccount } from "@/lib/format";
 import { useWallet } from "@/lib/wallet";
 
 const NAV = [
-  { href: "/", label: "Ringkasan" },
-  { href: "/rounds", label: "Ronde" },
-  { href: "/chat", label: "Chat agen" },
-  { href: "/coba", label: "Coba sendiri" },
+  { href: "/", label: "Overview" },
+  { href: "/rounds", label: "Rounds" },
+  { href: "/chat", label: "Agent chat" },
+  { href: "/try", label: "Try it yourself" },
 ] as const;
 
 function Crate() {
@@ -31,7 +31,7 @@ export function SiteHeader() {
   return (
     <header className="border-b-2 border-ink bg-paper-deep/70 backdrop-blur-sm">
       <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="Koelakan, ke halaman ringkasan">
+        <Link href="/" className="flex items-center gap-2.5" aria-label="Koelakan, go to the overview">
           <Crate />
           <span className="font-display text-2xl font-bold leading-none tracking-tight">Koelakan</span>
         </Link>
@@ -41,9 +41,9 @@ export function SiteHeader() {
           disabled={!ready}
           className="order-2 min-h-10 rounded-md border-2 border-ink bg-cream px-3 text-sm font-semibold hover:bg-kunyit-soft disabled:opacity-50 sm:order-3"
         >
-          {accountId ? <span className="num">{shortAccount(accountId).slice(0, 18)}</span> : "Masuk"}
+          {accountId ? <span className="num">{shortAccount(accountId).slice(0, 18)}</span> : "Sign in"}
         </button>
-        <nav aria-label="Utama" className="order-3 -mx-1 flex w-full gap-1 overflow-x-auto sm:order-2 sm:mx-0 sm:w-auto">
+        <nav aria-label="Main" className="order-3 -mx-1 flex w-full gap-1 overflow-x-auto sm:order-2 sm:mx-0 sm:w-auto">
           {NAV.map((item) => (
             <Link
               key={item.href}

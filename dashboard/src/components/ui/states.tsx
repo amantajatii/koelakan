@@ -19,12 +19,12 @@ export function ErrorNote({ message, onRetry }: { message: string; onRetry?: () 
   return (
     <div role="alert" className="flex flex-wrap items-center justify-between gap-3 rounded-lg border-2 border-chili bg-chili-soft/60 p-4 text-sm">
       <p className="max-w-xl">
-        <strong className="font-semibold">Data chain belum bisa dimuat.</strong> {message} Node publik membatasi
-        permintaan, jadi coba lagi sebentar lagi.
+        <strong className="font-semibold">Chain data could not be loaded.</strong> {message} Public nodes rate-limit
+        requests, so try again in a moment.
       </p>
       {onRetry && (
         <Button variant="secondary" onClick={onRetry}>
-          Coba lagi
+          Try again
         </Button>
       )}
     </div>

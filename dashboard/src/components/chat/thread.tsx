@@ -5,7 +5,7 @@ import type { ChatMessage } from "@/lib/wa";
 
 export function Thread({ messages, showSender }: { messages: ChatMessage[]; showSender: boolean }) {
   return (
-    <ol className="flex flex-col gap-2" aria-label="Pesan">
+    <ol className="flex flex-col gap-2" aria-label="Messages">
       {messages.map((m, i) => {
         const previous = messages[i - 1];
         const separator = previous === undefined || dayKey(previous.t) !== dayKey(m.t);

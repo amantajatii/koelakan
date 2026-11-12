@@ -11,7 +11,7 @@ const MARK: Record<StepStatus, string> = {
   skipped: "bg-cream border-rule text-rule line-through",
 };
 const MARK_TEXT: Record<StepStatus, string> = { done: "✓", current: "●", upcoming: "", skipped: "–" };
-const STATUS_SR: Record<StepStatus, string> = { done: "selesai", current: "sedang berjalan", upcoming: "belum mulai", skipped: "dilewati" };
+const STATUS_SR: Record<StepStatus, string> = { done: "done", current: "in progress", upcoming: "not started", skipped: "skipped" };
 
 export function Timeline({ round, nowMs }: { round: RoundView; nowMs: number }) {
   const steps = buildTimeline(round, nowMs);
@@ -30,10 +30,10 @@ export function Timeline({ round, nowMs }: { round: RoundView; nowMs: number }) 
                 {s.label} <span className="sr-only">({STATUS_SR[s.status]})</span>
               </p>
               <p className="num text-xs text-ink-soft">
-                {s.key === "settle" ? "setelah " : "sampai "}
+                {s.key === "settle" ? "after " : "until "}
                 {formatDateTime(s.deadlineMs)}
                 {s.status === "current" && s.key !== "settle" && (
-                  <> · sisa <Countdown deadlineMs={s.deadlineMs} nowMs={nowMs} /></>
+                  <> · <Countdown deadlineMs={s.deadlineMs} nowMs={nowMs} /></>
                 )}
               </p>
             </div>

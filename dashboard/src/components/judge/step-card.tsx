@@ -7,10 +7,10 @@ import { txUrl } from "@/lib/config";
 export type StepState = "done" | "ready" | "locked" | "optional";
 
 const BADGE: Record<StepState, { text: string; tone: Tone }> = {
-  done: { text: "Selesai", tone: "good" },
-  ready: { text: "Siap", tone: "warn" },
-  locked: { text: "Terkunci", tone: "neutral" },
-  optional: { text: "Opsional", tone: "info" },
+  done: { text: "Done", tone: "good" },
+  ready: { text: "Ready", tone: "warn" },
+  locked: { text: "Locked", tone: "neutral" },
+  optional: { text: "Optional", tone: "info" },
 };
 
 interface StepCardProps {
@@ -54,10 +54,10 @@ export function TxResult({ result }: { result: CallResult | null }) {
   if (!result) return null;
   return (
     <p role="status" className={cn("rounded-md border-2 px-3 py-2 text-sm", result.ok ? "border-pandan bg-pandan-soft/60" : "border-chili bg-chili-soft/60")}>
-      {result.ok ? "Transaksi berhasil." : result.error ?? "Transaksi gagal."}{" "}
+      {result.ok ? "Transaction succeeded." : result.error ?? "Transaction failed."}{" "}
       {result.hash && (
         <a className="num underline underline-offset-4" target="_blank" rel="noreferrer" href={txUrl(result.hash)}>
-          lihat di nearblocks
+          view on nearblocks
         </a>
       )}
     </p>

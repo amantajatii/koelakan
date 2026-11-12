@@ -42,9 +42,9 @@ Expected end of a run:
 
 ```
 === round #1: Closed ===
-winner: grosir-1.koelakan.testnet  clearing: Rp11.924  ref (PIHPS): Rp16.650
-participants: 20  total qty: 301  saving vs PIHPS: Rp1.422.526
-forfeited bond: Rp250.583 (grosir-5.koelakan.testnet)  silent warung: warung-18.koelakan.testnet
+winner: grosir-1.koelakan.testnet  clearing: Rp11,924  ref (PIHPS): Rp16,650
+participants: 20  total qty: 301  saving vs PIHPS: Rp1,422,526
+forfeited bond: Rp250,583 (grosir-5.koelakan.testnet)  silent warung: warung-18.koelakan.testnet
 cross-check vs sim engine: MATCH (56/56 checks)
 report: agents/out/round-1.json
 ```
@@ -128,7 +128,7 @@ Written by `pnpm round`. Schema version 1. All amounts are decimal strings (tIDR
       "direction": "agent_to_owner | owner_to_agent",
       "account": "warung-01.<root>", "owner": "Pak Budi",
       "kind": "joined | skipped | settled | failed | bond_forfeited | owner_confirm | delivery_confirmed | auto_accepted",
-      "text": "Pak Budi, Beras medium (tipe II) 16 kg sudah dipesan lewat ronde #1, harga maks Rp16.650/kg.",
+      "text": "Pak Budi, you're in round #1 with 16 kg of Medium rice (type II), max price Rp16,650/kg.",
       "tx_hash": "..."
     }
   ],
@@ -141,7 +141,7 @@ Written by `pnpm round`. Schema version 1. All amounts are decimal strings (tIDR
 }
 ```
 
-The `wa` array is sorted by time and written in Indonesian, addressed to the fictional owners (names are fixed per warung number in `src/wa.ts`).
+The `wa` array is sorted by time and written in English, addressed to the fictional owners (names are fixed per warung number in `src/wa.ts`).
 
 ### Cross-check
 

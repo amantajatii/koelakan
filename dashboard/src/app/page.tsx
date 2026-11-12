@@ -10,21 +10,22 @@ export default async function HomePage() {
     <>
       <section className="mb-10 max-w-3xl">
         <p className="mb-3 inline-block -rotate-1 rounded-sm border-2 border-chili px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-chili">
-          kulakan = belanja ke grosir
+          kulakan = restocking from a wholesaler
         </p>
         <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-6xl">
-          Warung kecil, harga <span className="text-chili">grosir</span>.
+          Small warung, <span className="text-chili">wholesale</span> prices.
         </h1>
         <p className="mt-4 max-w-2xl text-lg text-ink-soft">
-          Agen setiap warung patungan jadi satu pesanan besar, lalu agen grosir bersaing lewat lelang tawaran tersegel. Kontrak
-          NEAR menahan dana dan menegakkan batas harga serta anggaran pemilik.
+          Every warung (small neighbourhood shop) has an agent. The agents pool their orders into one big round, then grosir
+          (wholesaler) agents compete in a sealed-bid auction. A NEAR contract escrows the funds and enforces each owner&apos;s
+          price limits and budget. Prices are checked against PIHPS, Indonesia&apos;s national food price monitor.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link href="/rounds" className="inline-flex min-h-11 items-center rounded-md bg-ink px-5 text-sm font-semibold text-cream hover:bg-chili">
-            Lihat ronde
+            View rounds
           </Link>
-          <Link href="/coba" className="inline-flex min-h-11 items-center rounded-md border-2 border-ink bg-cream px-5 text-sm font-semibold hover:bg-kunyit-soft">
-            Coba sendiri
+          <Link href="/try" className="inline-flex min-h-11 items-center rounded-md border-2 border-ink bg-cream px-5 text-sm font-semibold hover:bg-kunyit-soft">
+            Try it yourself
           </Link>
         </div>
       </section>

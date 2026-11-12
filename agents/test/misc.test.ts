@@ -96,9 +96,9 @@ describe("setup guard", () => {
 });
 
 describe("util", () => {
-  it("formats rupiah with dots", () => {
-    expect(rupiah(16650n)).toBe("Rp16.650");
-    expect(rupiah("2000000")).toBe("Rp2.000.000");
+  it("formats rupiah with commas", () => {
+    expect(rupiah(16650n)).toBe("Rp16,650");
+    expect(rupiah("2000000")).toBe("Rp2,000,000");
     expect(rupiah(0)).toBe("Rp0");
   });
 

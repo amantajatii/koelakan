@@ -45,7 +45,7 @@ async function post(url: string, body: unknown): Promise<RpcEnvelope> {
       cache: "no-store",
     });
   } catch {
-    throw new RpcError("Tidak bisa menghubungi node NEAR.", "network");
+    throw new RpcError("Could not reach the NEAR node.", "network");
   }
   if (res.status === 429) throw new RpcError("Node NEAR membatasi permintaan (429).", "rate_limit");
   if (!res.ok) throw new RpcError(`Node NEAR membalas ${res.status}.`, "network");
@@ -95,7 +95,7 @@ export async function viewCall<T>(contract: string, method: string, args: unknow
       await sleep(400 * (attempt + 1));
     }
   }
-  throw last instanceof Error ? last : new RpcError("Gagal membaca data dari chain.", "unknown");
+  throw last instanceof Error ? last : new RpcError("Could not read data from the chain.", "unknown");
 }
 
 /** Latest block time (ms), used to correct for a skewed browser clock. */
@@ -118,5 +118,5 @@ export async function fetchChainTimeMs(): Promise<number> {
       // try the next endpoint
     }
   }
-  throw new RpcError("Tidak bisa membaca waktu blok.", "network");
+  throw new RpcError("Could not read the block time.", "network");
 }

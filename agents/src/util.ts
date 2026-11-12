@@ -15,9 +15,9 @@ export async function mapLimit<T, R>(items: readonly T[], limit: number, fn: (it
   return out;
 }
 
-/** Rupiah with Indonesian thousands separators: 16650 -> "Rp16.650". */
+/** Rupiah with en-US thousands separators: 16650 -> "Rp16,650". */
 export function rupiah(n: bigint | number | string): string {
-  const s = BigInt(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const s = BigInt(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return `Rp${s}`;
 }
 

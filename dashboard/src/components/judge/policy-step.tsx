@@ -6,6 +6,7 @@ import { Field, StepCard, TxResult, inputClass, type StepState } from "@/compone
 import { useTx } from "@/hooks/use-tx";
 import { parseAmount } from "@/lib/amount";
 import { rupiah } from "@/lib/format";
+import { itemLabel } from "@/lib/items";
 import { setPolicyCall } from "@/lib/tx";
 import type { Item, Policy } from "@/lib/types";
 
@@ -40,27 +41,27 @@ export function PolicyStep({ accountId, items, policy, onDone }: Props) {
   return (
     <StepCard
       index="4"
-      title="Atur kebijakan"
+      title="Set your policy"
       state={state}
-      intro={<>Batas harga per barang dan anggaran mingguan, ditegakkan kontrak. <code className="num">set_policy</code> memerlukan 1 yocto, jadi hanya kunci penuh Anda yang bisa mengubahnya, bukan agen. <code className="num">auto_join</code> dinyalakan agar kunci terbatas boleh ikut ronde.</>}
+      intro={<>A price limit per item and a weekly budget, enforced by the contract. <code className="num">set_policy</code> needs 1 yocto, so only your full-access key can change it, not the agent. <code className="num">auto_join</code> is switched on so the restricted key may join rounds.</>}
     >
       {accountId && (
         <>
           <fieldset className="grid gap-3 sm:grid-cols-2">
-            <legend className="mb-1 text-sm font-semibold">Harga maksimum per barang (default = harga acuan PIHPS)</legend>
+            <legend className="mb-1 text-sm font-semibold">Max price per item (default = PIHPS reference price)</legend>
             {items.map((item) => (
-              <Field key={item.id} id={`max-${item.id}`} label={`${item.name} per ${item.unit}`}>
+              <Field key={item.id} id={`max-${item.id}`} label={`${itemLabel(item)} per ${item.unit}`}>
                 <input id={`max-${item.id}`} inputMode="numeric" className={inputClass} value={maxRaw(item)} onChange={(e) => setEdits((prev) => ({ ...prev, [item.id]: e.target.value }))} />
               </Field>
             ))}
           </fieldset>
-          <Field id="anggaran" label="Anggaran mingguan (tIDR)" hint="Total yang boleh dikunci atau dibelanjakan per 7 hari.">
-            <input id="anggaran" inputMode="numeric" className={inputClass} value={budgetRaw} onChange={(e) => setBudgetRaw(e.target.value)} />
+          <Field id="budget" label="Weekly budget (tIDR)" hint="Total that may be locked or spent per 7 days.">
+            <input id="budget" inputMode="numeric" className={inputClass} value={budgetRaw} onChange={(e) => setBudgetRaw(e.target.value)} />
           </Field>
-          {policy && <p className="text-sm text-ink-soft">Kebijakan aktif: anggaran <span className="num">{rupiah(policy.weekly_budget)}</span>, {Object.keys(policy.max_price).length} barang.</p>}
-          {parsed === null && <p className="text-sm font-semibold text-chili">Semua isian harus berupa angka lebih dari 0.</p>}
+          {policy && <p className="text-sm text-ink-soft">Active policy: budget <span className="num">{rupiah(policy.weekly_budget)}</span>, {Object.keys(policy.max_price).length} items.</p>}
+          {parsed === null && <p className="text-sm font-semibold text-chili">Every field must be a number greater than 0.</p>}
           <Button onClick={() => parsed && void tx.run(setPolicyCall(parsed))} busy={tx.busy} disabled={parsed === null}>
-            {policy ? "Perbarui kebijakan" : "Simpan kebijakan"}
+            {policy ? "Update policy" : "Save policy"}
           </Button>
           <TxResult result={tx.result} />
         </>

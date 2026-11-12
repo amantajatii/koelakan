@@ -4,8 +4,8 @@ import { formatCountdown } from "@/lib/format";
 export function Countdown({ deadlineMs, nowMs }: { deadlineMs: number; nowMs: number }) {
   const left = deadlineMs - nowMs;
   return (
-    <span className="num" title="Sisa waktu fase ini">
-      <span className="sr-only">Sisa waktu </span>
+    <span className="num" title="Time left in this phase">
+      <span className="sr-only">Time left </span>
       {formatCountdown(left)}
     </span>
   );

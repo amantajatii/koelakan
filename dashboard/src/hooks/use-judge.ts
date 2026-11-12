@@ -52,7 +52,7 @@ export function useJudge(accountId: string | null): JudgeData {
       setAccount(accountId ? await loadAccount(accountId) : null);
       setError(null);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Gagal memuat data.");
+      setError(e instanceof Error ? e.message : "Could not load data.");
     } finally {
       setLoading(false);
     }

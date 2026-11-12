@@ -6,7 +6,7 @@ export const revalidate = 15;
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  return { title: `Ronde #${id} | Koelakan` };
+  return { title: `Round #${id} | Koelakan` };
 }
 
 export default async function RoundPage({ params }: { params: Promise<{ id: string }> }) {

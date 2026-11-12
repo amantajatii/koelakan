@@ -4,15 +4,15 @@ import type { Bid, Delivery, RoundView } from "./types";
 export function deliveryLabel(d: Delivery): { text: string; tone: Tone } {
   if (typeof d === "object") {
     return d.Resolved.refunded
-      ? { text: "Sengketa: dana kembali", tone: "warn" }
-      : { text: "Sengketa: dibayar ke grosir", tone: "neutral" };
+      ? { text: "Disputed: refunded", tone: "warn" }
+      : { text: "Disputed: paid to grosir", tone: "neutral" };
   }
   switch (d) {
-    case "Pending": return { text: "Menunggu", tone: "neutral" };
-    case "Confirmed": return { text: "Dikonfirmasi", tone: "good" };
-    case "Accepted": return { text: "Diterima otomatis", tone: "info" };
-    case "Disputed": return { text: "Sengketa", tone: "bad" };
-    case "DefaultRefunded": return { text: "Dana kembali (arbiter telat)", tone: "warn" };
+    case "Pending": return { text: "Waiting", tone: "neutral" };
+    case "Confirmed": return { text: "Confirmed", tone: "good" };
+    case "Accepted": return { text: "Auto-accepted", tone: "info" };
+    case "Disputed": return { text: "Disputed", tone: "bad" };
+    case "DefaultRefunded": return { text: "Refunded (arbiter timed out)", tone: "warn" };
   }
 }
 
@@ -26,9 +26,9 @@ export function bidStatus(round: RoundView, bid: Bid, index: number): BidStatus 
 }
 
 export const BID_LABEL: Record<BidStatus, { text: string; tone: Tone }> = {
-  winner: { text: "Menang", tone: "good" },
-  valid: { text: "Valid, kalah", tone: "neutral" },
-  invalid: { text: "Tidak valid", tone: "bad" },
-  forfeited: { text: "Tidak dibuka, jaminan hangus", tone: "bad" },
-  sealed: { text: "Tersegel", tone: "info" },
+  winner: { text: "Won", tone: "good" },
+  valid: { text: "Valid, lost", tone: "neutral" },
+  invalid: { text: "Invalid", tone: "bad" },
+  forfeited: { text: "Not revealed, bond forfeited", tone: "bad" },
+  sealed: { text: "Sealed", tone: "info" },
 };

@@ -38,20 +38,20 @@ export function outcomeHash(outcome: OutcomeLike | null | undefined): string | n
   return outcome?.transaction?.hash ?? outcome?.transaction_outcome?.id ?? null;
 }
 
-/** Turn contract panic text into a short Indonesian explanation. */
+/** Turn contract panic text into a short English explanation. */
 export function explainFailure(message: string): string {
   const rules: Array<[RegExp, string]> = [
-    [/wait one hour/i, "Faucet hanya bisa diklaim sekali per jam. Coba lagi nanti, atau pakai saldo tIDR yang sudah ada."],
-    [/no policy/i, 'Belum ada kebijakan untuk akun ini. Jalankan langkah "Atur kebijakan" dulu.'],
-    [/ceiling above owner max_price/i, "Harga maks ronde lebih tinggi dari batas harga di kebijakan Anda."],
-    [/weekly budget exceeded/i, "Anggaran mingguan Anda tidak cukup untuk jumlah ini."],
-    [/insufficient available balance/i, 'Saldo tersedia di market kurang. Jalankan "Setor ke market" lebih banyak.'],
-    [/already joined/i, "Akun ini sudah ikut ronde tersebut."],
-    [/not accepting joins/i, "Ronde sudah tidak menerima pendaftaran."],
-    [/item not in owner policy/i, "Barang ini belum ada di kebijakan Anda."],
-    [/does not have enough balance|NotEnoughBalance|not enough/i, "Saldo tIDR di dompet tidak cukup."],
-    [/not registered|storage/i, 'Akun belum terdaftar di token tIDR. Klik "Ambil tIDR" dulu.'],
-    [/NotEnoughAllowance|allowance/i, "Kunci terbatas kehabisan jatah gas. Masuk ulang untuk membuat kunci baru."],
+    [/wait one hour/i, "The faucet can only be claimed once per hour. Try again later, or use the tIDR you already have."],
+    [/no policy/i, 'This account has no policy yet. Run the "Set your policy" step first.'],
+    [/ceiling above owner max_price/i, "The round max price is above the price limit in your policy."],
+    [/weekly budget exceeded/i, "Your weekly budget is not enough for this quantity."],
+    [/insufficient available balance/i, 'Not enough available balance in the market. Run "Deposit to market" with a larger amount.'],
+    [/already joined/i, "This account has already joined that round."],
+    [/not accepting joins/i, "The round is no longer accepting joins."],
+    [/item not in owner policy/i, "This item is not in your policy."],
+    [/does not have enough balance|NotEnoughBalance|not enough/i, "Not enough tIDR in your wallet."],
+    [/not registered|storage/i, 'This account is not registered on the tIDR token. Click "Get tIDR" first.'],
+    [/NotEnoughAllowance|allowance/i, "The restricted key ran out of gas allowance. Sign in again to create a new key."],
   ];
   for (const [re, text] of rules) if (re.test(message)) return text;
   return message;

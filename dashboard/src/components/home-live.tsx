@@ -21,20 +21,20 @@ export function HomeLive({ initial, renderedAt }: { initial: Overview | null; re
   const now = useNow(renderedAt);
 
   if (!data) {
-    return loading ? <HomeSkeleton /> : <ErrorNote message={error ?? "Tidak ada balasan."} onRetry={refresh} />;
+    return loading ? <HomeSkeleton /> : <ErrorNote message={error ?? "No response."} onRetry={refresh} />;
   }
   const latest = [...data.rounds].reverse().slice(0, PREVIEW);
   return (
     <div className="space-y-10">
       {error && <ErrorNote message={error} onRetry={refresh} />}
       <StatsStrip agg={aggregate(data.rounds)} />
-      <section aria-labelledby="ronde-terbaru">
-        <SectionTitle aside={<Link className="text-sm font-semibold underline underline-offset-4 hover:text-chili" href="/rounds">Semua ronde</Link>}>
-          <span id="ronde-terbaru">Ronde terbaru</span>
+      <section aria-labelledby="latest-rounds">
+        <SectionTitle aside={<Link className="text-sm font-semibold underline underline-offset-4 hover:text-chili" href="/rounds">All rounds</Link>}>
+          <span id="latest-rounds">Latest rounds</span>
         </SectionTitle>
         {latest.length === 0 ? (
-          <EmptyState title="Belum ada ronde">
-            Buka ronde pertama dari halaman <Link className="underline" href="/coba">Coba sendiri</Link>.
+          <EmptyState title="No rounds yet">
+            Open the first round from the <Link className="underline" href="/try">Try it yourself</Link> page.
           </EmptyState>
         ) : (
           <div className="grid gap-4 md:grid-cols-3">
@@ -44,8 +44,8 @@ export function HomeLive({ initial, renderedAt }: { initial: Overview | null; re
       </section>
       <Catalogue items={data.items} />
       <DemoNote />
-      <section aria-labelledby="cara-kerja">
-        <SectionTitle><span id="cara-kerja">Cara kerjanya</span></SectionTitle>
+      <section aria-labelledby="how-it-works">
+        <SectionTitle><span id="how-it-works">How it works</span></SectionTitle>
         <HowItWorks />
       </section>
     </div>
@@ -54,7 +54,7 @@ export function HomeLive({ initial, renderedAt }: { initial: Overview | null; re
 
 function HomeSkeleton() {
   return (
-    <div className="space-y-6" role="status" aria-label="Memuat data chain">
+    <div className="space-y-6" role="status" aria-label="Loading chain data">
       <Skeleton className="h-28" />
       <div className="grid gap-4 md:grid-cols-3"><Skeleton className="h-36" /><Skeleton className="h-36" /><Skeleton className="h-36" /></div>
       <Skeleton className="h-64" />
