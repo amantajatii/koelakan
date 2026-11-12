@@ -5,3 +5,8 @@ node_modules/
 neardev/
 res/
 CLAUDE.md
+
+# agents: private keys, salts and run outputs must never be committed
+agents/.keys/
+agents/.state/
+agents/out/

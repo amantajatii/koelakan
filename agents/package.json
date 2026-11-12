@@ -1,0 +1,22 @@
+{
+  "name": "koelakan-agents",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Live Koelakan agents (warung, grosir, koordinator) for NEAR testnet",
+  "scripts": {
+    "setup": "tsx src/cli/setup.ts",
+    "round": "tsx src/cli/round.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "near-api-js": "^7.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}
