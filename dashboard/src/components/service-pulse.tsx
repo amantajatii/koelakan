@@ -10,7 +10,7 @@ import { useNow } from "@/hooks/use-now";
 import { cadenceLine, formatNextOpen, isStale } from "@/lib/status-format";
 
 /** Live agent-service summary: state, cadence, next round. Used on the overview and on /warung. */
-export function ServicePulse({ heading = "Agent service" }: { heading?: string }) {
+export function ServicePulse({ heading = "Agent service", showBadge = true }: { heading?: string; showBadge?: boolean }) {
   const { status, loading } = useAgentStatus();
   const now = useNow(0);
   const online = status !== null && now > 0 && !isStale(status, now);
@@ -18,7 +18,7 @@ export function ServicePulse({ heading = "Agent service" }: { heading?: string }
     <Panel aria-labelledby="service-pulse">
       <div className="flex items-center justify-between gap-3">
         <h2 id="service-pulse" className="text-lg font-bold tracking-tight">{heading}</h2>
-        <StatusBadge compact />
+        {showBadge && <StatusBadge compact />}
       </div>
       {loading ? (
         <Skeleton className="mt-4 h-14" />

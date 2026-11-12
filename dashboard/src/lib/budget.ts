@@ -56,13 +56,13 @@ export function planBudget(input: BudgetInput): BudgetPlan {
   if (lock > 0n && weeklyBudget !== null && weeklyBudget < lock) warnings.push("refused");
   else if (hoursToExhaust !== null && hoursToExhaust < FAST_EXHAUST_HOURS) warnings.push("exhausts_fast");
 
-  const usedPercent = hasBudget ? Math.min(100, Number((spent * 10_000n) / weeklyBudget) / 100) : 0;
+  const usedPercent = hasBudget && !unlimited ? Math.min(100, Number((spent * 10_000n) / weeklyBudget) / 100) : 0;
   return { lockPerRound: lock, roundsPerWeek, roundsCovered, hoursToExhaust, unlimited, usedPercent, warnings };
 }
 
 /** Weekly budget for people: huge values read as no limit instead of a wall of zeros. */
 export function describeBudgetAmount(budget: bigint, format: (n: bigint) => string): string {
-  return budget >= UNLIMITED_BUDGET ? "No practical limit" : format(budget);
+  return budget >= UNLIMITED_BUDGET ? "none set" : format(budget);
 }
 
 /** "about 3 hours" / "about 2 days" for the exhaustion warning. */

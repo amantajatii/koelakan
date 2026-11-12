@@ -18,11 +18,11 @@ describe("ownerSnapshots", () => {
   const me = "warung-01.koelakan.testnet";
   const parts = myParticipations([closedRound()], me, msAt(1000));
   it("uses the owner's own quantity from the last settled round", () => {
-    expect(ownerSnapshots([BERAS], parts, null)[0]).toMatchObject({ roundId: 1, paid: "12000", qty: 10 });
+    expect(ownerSnapshots([BERAS], parts, null)[0]).toMatchObject({ roundId: 1, paid: "12000", qty: 10, qtySource: "round" });
   });
   it("falls back to the standing order quantity before any round", () => {
-    expect(ownerSnapshots([SUGAR], parts, { "gula-pasir": 15 })[0]).toMatchObject({ roundId: null, paid: null, qty: 15 });
-    expect(ownerSnapshots([SUGAR], parts, { "gula-pasir": 0 })[0]?.qty).toBeNull();
+    expect(ownerSnapshots([SUGAR], parts, { "gula-pasir": 15 })[0]).toMatchObject({ roundId: null, paid: null, qty: 15, qtySource: "standing" });
+    expect(ownerSnapshots([SUGAR], parts, { "gula-pasir": 0 })[0]).toMatchObject({ qty: null, qtySource: null });
   });
 });
 

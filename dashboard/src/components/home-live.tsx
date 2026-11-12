@@ -77,7 +77,7 @@ export function HomeLive({ initial, renderedAt }: { initial: Overview | null; re
         <SectionTitle aside={source && asOf ? <span className="text-sm text-muted">Reference: {source}, {asOf}</span> : null}>
           <span id="staples">The four staples, against the market price</span>
         </SectionTitle>
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
           {marketSnapshots(data.items, data.rounds).map((s) => (
             <ItemCard key={s.item.id} snapshot={s} qtyLabel="pooled in the last round" qtyEmpty="No settled round yet" />
           ))}
@@ -118,7 +118,7 @@ export function HomeLive({ initial, renderedAt }: { initial: Overview | null; re
 function HomeSkeleton() {
   return (
     <div className="space-y-6" role="status" aria-label="Loading chain data">
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /></div>
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4"><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /></div>
       <Skeleton className="h-64" />
     </div>
   );

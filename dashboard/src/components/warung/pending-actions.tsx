@@ -42,7 +42,7 @@ export function PendingActions({ actions, items, nowMs, onDone, readOnly = false
         <span id="needs-action">Needs you</span>
       </SectionTitle>
       {actions.length === 0 ? (
-        <div className="flex items-start gap-3 rounded-2xl bg-ground p-4 text-sm text-muted">
+        <div className="flex items-start gap-3 text-sm text-muted">
           <PackageCheck className="mt-0.5 size-5 shrink-0 text-brand" aria-hidden />
           <p><strong className="font-semibold text-ink">Nothing needs you right now.</strong> When goods are on their way you see them here. If you do nothing, an order counts as received on its own when the delivery time ends.</p>
         </div>

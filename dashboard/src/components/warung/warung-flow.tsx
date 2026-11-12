@@ -22,7 +22,6 @@ import { PendingActions } from "@/components/warung/pending-actions";
 import { SetupComplete } from "@/components/warung/setup-complete";
 import { SetupStepper } from "@/components/warung/setup-stepper";
 import { StandingOrderCard } from "@/components/warung/standing-order-card";
-import { WithdrawPanel } from "@/components/warung/withdraw-panel";
 import { useAgentStatus } from "@/hooks/use-agent-status";
 import { useJudge } from "@/hooks/use-judge";
 import { useNow } from "@/hooks/use-now";
@@ -185,7 +184,7 @@ export function WarungFlow() {
         <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
           {setup}
           <div className="space-y-6">
-            <ServicePulse heading="Next round" />
+            <ServicePulse heading="Next round" showBadge={false} />
             <SecurityNote />
           </div>
         </div>
@@ -196,11 +195,11 @@ export function WarungFlow() {
           <section aria-labelledby="my-staples">
             <SectionTitle><span id="my-staples">Your four staples</span></SectionTitle>
             {!overview ? (
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4" role="status" aria-label="Loading your staples"><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /></div>
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4" role="status" aria-label="Loading your staples"><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /></div>
             ) : (
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
                 {ownerSnapshots(overview.items, participations, warung.record?.demand ?? null).map((s) => (
-                  <ItemCard key={s.item.id} snapshot={s} qtyLabel="in your last order" qtyEmpty="No order yet" />
+                  <ItemCard key={s.item.id} snapshot={s} qtyLabel="in your last order" standingLabel="on your standing order" qtyEmpty="No order yet" />
                 ))}
               </div>
             )}
@@ -210,8 +209,7 @@ export function WarungFlow() {
             <div className="space-y-6">
               {!hasPending && pendingPanel}
               {overview && <AgentFeed account={accountId} feed={feed} />}
-              <ServicePulse heading="Next round" />
-              <ActivityPanel actions={warung.record?.last_actions ?? null} apiDown={warung.apiDown || status === null} participations={participations} items={overview?.items ?? []} />
+              <ActivityPanel actions={warung.record?.last_actions ?? null} apiDown={warung.apiDown || status === null} participations={participations} items={overview?.items ?? []} rounds={rounds} />
             </div>
             <div className="space-y-6">
               {allDone && (overview ? (
@@ -219,8 +217,7 @@ export function WarungFlow() {
               ) : (
                 <Skeleton className="h-96" />
               ))}
-              <AccountSummary accountId={accountId} account={account} items={overview?.items ?? []} loading={data.loading} />
-              <WithdrawPanel available={account ? BigInt(account.balance.available) : 0n} onDone={afterTx} readOnly={readOnly} />
+              <AccountSummary accountId={accountId} account={account} items={overview?.items ?? []} loading={data.loading} onDone={afterTx} readOnly={readOnly} />
             </div>
           </div>
 

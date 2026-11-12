@@ -24,6 +24,9 @@ export function SecurityNote() {
         <p>
           Max price, weekly budget and balance are checked inside <code className={codeClass}>join_round</code>, and the round&apos;s ceiling can never exceed the PIHPS reference price stored on-chain.
         </p>
+        <p>
+          Your standing order is not a transaction. Your wallet signs a NEP-413 message with a single-use nonce, and the agent service verifies it before saving.
+        </p>
       </TechNote>
     </aside>
   );

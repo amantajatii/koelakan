@@ -1,5 +1,5 @@
 import { Chip } from "@/components/ui/chip";
-import { TableWrap, tableClass, td, tdRight, th, thRight, theadClass, trClass } from "@/components/ui/table";
+import { Facts, TableWrap, stackedList, stackedRow, tableClass, td, tdRight, th, thRight, theadClass, trClass } from "@/components/ui/table";
 import { accountUrl } from "@/lib/config";
 import { rupiah, shortAccount, shortHash } from "@/lib/format";
 import { BID_LABEL, bidStatus } from "@/lib/labels";
@@ -8,8 +8,24 @@ import type { RoundView } from "@/lib/types";
 
 export function BidsTable({ round }: { round: RoundView }) {
   return (
-    <TableWrap>
-      <table className={`${tableClass} min-w-[36rem]`}>
+    <>
+    <ul className={stackedList}>
+      {round.bids.map((b, i) => {
+        const st = BID_LABEL[bidStatus(round, b, i)];
+        return (
+          <li key={b.seller_id} className={stackedRow}>
+            <p className="flex flex-wrap items-center justify-between gap-2">
+              <a href={accountUrl(b.seller_id)} target="_blank" rel="noreferrer" className={`num ${linkClass}`}>{shortAccount(b.seller_id)}</a>
+              <Chip tone={st.tone}>{st.text}</Chip>
+            </p>
+            <Facts items={[["Price", b.revealed_price === null ? "sealed" : rupiah(b.revealed_price)], ["Bond", rupiah(b.bond)]]} />
+            <p className="num text-xs text-muted" title={b.hash}>Commit hash {shortHash(b.hash)}</p>
+          </li>
+        );
+      })}
+    </ul>
+    <TableWrap className="hidden sm:block">
+      <table className={tableClass}>
         <caption className="sr-only">Grosir bids for round #{round.id}</caption>
         <thead className={theadClass}>
           <tr>
@@ -38,5 +54,6 @@ export function BidsTable({ round }: { round: RoundView }) {
         </tbody>
       </table>
     </TableWrap>
+    </>
   );
 }

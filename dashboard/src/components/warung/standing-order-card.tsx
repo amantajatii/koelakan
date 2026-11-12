@@ -10,9 +10,7 @@ import { Notice } from "@/components/ui/notice";
 import { Panel } from "@/components/ui/panel";
 import type { StepState } from "@/components/judge/step-card";
 import { BudgetSummary } from "@/components/warung/budget-summary";
-import { TechNote, codeClass } from "@/components/warung/tech-note";
 import { planBudget } from "@/lib/budget";
-import { AGENT_RECIPIENT } from "@/lib/config";
 import type { Policy } from "@/lib/types";
 import { submitDemand } from "@/lib/agent-api";
 import type { WarungRecord } from "@/lib/agent-types";
@@ -106,7 +104,6 @@ export function StandingOrderCard({ accountId, items, record, apiOnline, onSaved
   }
 
   const clearing = check.ok && isUnregister(check.demand);
-  const saved = record ? Object.entries(record.demand).filter(([, q]) => q > 0) : [];
   const setQty = (id: string, value: string): void => setEdits((p) => ({ ...p, [id]: value }));
   const locked = readOnly || !apiOnline;
   const plan = useMemo(
@@ -117,12 +114,12 @@ export function StandingOrderCard({ accountId, items, record, apiOnline, onSaved
   const body = (
     <div className="space-y-4">
       {!apiOnline && !readOnly && <Notice tone="warn">The agent service is offline right now, so a new order cannot be saved. Everything on the blockchain still works; try again in a moment.</Notice>}
-      <ul className="divide-y divide-line rounded-2xl border border-line">
+      <ul className="divide-y divide-line border-y border-line">
         {items.map((item) => {
           const included = isIncluded(raw[item.id]);
           const lastQty = record?.demand[item.id];
           return (
-            <li key={item.id} className="flex items-center gap-3 px-3 py-2.5">
+            <li key={item.id} className="flex items-center gap-2.5 py-2.5 sm:gap-3">
               <input
                 type="checkbox"
                 id={`inc-${item.id}`}
@@ -131,20 +128,20 @@ export function StandingOrderCard({ accountId, items, record, apiOnline, onSaved
                 disabled={locked}
                 onChange={(e) => setQty(item.id, e.target.checked ? (lastQty && lastQty > 0 ? String(lastQty) : DEFAULT_QTY) : "0")}
               />
-              <label htmlFor={`inc-${item.id}`} className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 py-1">
-                <ItemImage itemId={item.id} size="sm" plain />
+              <label htmlFor={`inc-${item.id}`} className="flex min-w-0 flex-1 cursor-pointer items-center gap-2.5 py-1 sm:gap-3">
+                <ItemImage itemId={item.id} size="xs" plain className="sm:size-11" />
                 <span className="min-w-0">
-                  <span className={cn("block truncate text-sm font-semibold", !included && "text-muted")}>{itemLabel(item)}</span>
+                  <span className={cn("block text-sm font-semibold leading-snug", !included && "text-muted")}>{itemLabel(item)}</span>
                   <span className="block text-xs text-muted">{item.unit} each round</span>
                 </span>
               </label>
               <label htmlFor={`qty-${item.id}`} className="sr-only">{`${itemLabel(item)} (${item.unit} each round)`}</label>
-              <input id={`qty-${item.id}`} inputMode="numeric" className={cn(inputBase, "w-20 text-center")} value={raw[item.id]} onChange={(e) => setQty(item.id, e.target.value)} disabled={locked} />
+              <input id={`qty-${item.id}`} inputMode="numeric" className={cn(inputBase, "w-[4.5rem] px-2 text-center sm:w-20 sm:px-3.5")} value={raw[item.id]} onChange={(e) => setQty(item.id, e.target.value)} disabled={locked} />
             </li>
           );
         })}
       </ul>
-      <BudgetSummary plan={plan} weeklyBudget={policy ? BigInt(policy.weekly_budget) : null} spent={spent} showUsage={policy !== null} />
+      <BudgetSummary plan={plan} weeklyBudget={policy ? BigInt(policy.weekly_budget) : null} spent={spent} showUsage={policy !== null} editHref={embedded ? undefined : "#setup"} />
       {!check.ok && <p className="text-sm font-semibold text-danger">{check.message}</p>}
       {readOnly ? (
         <p className="text-sm text-muted">The demo is read-only. Sign in to set the order for your own warung.</p>
@@ -157,15 +154,6 @@ export function StandingOrderCard({ accountId, items, record, apiOnline, onSaved
         </>
       )}
       {notice && <Notice tone={notice.tone === "ok" ? "ok" : "error"}>{notice.text}</Notice>}
-      <p className="text-sm text-muted">
-        Saved order:{" "}
-        {saved.length === 0 ? "none yet." : saved.map(([id, q]) => `${itemLabel(items.find((i) => i.id === id), id)} ${q} ${items.find((i) => i.id === id)?.unit ?? "kg"}`).join(", ") + " each round."}
-      </p>
-      <TechNote>
-        <p>
-          The order is not a transaction. Your wallet signs a NEP-413 message (recipient <code className={codeClass}>{AGENT_RECIPIENT}</code>, single-use nonce) with your full-access key, and the agent service verifies it before saving. Unticking everything unregisters you.
-        </p>
-      </TechNote>
     </div>
   );
 

@@ -40,7 +40,7 @@ const TERMS = [
 
 function Code({ children, label }: { children: string; label: string }) {
   return (
-    <pre aria-label={label} className="overflow-x-auto rounded-2xl bg-ink p-4 font-mono text-xs leading-relaxed text-[#d8efe6]"><code>{children}</code></pre>
+    <pre aria-label={label} className="max-w-full overflow-x-auto rounded-2xl bg-ink p-4 font-mono text-xs leading-relaxed text-[#d8efe6]"><code>{children}</code></pre>
   );
 }
 
@@ -53,10 +53,10 @@ export default function GrosirPage() {
         A grosir (wholesaler) sells to many warungs at once. On Koelakan the warungs pool their demand into one round, and you win it by bidding the lowest price. One round, one big order, one delivery run.
       </PageHeader>
 
-      <div className="space-y-6">
-        <Panel aria-labelledby="role">
+      <div className="min-w-0 space-y-6">
+        <Panel aria-labelledby="role" className="min-w-0">
           <SectionTitle><span id="role">How a grosir wins a round</span></SectionTitle>
-          <dl className="grid gap-x-10 gap-y-5 sm:grid-cols-2">
+          <dl className="grid gap-x-10 gap-y-5 sm:grid-cols-[repeat(2,minmax(0,1fr))]">
             {TERMS.map(([title, body]) => (
               <div key={title} className="border-t border-line pt-4 first:border-t-0 first:pt-0 sm:[&:nth-child(-n+2)]:border-t-0 sm:[&:nth-child(-n+2)]:pt-0">
                 <dt className="font-bold">{title}</dt>
@@ -66,7 +66,7 @@ export default function GrosirPage() {
           </dl>
         </Panel>
 
-        <Panel aria-labelledby="live">
+        <Panel aria-labelledby="live" className="min-w-0">
           <SectionTitle><span id="live">Grosir agents running now</span></SectionTitle>
           <GrosirTable />
           <p className="mt-4 text-xs text-muted">
@@ -74,20 +74,20 @@ export default function GrosirPage() {
           </p>
         </Panel>
 
-        <Panel aria-labelledby="run" className="space-y-6">
+        <Panel aria-labelledby="run" className="min-w-0 space-y-6">
           <SectionTitle className="mb-0"><span id="run">Run your own grosir agent</span></SectionTitle>
           <aside className="rounded-2xl bg-warn-soft p-4 text-sm ring-1 ring-inset ring-warn/20">
             <strong className="font-semibold">Why you run it yourself.</strong> Committing a bond moves tIDR out of your own wallet, which needs a full-access key (RULES section 4). A restricted function-call key cannot attach that deposit, and we will never ask you to hand a full-access key to a service. Your key stays on your machine.
           </aside>
-          <ol className="space-y-6 text-sm">
-            <li className="flex gap-4">
+          <ol className="min-w-0 space-y-6 text-sm">
+            <li className="flex min-w-0 gap-4">
               <span aria-hidden className={STEP_BADGE}>1</span>
               <div className="min-w-0 flex-1">
                 <p className="font-bold">Create a testnet account and get tIDR.</p>
                 <p className="mt-1 text-muted">Fund it with a little NEAR for gas, then call the tIDR faucet for the bond. Keep tIDR in the wallet, not in the market balance.</p>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex min-w-0 gap-4">
               <span aria-hidden className={STEP_BADGE}>2</span>
               <div className="min-w-0 flex-1">
                 <p className="font-bold">Write your price list.</p>
@@ -95,7 +95,7 @@ export default function GrosirPage() {
                 <Code label="Example pricing file">{PRICING_EXAMPLE}</Code>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex min-w-0 gap-4">
               <span aria-hidden className={STEP_BADGE}>3</span>
               <div className="min-w-0 flex-1">
                 <p className="font-bold">Start the agent.</p>
@@ -104,7 +104,7 @@ export default function GrosirPage() {
                 <Code label="Run with docker">{RUN_DOCKER}</Code>
               </div>
             </li>
-            <li className="flex gap-4">
+            <li className="flex min-w-0 gap-4">
               <span aria-hidden className={STEP_BADGE}>4</span>
               <div className="min-w-0 flex-1">
                 <p className="font-bold">Watch it work.</p>

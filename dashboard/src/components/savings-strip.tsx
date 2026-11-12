@@ -27,7 +27,7 @@ export function SavingsStrip({ refPrice, paid, unit, refClass = "text-muted", si
   if (paid === null || below === null) {
     return (
       <div>
-        <p className="flex items-baseline justify-between gap-2">
+        <p className="flex flex-col gap-0.5">
           <span className={cn("text-xs font-medium", refClass)}>PIHPS price</span>
           <span className={cn("num font-bold", large ? "text-2xl" : "text-lg", refClass)}>{rupiah(refPrice)}<span className="text-xs font-medium">/{unit}</span></span>
         </p>

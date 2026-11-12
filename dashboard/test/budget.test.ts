@@ -33,6 +33,7 @@ describe("planBudget", () => {
   it("treats huge budgets as unlimited and never warns about exhaustion", () => {
     const p = planBudget({ ...base, demand: { "beras-medium": 20 }, weeklyBudget: 10n ** 15n });
     expect(p.unlimited).toBe(true);
+    expect(p.usedPercent).toBe(0);
     expect(p.hoursToExhaust).toBeNull();
     expect(p.warnings).toEqual([]);
   });
@@ -58,8 +59,8 @@ describe("planBudget", () => {
 
 describe("describe helpers", () => {
   it("formats absurd budgets sanely", () => {
-    expect(describeBudgetAmount(10n ** 12n, rupiah)).toBe("No practical limit");
-    expect(describeBudgetAmount(10n ** 15n, rupiah)).toBe("No practical limit");
+    expect(describeBudgetAmount(10n ** 12n, rupiah)).toBe("none set");
+    expect(describeBudgetAmount(10n ** 15n, rupiah)).toBe("none set");
     expect(describeBudgetAmount(2_000_000n, rupiah)).toBe("Rp2,000,000");
   });
   it("describes durations", () => {

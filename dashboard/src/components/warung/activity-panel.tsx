@@ -2,75 +2,105 @@ import Link from "next/link";
 import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
 import { Chip } from "@/components/ui/chip";
 import { TableWrap, tableClass, td, tdRight, th, thRight, theadClass, trClass } from "@/components/ui/table";
-import type { WarungAction } from "@/lib/agent-types";
 import { txUrl } from "@/lib/config";
-import { formatDateTime, rupiah } from "@/lib/format";
+import { rupiah } from "@/lib/format";
 import { itemLabel } from "@/lib/items";
+import { buildOwnerRoundRows, type OwnerRoundRow } from "@/lib/round-rows";
+import type { WarungAction } from "@/lib/agent-types";
 import type { Participation } from "@/lib/owner-actions";
 import { itemOf } from "@/lib/stats";
-import type { Item } from "@/lib/types";
+import type { Item, RoundView } from "@/lib/types";
 
 interface Props {
   actions: WarungAction[] | null;
   apiDown: boolean;
   participations: Participation[];
   items: Item[];
+  rounds: RoundView[];
 }
 
-export function ActivityPanel({ actions, apiDown, participations, items }: Props) {
+function describe(row: OwnerRoundRow, items: Item[]): string {
+  const item = row.itemId ? itemOf(items, row.itemId) : undefined;
+  const name = row.itemId ? itemLabel(item, row.itemId) : "Round";
+  return row.qty === null ? name : `${name} · ${row.qty} ${item?.unit ?? "units"}`;
+}
+
+function Outcome({ row }: { row: OwnerRoundRow }) {
+  return (
+    <>
+      <Chip tone={row.tone}>{row.outcome}</Chip>
+      {row.reason && <span className="mt-1 block text-xs text-muted">{row.reason}</span>}
+    </>
+  );
+}
+
+function Receipt({ tx }: { tx: string | null }) {
+  return tx ? <a className={`num text-xs ${linkClass}`} target="_blank" rel="noreferrer" href={txUrl(tx)}>receipt</a> : null;
+}
+
+/** Every round the owner joined, plus the ones the agent skipped and why. Stacked rows on phones, a table from sm up. */
+export function ActivityPanel({ actions, apiDown, participations, items, rounds }: Props) {
+  const rows = buildOwnerRoundRows(participations, actions, rounds);
   return (
     <Panel aria-labelledby="activity">
-      <SectionTitle><span id="activity">What your agent did</span></SectionTitle>
-      <h3 className="text-sm font-bold">Decisions, round by round</h3>
-      {apiDown ? (
-        <p className="mt-2 text-sm text-muted">The agent service is offline, so its log is unavailable. The rounds below come straight from the blockchain and are still up to date.</p>
-      ) : !actions || actions.length === 0 ? (
-        <p className="mt-2 text-sm text-muted">Nothing yet. Once you save a standing order, each round shows up here as joined or skipped, with the reason.</p>
+      <SectionTitle><span id="activity">Your rounds</span></SectionTitle>
+      {rows.length === 0 ? (
+        <p className="text-sm text-muted">
+          {apiDown
+            ? "No rounds yet, and the agent service is offline so its log is unavailable. Rounds you join come straight from the blockchain."
+            : "No rounds yet. Once your agent joins one, it shows here with what you paid and what came back. Rounds it skips show up with the reason."}
+        </p>
       ) : (
-        <ul className="mt-2 divide-y divide-line text-sm">
-          {actions.map((a) => (
-            <li key={`${a.round_id}-${a.at}`} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5">
-              <Chip tone={a.action === "joined" ? "good" : "neutral"}>{a.action === "joined" ? "Joined" : "Skipped"}</Chip>
-              <Link href={`/rounds/${a.round_id}`} className={linkClass}>Round #{a.round_id}</Link>
-              {a.qty !== null && <span className="num">{a.qty} kg</span>}
-              {a.reason && <span className="text-muted">{a.reason}</span>}
-              <span className="ml-auto text-xs text-muted">{formatDateTime(Date.parse(a.at))}</span>
-              {a.tx && <a className={`num text-xs ${linkClass}`} target="_blank" rel="noreferrer" href={txUrl(a.tx)}>receipt</a>}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <h3 className="mt-7 text-sm font-bold">Your rounds, from the blockchain</h3>
-      {participations.length === 0 ? (
-        <p className="mt-2 text-sm text-muted">No rounds yet. Once your agent joins one, it shows here with what you paid and what came back.</p>
-      ) : (
-        <TableWrap className="mt-2">
-          <table className={`${tableClass} min-w-[34rem]`}>
-            <caption className="sr-only">Your rounds with outcome, amount paid and refund</caption>
-            <thead className={theadClass}>
-              <tr>
-                <th scope="col" className={th}>Round</th>
-                <th scope="col" className={th}>Outcome</th>
-                <th scope="col" className={thRight}>Paid</th>
-                <th scope="col" className={thRight}>Refund</th>
-              </tr>
-            </thead>
-            <tbody>
-              {participations.map((p) => (
-                <tr key={p.round.id} className={trClass}>
-                  <th scope="row" className={`${td} font-normal`}>
-                    <Link href={`/rounds/${p.round.id}`} className={`num ${linkClass}`}>#{p.round.id}</Link>
-                    <span className="block text-xs text-muted">{itemLabel(itemOf(items, p.round.item), p.round.item)}, {p.qty} {itemOf(items, p.round.item)?.unit ?? "units"}</span>
-                  </th>
-                  <td className={td}><Chip tone={p.tone}>{p.outcome}</Chip></td>
-                  <td className={tdRight}>{rupiah(p.paid)}</td>
-                  <td className={tdRight}>{rupiah(p.refund)}</td>
+        <>
+          <ul className="divide-y divide-line sm:hidden">
+            {rows.map((row) => (
+              <li key={row.roundId} className="space-y-1.5 py-3 first:pt-0 last:pb-0">
+                <p className="font-semibold">
+                  <Link href={`/rounds/${row.roundId}`} className={`num ${linkClass}`}>#{row.roundId}</Link>
+                  <span className="text-muted"> · </span>
+                  {describe(row, items)}
+                </p>
+                <p><Outcome row={row} /></p>
+                {row.paid !== null && row.refund !== null && (
+                  <p className="num flex flex-wrap items-baseline gap-x-4 text-sm">
+                    <span><span className="text-muted">Paid </span><strong>{rupiah(row.paid)}</strong></span>
+                    <span><span className="text-muted">Refund </span><strong>{rupiah(row.refund)}</strong></span>
+                    <Receipt tx={row.tx} />
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+          <TableWrap className="hidden sm:block">
+            <table className={tableClass}>
+              <caption className="sr-only">Your rounds with outcome, amount paid and refund</caption>
+              <thead className={theadClass}>
+                <tr>
+                  <th scope="col" className={th}>Round</th>
+                  <th scope="col" className={th}>Outcome</th>
+                  <th scope="col" className={thRight}>Paid</th>
+                  <th scope="col" className={thRight}>Refund</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableWrap>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.roundId} className={trClass}>
+                    <th scope="row" className={`${td} font-normal`}>
+                      <Link href={`/rounds/${row.roundId}`} className={`num ${linkClass}`}>#{row.roundId}</Link>
+                      <span className="block text-xs text-muted">{describe(row, items)}</span>
+                    </th>
+                    <td className={td}><Outcome row={row} /></td>
+                    <td className={tdRight}>{row.paid === null ? "-" : rupiah(row.paid)}</td>
+                    <td className={tdRight}>
+                      {row.refund === null ? "-" : rupiah(row.refund)}
+                      {row.tx && <span className="block"><Receipt tx={row.tx} /></span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </TableWrap>
+        </>
       )}
     </Panel>
   );

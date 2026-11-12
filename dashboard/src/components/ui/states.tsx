@@ -10,7 +10,7 @@ export function Skeleton({ className }: { className?: string }) {
 /** Empty states teach: say what belongs here and what to do next. */
 export function EmptyState({ title, children, icon: Icon = Inbox, className }: { title: string; children?: ReactNode; icon?: LucideIcon; className?: string }) {
   return (
-    <div className={cn("flex flex-col items-center rounded-2xl border border-dashed border-line-strong bg-ground/60 px-6 py-10 text-center", className)}>
+    <div className={cn("flex flex-col items-center px-6 py-10 text-center", className)}>
       <span aria-hidden className="mb-3 flex size-11 items-center justify-center rounded-full bg-brand-soft text-brand-ink"><Icon className="size-5" /></span>
       <p className="font-semibold">{title}</p>
       {children && <div className="mx-auto mt-1.5 max-w-md text-sm text-muted">{children}</div>}

@@ -4,7 +4,7 @@ import { OfflineNote } from "@/components/offline-note";
 import { Chip } from "@/components/ui/chip";
 import { linkClass } from "@/components/ui/panel";
 import { Skeleton } from "@/components/ui/states";
-import { TableWrap, tableClass, td, tdRight, th, thRight, theadClass, trClass } from "@/components/ui/table";
+import { Facts, TableWrap, stackedList, stackedRow, tableClass, td, tdRight, th, thRight, theadClass, trClass } from "@/components/ui/table";
 import { useAgentStatus } from "@/hooks/use-agent-status";
 import { accountUrl } from "@/lib/config";
 import { rupiah, shortAccount } from "@/lib/format";
@@ -15,17 +15,29 @@ export function GrosirTable() {
   if (loading) return <Skeleton className="h-40" />;
   if (!status) return <OfflineNote />;
   const rows = status.agents.grosir;
-  if (rows.length === 0) return <p className="rounded-2xl border border-dashed border-line-strong p-4 text-sm text-muted">The service is not running any grosir agents right now.</p>;
+  if (rows.length === 0) return <p className="text-sm text-muted">The service is not running any grosir agents right now.</p>;
   return (
-    <TableWrap>
-      <table className={`${tableClass} min-w-[36rem]`}>
+    <>
+    <ul className={stackedList}>
+      {rows.map((g) => (
+        <li key={g.account_id} className={stackedRow}>
+          <p className="flex flex-wrap items-center justify-between gap-2">
+            <a href={accountUrl(g.account_id)} target="_blank" rel="noreferrer" className={`num ${linkClass}`}>{shortAccount(g.account_id)}</a>
+            {g.paused ? <Chip tone="warn">Paused</Chip> : <Chip tone="good">Bidding</Chip>}
+          </p>
+          <Facts items={[["NEAR (gas)", formatNear(g.near)], ["Held in market (bonds + sales)", rupiah(g.market_available)], ["tIDR in wallet", rupiah(g.tidr_wallet)]]} />
+        </li>
+      ))}
+    </ul>
+    <TableWrap className="hidden sm:block">
+      <table className={tableClass}>
         <caption className="sr-only">Grosir agents run by the Koelakan service</caption>
         <thead className={theadClass}>
           <tr>
             <th scope="col" className={th}>Grosir</th>
             <th scope="col" className={thRight}>NEAR (gas)</th>
             <th scope="col" className={thRight}>tIDR in wallet (bonds)</th>
-            <th scope="col" className={thRight}>Earnings in market</th>
+            <th scope="col" className={thRight}>Held in market (bonds + sales)</th>
             <th scope="col" className={`${th} pl-4`}>State</th>
           </tr>
         </thead>
@@ -44,5 +56,6 @@ export function GrosirTable() {
         </tbody>
       </table>
     </TableWrap>
+    </>
   );
 }

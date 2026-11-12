@@ -59,9 +59,9 @@ function Online({ status, now }: { status: AgentStatus; now: number }) {
         <Panel aria-labelledby="cadence">
           <SectionTitle><span id="cadence">Round schedule</span></SectionTitle>
           <p className="text-sm text-muted">Each round runs through four timed phases, then delivery:</p>
-          <ol className="mt-4 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+          <ol className="mt-3 divide-y divide-line text-sm">
             {([["Joining", c.join_secs], ["Sealed bids", c.commit_secs], ["Reveal", c.reveal_secs], ["Delivery", c.delivery_secs]] as const).map(([name, secs]) => (
-              <li key={name} className="rounded-xl bg-ground px-3 py-2.5"><span className="block font-semibold">{name}</span><span className="num text-muted">{secs} s</span></li>
+              <li key={name} className="flex items-baseline justify-between gap-3 py-2.5"><span className="font-semibold">{name}</span><span className="num text-muted">{secs} s</span></li>
             ))}
           </ol>
         </Panel>
@@ -85,12 +85,12 @@ function Online({ status, now }: { status: AgentStatus; now: number }) {
       <Panel aria-labelledby="active">
         <SectionTitle><span id="active">Active rounds</span></SectionTitle>
         {status.active_rounds.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-line-strong p-4 text-sm text-muted">No round is running. The next one opens {formatNextOpen(status.next_open_at, now)}.</p>
+          <p className="text-sm text-muted">No round is running. The next one opens {formatNextOpen(status.next_open_at, now)}.</p>
         ) : (
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="divide-y divide-line">
             {status.active_rounds.map((r) => (
               <li key={r.id}>
-                <Link href={`/rounds/${r.id}`} className="flex min-h-14 items-center justify-between gap-3 rounded-2xl bg-ground px-4 py-3 transition-colors duration-150 hover:bg-brand-soft">
+                <Link href={`/rounds/${r.id}`} className="flex min-h-14 items-center justify-between gap-3 py-3 transition-colors duration-150 hover:bg-ground/70">
                   <span><strong className="font-bold">Round #{r.id}</strong><span className="block text-sm text-muted">{r.item}</span></span>
                   {PHASES.includes(r.phase) ? <PhaseBadge phase={r.phase as Phase} /> : <Chip>{r.phase}</Chip>}
                 </Link>
@@ -103,7 +103,7 @@ function Online({ status, now }: { status: AgentStatus; now: number }) {
       <Panel aria-labelledby="events">
         <SectionTitle><span id="events">Recent events</span></SectionTitle>
         {status.recent_events.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-line-strong p-4 text-sm text-muted">No events yet. Rounds opening, bids and settlements appear here as the service works.</p>
+          <p className="text-sm text-muted">No events yet. Rounds opening, bids and settlements appear here as the service works.</p>
         ) : (
           <ol className="divide-y divide-line">
             {status.recent_events.map((e, i) => (
