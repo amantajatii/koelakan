@@ -1,0 +1,16 @@
+[package]
+name = "tidr"
+version = "0.1.0"
+edition = "2021"
+description = "tIDR: NEP-141 test rupiah token with a testnet faucet (Koelakan)"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+near-sdk = { workspace = true }
+near-contract-standards = { workspace = true }
+
+[dev-dependencies]
+near-sdk = { workspace = true, features = ["unit-testing"] }
