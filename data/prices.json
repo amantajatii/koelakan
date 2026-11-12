@@ -1,0 +1,13 @@
+{
+  "note": "ref_price = national average market price (PIHPS Nasional, 11 Nov 2026). het = official retail ceiling, zone 1 (Surat Edaran Kepala Bapanas No. 456/2026, 10 Nov 2026). Units: rupiah = tIDR.",
+  "sources": {
+    "pihps_2026_11_11": "https://www.liputan6.com/bisnis/read/8332822/harga-pangan-11-november-2026-cabai-rawit-merah-sentuh-rp-104050-per-kg",
+    "het_se_456_2026": "https://www.cnbcindonesia.com/tech/20261110200252-37-784055/segini-harga-beras-minyak-dan-telur-terbaru-november-2026"
+  },
+  "items": [
+    { "id": "beras-medium", "name": "Beras medium (tipe II)", "unit": "kg", "ref_price": "16650", "het": "13500", "source": "PIHPS Nasional", "as_of": "2026-11-11" },
+    { "id": "gula-pasir",   "name": "Gula pasir lokal",       "unit": "kg", "ref_price": "19950", "het": "17500", "source": "PIHPS Nasional", "as_of": "2026-11-11" },
+    { "id": "telur-ayam",   "name": "Telur ayam ras",         "unit": "kg", "ref_price": "28350", "het": "30000", "source": "PIHPS Nasional", "as_of": "2026-11-11" },
+    { "id": "minyak-curah", "name": "Minyak goreng curah",    "unit": "kg", "ref_price": "20800", "het": null,    "source": "PIHPS Nasional", "as_of": "2026-11-11" }
+  ]
+}
