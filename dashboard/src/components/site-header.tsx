@@ -3,14 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/components/ui/cn";
+import { StatusBadge } from "@/components/status-badge";
 import { shortAccount } from "@/lib/format";
 import { useWallet } from "@/lib/wallet";
 
 const NAV = [
   { href: "/", label: "Overview" },
+  { href: "/warung", label: "Run your warung" },
   { href: "/rounds", label: "Rounds" },
   { href: "/chat", label: "Agent chat" },
-  { href: "/try", label: "Try it yourself" },
+  { href: "/grosir", label: "For wholesalers" },
+  { href: "/status", label: "Status" },
 ] as const;
 
 function Crate() {
@@ -35,14 +38,17 @@ export function SiteHeader() {
           <Crate />
           <span className="font-display text-2xl font-bold leading-none tracking-tight">Koelakan</span>
         </Link>
+        <div className="order-2 ml-auto flex items-center gap-3 sm:order-3 sm:ml-0">
+        <StatusBadge compact className="hidden min-[420px]:inline-flex" />
         <button
           type="button"
           onClick={signIn}
           disabled={!ready}
-          className="order-2 min-h-10 rounded-md border-2 border-ink bg-cream px-3 text-sm font-semibold hover:bg-kunyit-soft disabled:opacity-50 sm:order-3"
+          className="min-h-10 rounded-md border-2 border-ink bg-cream px-3 text-sm font-semibold hover:bg-kunyit-soft disabled:opacity-50"
         >
           {accountId ? <span className="num">{shortAccount(accountId).slice(0, 18)}</span> : "Sign in"}
         </button>
+        </div>
         <nav aria-label="Main" className="order-3 -mx-1 flex w-full gap-1 overflow-x-auto sm:order-2 sm:mx-0 sm:w-auto">
           {NAV.map((item) => (
             <Link

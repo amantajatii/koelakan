@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LiveStrip } from "@/components/live-strip";
 import { HomeLive } from "@/components/home-live";
 import { loadOverview } from "@/lib/overview";
 
@@ -9,6 +10,7 @@ export default async function HomePage() {
   return (
     <>
       <section className="mb-10 max-w-3xl">
+        <LiveStrip />
         <p className="mb-3 inline-block -rotate-1 rounded-sm border-2 border-chili px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-chili">
           kulakan = restocking from a wholesaler
         </p>
@@ -21,11 +23,14 @@ export default async function HomePage() {
           price limits and budget. Prices are checked against PIHPS, Indonesia&apos;s national food price monitor.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/rounds" className="inline-flex min-h-11 items-center rounded-md bg-ink px-5 text-sm font-semibold text-cream hover:bg-chili">
+          <Link href="/warung" className="inline-flex min-h-11 items-center rounded-md bg-ink px-5 text-sm font-semibold text-cream hover:bg-chili">
+            Run your warung
+          </Link>
+          <Link href="/rounds" className="inline-flex min-h-11 items-center rounded-md border-2 border-ink bg-cream px-5 text-sm font-semibold hover:bg-kunyit-soft">
             View rounds
           </Link>
-          <Link href="/try" className="inline-flex min-h-11 items-center rounded-md border-2 border-ink bg-cream px-5 text-sm font-semibold hover:bg-kunyit-soft">
-            Try it yourself
+          <Link href="/grosir" className="inline-flex min-h-11 items-center rounded-md border-2 border-ink bg-cream px-5 text-sm font-semibold hover:bg-kunyit-soft">
+            For wholesalers
           </Link>
         </div>
       </section>

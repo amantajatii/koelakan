@@ -34,7 +34,7 @@ export function HomeLive({ initial, renderedAt }: { initial: Overview | null; re
         </SectionTitle>
         {latest.length === 0 ? (
           <EmptyState title="No rounds yet">
-            Open the first round from the <Link className="underline" href="/try">Try it yourself</Link> page.
+            The agent service opens rounds on a schedule. See its <Link className="underline" href="/status">status</Link>, or <Link className="underline" href="/warung">run your warung</Link>.
           </EmptyState>
         ) : (
           <div className="grid gap-4 md:grid-cols-3">

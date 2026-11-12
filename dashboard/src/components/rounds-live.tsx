@@ -25,7 +25,7 @@ export function RoundsLive({ initial, renderedAt }: { initial: Overview | null; 
       : <ErrorNote message={error ?? "No response."} onRetry={refresh} />;
   }
   if (data.rounds.length === 0) {
-    return <EmptyState title="No rounds yet">Open the first round from the <Link className="underline" href="/try">Try it yourself</Link> page.</EmptyState>;
+    return <EmptyState title="No rounds yet">The agent service opens rounds on a schedule. See its <Link className="underline" href="/status">status</Link>, or <Link className="underline" href="/warung">run your warung</Link>.</EmptyState>;
   }
   const rounds = [...data.rounds].reverse();
   return (

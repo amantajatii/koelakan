@@ -3,7 +3,10 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { WalletSelector } from "@near-wallet-selector/core";
 import type { WalletSelectorModal } from "@near-wallet-selector/modal-ui";
+import { Buffer } from "buffer";
 import { config } from "./config";
+import type { AddKeySpec, DeleteKeySpec } from "./delegation";
+import { SIGN_MESSAGE_HINT, type SignRequest, type SignedResult } from "./nep413";
 import { explainFailure, outcomeFailure, outcomeHash, type OutcomeLike } from "./outcome";
 import type { FunctionCallSpec } from "./tx";
 
@@ -22,7 +25,16 @@ interface WalletState {
   signIn: () => void;
   signOut: () => Promise<void>;
   call: (spec: FunctionCallSpec) => Promise<CallResult>;
+  /** AddKey or DeleteKey on the signed-in account itself (needs the full-access key). */
+  keyAction: (spec: AddKeySpec | DeleteKeySpec) => Promise<CallResult>;
+  /** NEP-413 signature. `redirected` means the wallet left the page and the result comes back in the URL hash. */
+  signMessage: (req: SignRequest) => Promise<SignOutcome>;
 }
+
+export type SignOutcome =
+  | { status: "signed"; signed: SignedResult }
+  | { status: "redirected" }
+  | { status: "failed"; error: string };
 
 const WalletContext = createContext<WalletState | null>(null);
 
@@ -30,7 +42,7 @@ const KEY_METHODS = ["join_round"];
 
 function errorMessage(e: unknown): string {
   if (e instanceof Error) return explainFailure(e.message);
-  return "Terjadi kesalahan tak terduga.";
+  return "Something unexpected went wrong.";
 }
 
 export function WalletProvider({ children }: { children: ReactNode }) {
@@ -42,6 +54,9 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [walletId, setWalletId] = useState<string | null>(null);
 
   useEffect(() => {
+    // Some wallet modules call the global Buffer, which Next does not provide in the browser.
+    const g = globalThis as { Buffer?: typeof Buffer };
+    g.Buffer ??= Buffer;
     let cancelled = false;
     const unsubscribe: Array<() => void> = [];
 
@@ -115,9 +130,48 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     }
   }, [accountId]);
 
+  const keyAction = useCallback(async (spec: AddKeySpec | DeleteKeySpec): Promise<CallResult> => {
+    const selector = selectorRef.current;
+    if (!selector || !accountId) return { ok: false, hash: null, error: "Sign in with a NEAR wallet first." };
+    try {
+      const [{ actionCreators }, { utils }] = await Promise.all([import("@near-wallet-selector/core"), import("near-api-js")]);
+      const publicKey = utils.PublicKey.from(spec.publicKey) as unknown as Parameters<typeof actionCreators.addKey>[0];
+      const action =
+        spec.type === "AddKey"
+          ? actionCreators.addKey(publicKey, actionCreators.functionCallAccessKey(spec.receiverId, spec.methodNames, BigInt(spec.allowanceYocto)))
+          : actionCreators.deleteKey(publicKey);
+      const wallet = await selector.wallet();
+      const outcome = (await wallet.signAndSendTransaction({ signerId: accountId, receiverId: accountId, actions: [action] })) as OutcomeLike | void;
+      const failure = outcomeFailure(outcome ?? null);
+      if (failure) return { ok: false, hash: outcomeHash(outcome ?? null), error: explainFailure(failure) };
+      return { ok: true, hash: outcomeHash(outcome ?? null), error: null };
+    } catch (e) {
+      return { ok: false, hash: null, error: errorMessage(e) };
+    }
+  }, [accountId]);
+
+  const signMessage = useCallback(async (req: SignRequest): Promise<SignOutcome> => {
+    const selector = selectorRef.current;
+    if (!selector || !accountId) return { status: "failed", error: "Sign in with a NEAR wallet first." };
+    try {
+      const wallet = await selector.wallet();
+      if (!wallet.signMessage) return { status: "failed", error: SIGN_MESSAGE_HINT };
+      const result = await wallet.signMessage({
+        message: req.message,
+        recipient: req.recipient,
+        nonce: Buffer.from(req.nonce),
+        callbackUrl: `${window.location.origin}/warung`,
+      });
+      if (!result) return { status: "redirected" };
+      return { status: "signed", signed: { accountId: result.accountId, publicKey: result.publicKey, signature: result.signature } };
+    } catch (e) {
+      return { status: "failed", error: e instanceof Error && /reject|cancel|closed|denied/i.test(e.message) ? "Signing was cancelled in the wallet." : errorMessage(e) };
+    }
+  }, [accountId]);
+
   const value = useMemo<WalletState>(
-    () => ({ ready, initError, accountId, walletId, signIn, signOut, call }),
-    [ready, initError, accountId, walletId, signIn, signOut, call],
+    () => ({ ready, initError, accountId, walletId, signIn, signOut, call, keyAction, signMessage }),
+    [ready, initError, accountId, walletId, signIn, signOut, call, keyAction, signMessage],
   );
   return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
 }

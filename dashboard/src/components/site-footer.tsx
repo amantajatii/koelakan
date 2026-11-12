@@ -1,3 +1,4 @@
+import { StatusBadge } from "@/components/status-badge";
 import { accountUrl, config } from "@/lib/config";
 
 export function SiteFooter() {
@@ -6,9 +7,10 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-6xl gap-3 px-4 py-6 text-sm text-ink-soft sm:px-6 md:grid-cols-2">
         <p>
           Koelakan runs on <strong className="text-ink">NEAR testnet</strong>. tIDR is test rupiah, not real money. Reference
-          prices come from PIHPS (national food price monitor); grosir costs in the demo are assumptions.
+          prices come from PIHPS (national food price monitor); costs of the service&apos;s own grosirs are assumptions.
         </p>
-        <p className="md:text-right">
+        <div className="md:col-span-2"><StatusBadge /></div>
+        <p className="md:col-span-2">
           Contracts:{" "}
           <a className="num underline decoration-rule underline-offset-4 hover:text-ink" href={accountUrl(config.marketId)} target="_blank" rel="noreferrer">
             {config.marketId}

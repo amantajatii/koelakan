@@ -23,8 +23,8 @@ export function OpenStep({ accountId, items, onDone }: { accountId: string | nul
 
   return (
     <StepCard
-      index="6"
-      title="Open a round"
+      index="+"
+      title="Open a round (demo)"
       state={accountId ? "optional" : "locked"}
       intro={<>Anyone can call <code className="num">open_round</code>. The round max price is set to the PIHPS reference price (the highest allowed). Demo durations: joining {d.join} s, sealed bids {d.commit} s, reveal {d.reveal} s, delivery {d.delivery} s.</>}
     >
@@ -45,12 +45,10 @@ export function OpenStep({ accountId, items, onDone }: { accountId: string | nul
           </Button>
           <TxResult result={tx.result} />
           <div className="rounded-md border-2 border-kunyit bg-kunyit-soft/60 p-3 text-sm">
-            <p className="font-semibold">Grosir bids only appear if the grosir agents are running.</p>
+            <p className="font-semibold">You do not need this: the 24/7 agent service already opens rounds on a schedule.</p>
             <p className="mt-1">
-              The grosir and warung agents run from the repo: <code className="num">cd agents &amp;&amp; pnpm round</code> opens its
-              own round and then drives the whole cycle. A round opened from here is not handled by that command, so without
-              grosirs bidding it will <strong>fail</strong> and your funds are refunded in full. To see the full cycle, run that
-              command and join the round it opens in step 5 while its joining window is still open.
+              The service&apos;s grosir agents bid on any open round now, including one you open here, so it should settle on its own.
+              If the service is offline, nobody bids and the round <strong>fails</strong>; your funds are refunded in full.
             </p>
           </div>
         </>

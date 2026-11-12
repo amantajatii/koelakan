@@ -50,16 +50,16 @@ export function JoinStep({ accountId, rounds, items, account, clockOffsetMs, onD
 
   return (
     <StepCard
-      index="5"
-      title="Join a round"
+      index="+"
+      title="Join a round manually"
       state={state}
-      intro={<>Calls <code className="num">join_round</code> with the <strong className="text-ink">restricted key</strong>, so the wallet does not ask for another signature (on MyNearWallet). The contract rejects anything outside your policy; the check below mirrors those rules before you send.</>}
+      intro={<>You normally do not need this: your agent joins rounds for you. Use it to join one yourself with the browser&apos;s restricted key (no extra wallet popup on MyNearWallet). The contract rejects anything outside your policy; the check below mirrors those rules before you send.</>}
     >
       {accountId && (
         <>
           {open.length === 0 ? (
             <p className="rounded-md border-2 border-dashed border-rule p-3 text-sm">
-              No round is accepting joins right now. Open a round in step 6, then join quickly before the joining window closes.
+              No round is accepting joins right now. Rounds open automatically; check back when the next one opens.
             </p>
           ) : (
             <div className="grid gap-3 sm:grid-cols-[1fr_8rem]">

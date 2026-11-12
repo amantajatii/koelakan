@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/states";
 import { loadOverview } from "@/lib/overview";
 
 export const revalidate = 15;
-export const metadata = { title: "Agent chat | Koelakan" };
+export const metadata = { title: "Agent chat" };
 
 export default async function ChatPage() {
   const { data } = await loadOverview();

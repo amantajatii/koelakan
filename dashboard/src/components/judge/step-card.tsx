@@ -4,11 +4,13 @@ import { Stamp, type Tone } from "@/components/ui/stamp";
 import type { CallResult } from "@/lib/wallet";
 import { txUrl } from "@/lib/config";
 
-export type StepState = "done" | "ready" | "locked" | "optional";
+export type StepState = "done" | "ready" | "locked" | "optional" | "next" | "todo";
 
 const BADGE: Record<StepState, { text: string; tone: Tone }> = {
   done: { text: "Done", tone: "good" },
   ready: { text: "Ready", tone: "warn" },
+  next: { text: "Next up", tone: "warn" },
+  todo: { text: "To do", tone: "neutral" },
   locked: { text: "Locked", tone: "neutral" },
   optional: { text: "Optional", tone: "info" },
 };
@@ -29,7 +31,7 @@ export function StepCard({ index, title, state, intro, children }: StepCardProps
       className={cn(
         "rounded-lg border-2 border-ink/80 bg-cream p-4 sm:p-5",
         state === "locked" && "border-dashed border-rule bg-cream/60",
-        state === "ready" && "shadow-[3px_3px_0_0_rgba(42,33,24,0.85)]",
+        (state === "ready" || state === "next") && "shadow-[3px_3px_0_0_rgba(42,33,24,0.85)]",
       )}
     >
       <header className="flex items-start gap-3">

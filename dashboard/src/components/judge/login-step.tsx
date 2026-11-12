@@ -5,11 +5,11 @@ import { StepCard } from "@/components/judge/step-card";
 import { accountUrl, config } from "@/lib/config";
 import { useWallet } from "@/lib/wallet";
 
-export function LoginStep() {
+export function LoginStep({ index = "1" }: { index?: string }) {
   const { accountId, walletId, ready, initError, signIn, signOut } = useWallet();
   return (
     <StepCard
-      index="1"
+      index={index}
       title="Sign in"
       state={accountId ? "done" : "ready"}
       intro={

@@ -15,19 +15,21 @@ interface Props {
   tidr: bigint | null;
   available: bigint | null;
   onDone: () => void;
+  index?: string;
+  status?: StepState;
 }
 
-export function DepositStep({ accountId, tidr, available, onDone }: Props) {
+export function DepositStep({ accountId, tidr, available, onDone, index = "3", status }: Props) {
   const tx = useTx(onDone);
   const [raw, setRaw] = useState(DEFAULT_DEPOSIT);
   const amount = parseAmount(raw);
   const tooMuch = amount !== null && tidr !== null && amount > tidr;
   const invalid = amount === null || amount === 0n;
-  const state: StepState = !accountId ? "locked" : (available ?? 0n) > 0n ? "done" : "ready";
-  const error = invalid ? "Enter a number greater than 0." : tooMuch ? `Your wallet only has ${rupiah(tidr ?? 0n)} tIDR. Get tIDR first.` : null;
+  const state: StepState = status ?? (!accountId ? "locked" : (available ?? 0n) > 0n ? "done" : "ready");
+  const error = invalid ? "Enter a number greater than 0." : tooMuch ? `Your wallet only has ${rupiah(tidr ?? 0n)} tIDR. Get test rupiah first.` : null;
   return (
     <StepCard
-      index="3"
+      index={index}
       title="Deposit to market"
       state={state}
       intro={<>Moves tIDR into your pooled balance in the contract via <code className="num">ft_transfer_call</code> (message <code className="num">deposit</code>, 1 yocto). This is the money that gets locked when you join a round.</>}

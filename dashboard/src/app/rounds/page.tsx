@@ -2,7 +2,7 @@ import { RoundsLive } from "@/components/rounds-live";
 import { loadOverview } from "@/lib/overview";
 
 export const revalidate = 15;
-export const metadata = { title: "Rounds | Koelakan" };
+export const metadata = { title: "Rounds" };
 
 export default async function RoundsPage() {
   const { data, renderedAt } = await loadOverview();

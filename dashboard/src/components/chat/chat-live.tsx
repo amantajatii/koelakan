@@ -39,7 +39,7 @@ export function ChatLive({ initial }: { initial: Overview | null }) {
     return loading ? <Skeleton className="h-96" /> : <ErrorNote message={error ?? "No response."} onRetry={refresh} />;
   }
   if (!round || !item) {
-    return <EmptyState title="No conversations yet">Chats appear once a warung has joined a round. <Link className="underline" href="/try">Try it yourself</Link>.</EmptyState>;
+    return <EmptyState title="No conversations yet">Chats appear once a warung has joined a round. <Link className="underline" href="/warung">Run your warung</Link>.</EmptyState>;
   }
 
   const accounts = round.participants.map((p) => p.account_id).sort();

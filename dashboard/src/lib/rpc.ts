@@ -1,4 +1,5 @@
 import { config } from "./config";
+import type { AccessKeyView } from "./delegation";
 import { parseChainJson } from "./json";
 
 /** Minimum gap between two RPC requests. The public endpoint allows about 5 req/s. */
@@ -47,8 +48,8 @@ async function post(url: string, body: unknown): Promise<RpcEnvelope> {
   } catch {
     throw new RpcError("Could not reach the NEAR node.", "network");
   }
-  if (res.status === 429) throw new RpcError("Node NEAR membatasi permintaan (429).", "rate_limit");
-  if (!res.ok) throw new RpcError(`Node NEAR membalas ${res.status}.`, "network");
+  if (res.status === 429) throw new RpcError("The NEAR node is rate limiting requests (429).", "rate_limit");
+  if (!res.ok) throw new RpcError(`The NEAR node answered ${res.status}.`, "network");
   return (await res.json()) as RpcEnvelope;
 }
 
@@ -75,7 +76,7 @@ async function callOnce<T>(url: string, contract: string, method: string, args: 
   }
   const result = env.result;
   if (result?.error) throw new RpcError(result.error, "contract");
-  if (!result?.result) throw new RpcError("Balasan node kosong.", "unknown");
+  if (!result?.result) throw new RpcError("The NEAR node returned an empty answer.", "unknown");
   return parseChainJson<T>(decodeBytes(result.result));
 }
 
@@ -119,4 +120,46 @@ export async function fetchChainTimeMs(): Promise<number> {
     }
   }
   throw new RpcError("Could not read the block time.", "network");
+}
+
+interface AccessKeyEnvelope {
+  result?: { permission?: unknown; error?: string };
+  error?: { message?: string };
+}
+
+/**
+ * Read one access key of an account, or null if that key is not on the account.
+ * Uses `view_access_key`, so delegation can be detected even if the service never heard of the owner.
+ */
+export async function fetchAccessKey(accountId: string, publicKey: string): Promise<AccessKeyView | null> {
+  const urls = [config.rpcUrl, config.rpcFallbackUrl];
+  let last: unknown;
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    const url = urls[attempt % urls.length] ?? config.rpcUrl;
+    try {
+      const env = (await throttled(async () => {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            id: "koelakan",
+            method: "query",
+            params: { request_type: "view_access_key", finality: "final", account_id: accountId, public_key: publicKey },
+          }),
+          cache: "no-store",
+        });
+        if (!res.ok) throw new RpcError(`The NEAR node answered ${res.status}.`, "network");
+        return (await res.json()) as AccessKeyEnvelope;
+      })) as AccessKeyEnvelope;
+      const message = env.error?.message ?? env.result?.error ?? "";
+      if (/does not exist|unknown.?access.?key|UNKNOWN_ACCESS_KEY|doesn't exist/i.test(message) || /UNKNOWN_ACCOUNT/i.test(JSON.stringify(env.error ?? ""))) return null;
+      if (env.error || env.result?.error) throw new RpcError(message || "RPC error", "unknown");
+      return env.result as unknown as AccessKeyView;
+    } catch (e) {
+      last = e;
+      await sleep(400 * (attempt + 1));
+    }
+  }
+  throw last instanceof Error ? last : new RpcError("Could not read the access key.", "unknown");
 }
