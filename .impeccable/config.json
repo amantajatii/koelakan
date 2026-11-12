@@ -66,6 +66,42 @@
         ],
         "createdAt": "2026-11-12T10:16:33.630Z",
         "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-12T11:20:31.014Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-12T11:20:31.048Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-consumer.html"
+        ],
+        "createdAt": "2026-11-12T11:20:31.082Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-11-12T11:20:31.116Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
       }
     ]
   }
