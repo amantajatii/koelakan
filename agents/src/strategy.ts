@@ -72,12 +72,14 @@ export interface BidInput {
   readonly ceiling: bigint;
   readonly bond: bigint;
   readonly wallet: bigint;
+  /** Overrides the scripted-forgetful check (commit regardless of price, to exercise forfeit). */
+  readonly forgetful?: boolean;
 }
 
 /** Sim strategy: bid only if price <= ceiling and the bond is affordable. The forgetful grosir always commits. */
 export function decideBid(i: BidInput): BidDecision {
   if (i.price < 1n) return { action: "skip", reason: "no quote for this item" };
-  if (i.price > i.ceiling && !neverReveals(i.short)) {
+  if (i.price > i.ceiling && !(i.forgetful ?? neverReveals(i.short))) {
     return { action: "skip", reason: `quote ${i.price} above ceiling ${i.ceiling}` };
   }
   if (i.wallet < i.bond) return { action: "skip", reason: `wallet ${i.wallet} below bond ${i.bond}` };

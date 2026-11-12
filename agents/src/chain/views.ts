@@ -61,6 +61,24 @@ export interface BalanceView {
   held: string;
 }
 
+export type AccessKeyInfo =
+  | { readonly kind: "full" }
+  | { readonly kind: "function-call"; readonly receiver: string; readonly methods: readonly string[]; readonly allowance: bigint | null };
+
+const NOT_FOUND = /does not exist|UNKNOWN_ACCOUNT|unknown_access_key|AccessKeyDoesNotExist|UNKNOWN_ACCESS_KEY/i;
+export const isNotFoundError = (e: unknown): boolean => NOT_FOUND.test(e instanceof Error ? `${e.name} ${e.message}` : String(e));
+
+/** Accepts both the RPC shape `{FunctionCall:{...}}` and the string "FullAccess". */
+export function describeAccessKey(permission: unknown): AccessKeyInfo {
+  if (permission === "FullAccess") return { kind: "full" };
+  const fc = (permission as { FunctionCall?: { receiver_id: string; method_names: string[]; allowance: string | bigint | null } } | null)?.FunctionCall;
+  if (fc === undefined) return { kind: "full" };
+  return {
+    kind: "function-call", receiver: fc.receiver_id, methods: fc.method_names,
+    allowance: fc.allowance === null || fc.allowance === undefined ? null : BigInt(fc.allowance),
+  };
+}
+
 export class Views {
   constructor(
     private readonly provider: Provider,
@@ -102,6 +120,33 @@ export class Views {
   async roundCount(): Promise<number> {
     const c = await this.view<{ rounds: number }>(this.market, "get_config");
     return c.rounds;
+  }
+
+  listRounds(from: number, limit = 50): Promise<RoundView[]> {
+    return this.view<RoundView[]>(this.market, "list_rounds", { from, limit });
+  }
+
+  /** Spendable NEAR (yocto) of an account; 0n when the account does not exist. */
+  async nearBalance(account: string): Promise<bigint> {
+    try {
+      return (await withRetry(() => this.provider.viewAccount({ accountId: account }), VIEW_RETRY)).amount as bigint;
+    } catch (e) {
+      if (isNotFoundError(e)) return 0n;
+      throw e;
+    }
+  }
+
+  /** The access key if it exists on the account, else null. */
+  async accessKey(account: string, publicKey: string): Promise<AccessKeyInfo | null> {
+    try {
+      const k = (await withRetry(() => this.provider.viewAccessKey({ accountId: account, publicKey }), VIEW_RETRY)) as unknown as {
+        permission: unknown;
+      };
+      return describeAccessKey(k.permission);
+    } catch (e) {
+      if (isNotFoundError(e)) return null;
+      throw e;
+    }
   }
 
   async tokenBalance(account: string): Promise<bigint> {

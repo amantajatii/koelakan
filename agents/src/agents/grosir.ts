@@ -18,6 +18,11 @@ export interface GrosirDeps {
   walletBalance(): Promise<bigint>;
   requiredBond(roundId: number): Promise<bigint>;
   quote(item: string): bigint;
+  /** Service mode: per-round "forget to reveal" roll. Default is the scripted `neverReveals(short)`. */
+  forgets?(roundId: number): boolean;
+  /** External grosir limits: never bid below `minBid`, never bond more than `maxBond`. */
+  readonly minBid?: bigint;
+  readonly maxBond?: bigint;
   sendCommit(args: ReturnType<typeof ftTransferCallArgs>, note: string): Promise<ActionRecord>;
   sendReveal(args: ReturnType<typeof revealArgs>, note: string): Promise<ActionRecord>;
 }
@@ -33,8 +38,16 @@ const ROLE = "grosir";
 /** Decide, persist {round_id, price, salt}, THEN send the commit. */
 export async function runCommit(d: GrosirDeps, round: RoundInfo): Promise<ActionRecord> {
   const [wallet, bond] = await Promise.all([d.walletBalance(), d.requiredBond(round.id)]);
-  const decision = decideBid({ short: d.short, price: d.quote(round.item), ceiling: round.ceiling, bond, wallet });
+  const decision = decideBid({
+    short: d.short, price: d.quote(round.item), ceiling: round.ceiling, bond, wallet, forgetful: d.forgets?.(round.id),
+  });
   if (decision.action === "skip") return skipRecord(d.account, ROLE, "commit", decision.reason);
+  if (d.minBid !== undefined && decision.price < d.minBid) {
+    return skipRecord(d.account, ROLE, "commit", `quote ${decision.price} below MIN_BID ${d.minBid}`);
+  }
+  if (d.maxBond !== undefined && bond > d.maxBond) {
+    return skipRecord(d.account, ROLE, "commit", `bond ${bond} above MAX_BOND ${d.maxBond}`);
+  }
   const prior = d.loadSalt(round.id);
   const salt = prior?.salt ?? d.newSalt();
   const price = prior !== null ? BigInt(prior.price) : decision.price;
@@ -48,7 +61,7 @@ export async function runCommit(d: GrosirDeps, round: RoundInfo): Promise<Action
 
 /** Reveal from the persisted salt (never from memory). Grosir-5 is scripted to skip. */
 export async function runReveal(d: GrosirDeps, roundId: number): Promise<ActionRecord> {
-  if (neverReveals(d.short)) return skipRecord(d.account, ROLE, "reveal_bid", "scripted: never reveals (forfeit path)");
+  if (d.forgets ? d.forgets(roundId) : neverReveals(d.short)) return skipRecord(d.account, ROLE, "reveal_bid", "scripted: never reveals (forfeit path)");
   const saved = d.loadSalt(roundId);
   if (saved === null) return skipRecord(d.account, ROLE, "reveal_bid", "no saved salt: did not commit");
   return d.sendReveal(revealArgs(roundId, BigInt(saved.price), saved.salt), "bid revealed");

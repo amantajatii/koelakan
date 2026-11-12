@@ -1,0 +1,6 @@
+{
+  "beras-medium": { "cost": 14500, "margin_bps": 400 },
+  "gula-pasir": { "cost": 17800, "margin_bps": 350 },
+  "telur-ayam": { "cost": 26500, "margin_bps": 500 },
+  "minyak-curah": { "cost": 18200, "margin_bps": 450 }
+}

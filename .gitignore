@@ -15,3 +15,9 @@ agents/out/
 dashboard/.next/
 dashboard/screenshots/
 dashboard/next-env.d.ts
+
+# agents service: runtime data and packed secrets
+agents/.data/
+agents/dist/
+agents/deploy/secrets/
+agents/deploy/.env

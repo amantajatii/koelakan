@@ -20,12 +20,15 @@ export PRIVATE_KEY=ed25519:...        # full-access key of that account
 export PRICING_FILE=./pricing.json
 pnpm grosir`;
 
-const RUN_DOCKER = `docker run --rm \\
+const RUN_DOCKER = `git clone https://github.com/amantajatii/koelakan && cd koelakan
+docker build -f agents/deploy/Dockerfile -t koelakan-agent .
+docker run -d --name my-grosir --restart unless-stopped \\
   -e ACCOUNT_ID=your-grosir.testnet \\
   -e PRIVATE_KEY=ed25519:... \\
-  -e PRICING_FILE=/config/pricing.json \\
-  -v "$PWD/pricing.json:/config/pricing.json:ro" \\
-  <agents image from agents/README.md>`;
+  -e PRICING_FILE=/pricing/pricing.json \\
+  -v "$PWD/pricing.json:/pricing/pricing.json:ro" \\
+  -v my-grosir-data:/data \\
+  koelakan-agent node dist/agents/src/cli/grosir.js`;
 
 const TERMS = [
   ["Sealed bid", "You submit a hash of your unit price, so nobody sees it until the reveal phase. The lowest valid revealed price wins the whole round."],

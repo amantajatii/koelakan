@@ -1,0 +1,7 @@
+*
+!agents/package.json
+!agents/pnpm-lock.yaml
+!agents/tsconfig.json
+!agents/tsconfig.build.json
+!agents/src
+!sim/src
