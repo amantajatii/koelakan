@@ -31,13 +31,13 @@ export function ConfirmDialog({ open, title, confirmLabel, tone = "default", bus
         onCancel();
       }}
       aria-labelledby="confirm-title"
-      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-lg border-2 border-ink bg-cream p-5 text-ink shadow-[5px_5px_0_0_rgba(42,33,24,0.85)] backdrop:bg-ink/50"
+      className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-card border border-line bg-surface p-6 text-ink shadow-lift backdrop:bg-ink/40"
     >
-      <h2 id="confirm-title" className="font-display text-xl font-semibold">{title}</h2>
-      <div className="mt-2 space-y-2 text-sm text-ink-soft">{children}</div>
+      <h2 id="confirm-title" className="text-xl font-bold tracking-tight">{title}</h2>
+      <div className="mt-2 space-y-2 text-sm text-muted">{children}</div>
       <div className="mt-4 flex flex-wrap justify-end gap-3">
         <Button variant="secondary" onClick={onCancel} disabled={busy}>Cancel</Button>
-        <Button onClick={onConfirm} busy={busy} className={tone === "danger" ? "bg-chili hover:bg-ink" : undefined}>{confirmLabel}</Button>
+        <Button variant={tone === "danger" ? "danger" : "primary"} onClick={onConfirm} busy={busy}>{confirmLabel}</Button>
       </div>
     </dialog>
   );

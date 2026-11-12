@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronRight, MessageCircle } from "lucide-react";
 import { PhaseBadge } from "@/components/phase-badge";
+import { ItemImage } from "@/components/produce-art";
 import { BidsTable } from "@/components/round/bids-table";
 import { ForfeitBox } from "@/components/round/forfeit-box";
 import { ParticipantsTable } from "@/components/round/participants-table";
 import { PriceCompare } from "@/components/round/price-compare";
 import { Timeline } from "@/components/round/timeline";
-import { Panel, SectionTitle } from "@/components/ui/panel";
+import { SavingsStrip } from "@/components/savings-strip";
+import { buttonClass } from "@/components/ui/button";
+import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
 import { EmptyState, ErrorNote, Skeleton } from "@/components/ui/states";
 import { useLive } from "@/hooks/use-live";
 import { useNow } from "@/hooks/use-now";
@@ -38,14 +42,14 @@ export function RoundDetailLive({ id, initial, renderedAt }: { id: number; initi
 
   if (!data) {
     return loading
-      ? <div role="status" aria-label="Loading round" className="space-y-4"><Skeleton className="h-24" /><Skeleton className="h-64" /></div>
+      ? <div role="status" aria-label="Loading round" className="space-y-4"><Skeleton className="h-32" /><Skeleton className="h-48" /><Skeleton className="h-64" /></div>
       : <ErrorNote message={error ?? "No response."} onRetry={refresh} />;
   }
   const round = data.round;
   if (!round) {
     return (
       <EmptyState title={`Round #${id} not found`}>
-        <Link className="underline" href="/rounds">Back to all rounds</Link>
+        Rounds are numbered from 1. <Link className={linkClass} href="/rounds">Back to all rounds</Link>
       </EmptyState>
     );
   }
@@ -58,71 +62,81 @@ export function RoundDetailLive({ id, initial, renderedAt }: { id: number; initi
   return (
     <div className="space-y-6">
       {error && <ErrorNote message={error} onRetry={refresh} />}
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <p className="num text-sm text-ink-soft"><Link href="/rounds" className="underline underline-offset-4 hover:text-chili">Rounds</Link> / #{round.id}</p>
-          <h1 className="font-display text-4xl font-bold tracking-tight">{itemLabel(item, round.item)}</h1>
-          <p className="mt-1 text-sm text-ink-soft">
-            Opened {formatDateTime(nsToMs(round.opened_at))} by{" "}
-            <a className="num underline decoration-rule underline-offset-4 hover:text-chili" target="_blank" rel="noreferrer" href={accountUrl(round.opener)}>{shortAccount(round.opener)}</a>
-            {" · minimum lot "}<span className="num">{int(round.min_total_qty)} {unit}</span>
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <PhaseBadge phase={phase} />
-          <Link href={`/chat?round=${round.id}`} className="inline-flex min-h-11 items-center rounded-md border-2 border-ink bg-cream px-4 text-sm font-semibold hover:bg-kunyit-soft">
-            Open agent chat
-          </Link>
-        </div>
-      </header>
+      <nav aria-label="Breadcrumb" className="mt-2 flex items-center gap-1 text-sm text-muted">
+        <Link href="/rounds" className="font-semibold hover:text-ink">Rounds</Link>
+        <ChevronRight className="size-4" aria-hidden />
+        <span className="num" aria-current="page">#{round.id}</span>
+      </nav>
 
-      <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
-        <Panel aria-labelledby="result">
+      <Panel aria-labelledby="round-title" className="flex flex-wrap items-center justify-between gap-5">
+        <div className="flex min-w-0 items-center gap-4">
+          <ItemImage itemId={round.item} size="xl" plain />
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+              <h1 id="round-title" className="text-3xl font-extrabold tracking-[-0.02em] sm:text-4xl">{itemLabel(item, round.item)}</h1>
+              <PhaseBadge phase={phase} />
+            </div>
+            <p className="mt-1.5 text-sm text-muted">
+              Round <span className="num font-semibold text-ink">#{round.id}</span> · opened {formatDateTime(nsToMs(round.opened_at))} by{" "}
+              <a className={`num ${linkClass}`} target="_blank" rel="noreferrer" href={accountUrl(round.opener)}>{shortAccount(round.opener)}</a>
+              {" · minimum lot "}<span className="num">{int(round.min_total_qty)} {unit}</span>
+            </p>
+          </div>
+        </div>
+        <Link href={`/chat?round=${round.id}`} className={buttonClass("secondary", "gap-2")}>
+          <MessageCircle className="size-4" aria-hidden /> Open agent chat
+        </Link>
+      </Panel>
+
+      <Panel aria-labelledby="phases">
+        <SectionTitle><span id="phases">Phases and deadlines</span></SectionTitle>
+        <Timeline round={round} nowMs={now} />
+      </Panel>
+
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[1.25fr_1fr]">
+        <Panel aria-labelledby="result" className="bg-brand-soft/60">
           <SectionTitle><span id="result">Auction result</span></SectionTitle>
           {settled && winner && round.clearing_price !== null ? (
-            <div className="mb-5 grid grid-cols-2 gap-4 border-b-2 border-dashed border-rule pb-5">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-ink-soft">Winner</p>
-                <a className="num text-lg font-semibold underline decoration-rule underline-offset-4 hover:text-chili" target="_blank" rel="noreferrer" href={accountUrl(winner.seller_id)}>
-                  {shortAccount(winner.seller_id)}
-                </a>
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-ink-soft">Winning price</p>
-                <p className="num text-lg font-semibold">{rupiah(round.clearing_price)}/{unit}</p>
-              </div>
-              <div className="col-span-2 rounded-md bg-pandan-soft/70 p-3">
-                <p className="text-xs font-semibold uppercase tracking-wider text-pandan">Saved vs PIHPS</p>
-                <p className="num text-2xl font-semibold text-pandan">{rupiah(savingOf(round))}</p>
-                <p className="text-sm text-ink-soft">
-                  ({rupiah(round.ref_price)} - {rupiah(round.clearing_price)}) x {int(round.total_qty)} {unit} ={" "}
-                  {percent(savingPercent(round))} below the market price
+            <>
+              <SavingsStrip refPrice={round.ref_price} paid={round.clearing_price} unit={unit} size="lg" trackClass="bg-white" />
+              <div className="mt-5 rounded-2xl bg-white p-4">
+                <p className="text-sm text-muted">Saved vs PIHPS</p>
+                <p className="num text-2xl font-extrabold text-brand-ink">{rupiah(savingOf(round))}</p>
+                <p className="num mt-1 text-sm text-muted">
+                  ({rupiah(round.ref_price)} - {rupiah(round.clearing_price)}) x {int(round.total_qty)} {unit} · {percent(savingPercent(round))} below the market price
                 </p>
               </div>
-            </div>
+              <p className="mt-4 text-sm text-muted">
+                Winner:{" "}
+                <a className={`num ${linkClass}`} target="_blank" rel="noreferrer" href={accountUrl(winner.seller_id)}>{shortAccount(winner.seller_id)}</a>
+              </p>
+            </>
           ) : (
-            <p className="mb-5 rounded-md bg-paper-deep/60 p-3 text-sm">
+            <p className="rounded-xl bg-white px-4 py-3 text-sm">
               {round.state === "Failed"
                 ? "Round failed: no valid bid, or demand was below the minimum. All funds were refunded."
                 : "The winner is picked once the reveal phase ends."}
             </p>
           )}
-          <PriceCompare round={round} item={item} />
         </Panel>
 
-        <Panel aria-labelledby="phases">
-          <SectionTitle><span id="phases">Phases and deadlines</span></SectionTitle>
-          <Timeline round={round} nowMs={now} />
+        <Panel aria-labelledby="ladder">
+          <SectionTitle><span id="ladder">Price ladder</span></SectionTitle>
+          <PriceCompare round={round} item={item} />
         </Panel>
       </div>
 
       <Panel aria-labelledby="participants">
-        <SectionTitle aside={<span className="num text-sm text-ink-soft">{round.participants.length} warungs · {int(round.total_qty)} {unit}</span>}>
+        <SectionTitle aside={<span className="num text-sm text-muted">{round.participants.length} warungs · {int(round.total_qty)} {unit}</span>}>
           <span id="participants">Participants (warungs)</span>
         </SectionTitle>
-        {round.participants.length === 0 ? <EmptyState title="No warung has joined yet" /> : <ParticipantsTable round={round} unit={unit} />}
+        {round.participants.length === 0 ? (
+          <EmptyState title="No warung has joined yet">Warungs join during the joining phase. Delegate your own agent on <Link className={linkClass} href="/warung">My warung</Link>.</EmptyState>
+        ) : (
+          <ParticipantsTable round={round} unit={unit} />
+        )}
         {settled && round.participants.length > 0 && (
-          <p className="mt-3 text-sm text-ink-soft">Delivery confirmation: {deliverySummary(round)}.</p>
+          <p className="mt-4 text-sm text-muted">Delivery confirmation: {deliverySummary(round)}.</p>
         )}
       </Panel>
 
@@ -131,12 +145,10 @@ export function RoundDetailLive({ id, initial, renderedAt }: { id: number; initi
         {round.bids.length === 0 ? (
           <EmptyState title="No bids yet">Grosirs submit sealed bids after the joining phase ends, as long as the grosir agents are running from the repo.</EmptyState>
         ) : (
-          <div className="space-y-4">
-            <BidsTable round={round} />
-            <ForfeitBox round={round} />
-          </div>
+          <BidsTable round={round} />
         )}
       </Panel>
+      <ForfeitBox round={round} />
     </div>
   );
 }

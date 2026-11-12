@@ -1,15 +1,23 @@
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "./cn";
 
+/** White card: 20px radius, hairline border, soft shadow. Never nest one inside another. */
 export function Panel({ className, ...rest }: HTMLAttributes<HTMLElement>) {
-  return <section {...rest} className={cn("rounded-lg border-2 border-ink/80 bg-cream p-4 shadow-[3px_3px_0_0_rgba(42,33,24,0.85)] sm:p-6", className)} />;
+  return <section {...rest} className={cn("rounded-card border border-line bg-surface p-5 shadow-card sm:p-6", className)} />;
 }
 
-export function SectionTitle({ children, aside }: { children: React.ReactNode; aside?: React.ReactNode }) {
+export function SectionTitle({ children, aside, className }: { children: ReactNode; aside?: ReactNode; className?: string }) {
   return (
-    <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
-      <h2 className="font-display text-2xl font-semibold tracking-tight">{children}</h2>
+    <div className={cn("mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1", className)}>
+      <h2 className="text-lg font-bold tracking-tight">{children}</h2>
       {aside}
     </div>
   );
+}
+
+/** Inline text link with the dashboard's quiet emphasis. */
+export const linkClass = "font-semibold text-brand-ink underline decoration-brand/30 underline-offset-4 transition-colors duration-150 hover:text-brand hover:decoration-brand";
+
+export function Muted({ children, className }: { children: ReactNode; className?: string }) {
+  return <p className={cn("text-sm text-muted", className)}>{children}</p>;
 }

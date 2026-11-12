@@ -1,64 +1,150 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #ecdfc5;
-  --color-paper-deep: #e0cfae;
-  --color-cream: #faf4e4;
-  --color-ink: #2a2118;
-  --color-ink-soft: #5a4a38;
-  --color-rule: #c4b08a;
-  --color-chili: #a82f1b;
-  --color-chili-soft: #f1d6cb;
-  --color-pandan: #28634a;
-  --color-pandan-soft: #d3e6d6;
-  --color-kunyit: #b8780c;
-  --color-kunyit-soft: #f3e1b3;
-  --color-ledger: #2b4a6a;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
-  --font-sans: var(--font-sans-body), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono-num), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Surfaces */
+  --color-ground: #eef6f2;
+  --color-surface: #ffffff;
+  --color-line: #e3ece8;
+  --color-line-strong: #c9d8d1;
+  /* Ink */
+  --color-ink: #0f2a22;
+  --color-muted: #55665f;
+  /* Emerald: the only action colour */
+  --color-brand: #0a7f61;
+  --color-brand-hover: #087458;
+  --color-brand-deep: #08694f;
+  --color-brand-soft: #e3f4ee;
+  --color-brand-ink: #066049;
+  /* One pastel per staple, each with a darker same-hue text tint */
+  --color-rice: #ffebdd;
+  --color-rice-ink: #9a4a12;
+  --color-sugar: #fde6ee;
+  --color-sugar-ink: #9b2c55;
+  --color-eggs: #fff6d6;
+  --color-eggs-ink: #8a6a00;
+  --color-oil: #e2f1fb;
+  --color-oil-ink: #1b5e8c;
+  /* States (success is the brand emerald) */
+  --color-warn: #8a5a00;
+  --color-warn-soft: #fff1d6;
+  --color-danger: #b42318;
+  --color-danger-soft: #fde8e8;
+  --color-info: #1b5e8c;
+  --color-info-soft: #e2f1fb;
+
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Type scale, ratio 1.2 */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.35rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.6rem;
+  --text-lg: 1.2rem;
+  --text-lg--line-height: 1.7rem;
+  --text-xl: 1.44rem;
+  --text-xl--line-height: 1.9rem;
+  --text-2xl: 1.728rem;
+  --text-2xl--line-height: 2.1rem;
+  --text-3xl: 2.074rem;
+  --text-3xl--line-height: 2.4rem;
+  --text-4xl: 2.488rem;
+  --text-4xl--line-height: 2.8rem;
+
+  --radius-card: 1.25rem;
+  --shadow-card: 0 1px 2px rgba(15, 42, 34, 0.04), 0 8px 24px rgba(15, 42, 34, 0.06);
+  --shadow-lift: 0 2px 4px rgba(15, 42, 34, 0.05), 0 14px 32px rgba(15, 42, 34, 0.1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
-  background: var(--color-paper);
+  background: var(--color-ground);
   color: var(--color-ink);
   -webkit-text-size-adjust: 100%;
+  scrollbar-color: #b3cbc1 transparent;
+  scrollbar-width: thin;
 }
 
 body {
   min-height: 100dvh;
   font-family: var(--font-sans);
-  background-color: var(--color-paper);
+  font-feature-settings: "ss01" 0;
+  background-color: var(--color-ground);
   background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .25  0 0 0 0 .1  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    radial-gradient(52rem 34rem at 108% -12%, rgba(10, 127, 97, 0.16), transparent 62%),
+    radial-gradient(40rem 30rem at -12% 105%, rgba(46, 160, 200, 0.1), transparent 60%);
+  background-repeat: no-repeat;
+  accent-color: var(--color-brand);
+  caret-color: var(--color-brand);
 }
 
-/* Ledger-style tabular numerals for money. */
+/* Money, quantities, times: aligned digits. */
 .num {
-  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+::selection {
+  background: #bfe6d7;
+  color: var(--color-ink);
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-ledger);
+  outline: 3px solid var(--color-brand);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 0.5rem;
 }
 
-/* Ruled "buku kas" paper: a red margin line and faint horizontal rules. */
-.ledger-paper {
-  background-color: var(--color-cream);
-  background-image: linear-gradient(to right, transparent 2.1rem, rgba(168, 47, 27, 0.35) 2.1rem, rgba(168, 47, 27, 0.35) calc(2.1rem + 1px), transparent calc(2.1rem + 1px));
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #b3cbc1;
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8fb2a4;
+  background-clip: content-box;
+  border: 3px solid transparent;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.stamp {
-  transform: rotate(-2deg);
+input::placeholder {
+  color: #6b7b74;
+}
+
+/* Settle-in motion for live data: one authored moment, short and from a visible default. */
+@keyframes rise {
+  from { opacity: 0.001; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.rise {
+  animation: rise 240ms var(--ease-out-expo) both;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(10, 127, 97, 0.35); }
+  100% { box-shadow: 0 0 0 7px rgba(10, 127, 97, 0); }
+}
+.live-dot {
+  animation: pulse-ring 1.8s ease-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }

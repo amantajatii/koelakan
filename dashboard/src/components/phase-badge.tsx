@@ -1,4 +1,4 @@
-import { Stamp, type Tone } from "@/components/ui/stamp";
+import { Chip, type Tone } from "@/components/ui/chip";
 import { PHASE_LABEL } from "@/lib/phase";
 import type { Phase } from "@/lib/types";
 
@@ -14,5 +14,5 @@ const TONE: Record<Phase, Tone> = {
 };
 
 export function PhaseBadge({ phase }: { phase: Phase }) {
-  return <Stamp tone={TONE[phase]}>{PHASE_LABEL[phase]}</Stamp>;
+  return <Chip tone={TONE[phase]}>{PHASE_LABEL[phase]}</Chip>;
 }

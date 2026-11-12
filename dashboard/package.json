@@ -19,6 +19,7 @@
     "@near-wallet-selector/my-near-wallet": "^10.1.4",
     "buffer": "^6.0.3",
     "clsx": "^2.1.1",
+    "lucide-react": "^1.72.0",
     "near-api-js": "^6.5.1",
     "next": "^16.4.6",
     "react": "^19.3.1",

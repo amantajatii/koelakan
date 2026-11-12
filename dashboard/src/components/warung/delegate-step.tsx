@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Chip } from "@/components/ui/chip";
+import { Notice } from "@/components/ui/notice";
 import { StepCard, TxResult, type StepState } from "@/components/judge/step-card";
 import { addDelegationKey, revokeDelegationKey } from "@/lib/delegation";
 import { config } from "@/lib/config";
@@ -38,24 +40,25 @@ export function DelegateStep({ accountId, servicePublicKey, allowanceNear, deleg
   return (
     <StepCard
       index={index}
+      stepId="delegate"
       title="Delegate to the Koelakan agent"
       state={status}
-      intro={<>Adds a function-call key to your account for the service&apos;s agent. It can only call <code className="num">join_round</code> on <code className="num">{config.marketId}</code>, with a gas allowance of <span className="num">{formatNear(allowanceNear)}</span> and no way to attach a deposit. Your wallet asks you to approve this once.</>}
+      intro={<>Adds a function-call key to your account for the service&apos;s agent. It can only call <code className="font-mono text-xs text-ink">join_round</code> on <code className="font-mono text-xs text-ink">{config.marketId}</code>, with a gas allowance of <span className="num">{formatNear(allowanceNear)}</span> and no way to attach a deposit. Your wallet asks you to approve this once.</>}
     >
       {accountId && (
         <>
           {servicePublicKey ? (
-            <p className="break-all text-xs text-ink-soft">Agent key: <span className="num">{servicePublicKey}</span></p>
+            <p className="break-all text-xs text-muted">Agent key: <span className="font-mono">{servicePublicKey}</span></p>
           ) : (
-            <p className="rounded-md border-2 border-dashed border-rule p-3 text-sm">The agent&apos;s public key comes from the service, which is offline right now. Try again in a moment.</p>
+            <Notice tone="warn">The agent&apos;s public key comes from the service, which is offline right now. Try again in a moment.</Notice>
           )}
-          <p className="text-sm">
-            Status:{" "}
-            <strong className={delegated ? "text-pandan" : undefined}>
-              {delegated === null ? "checking the chain" : delegated ? "delegated, the agent can join for you" : "not delegated"}
-            </strong>
+          <p className="flex flex-wrap items-center gap-2 text-sm">
+            Status:
+            <Chip tone={delegated ? "good" : "neutral"}>
+              {delegated === null ? "checking the chain" : delegated ? "Delegated, the agent can join for you" : "Not delegated"}
+            </Chip>
           </p>
-          {chainError && <p className="text-xs text-chili">Could not read your access keys: {chainError}</p>}
+          {chainError && <Notice tone="error" role="alert">Could not read your access keys: {chainError}</Notice>}
           <div className="flex flex-wrap items-center gap-3">
             {!delegated && (
               <Button onClick={() => void run("add")} busy={busy === "add"} disabled={!servicePublicKey || busy !== null}>

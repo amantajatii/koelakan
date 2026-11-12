@@ -1,23 +1,17 @@
+import { CheckCheck } from "lucide-react";
+import { Chip, type Tone } from "@/components/ui/chip";
 import { cn } from "@/components/ui/cn";
 import { formatClock, shortAccount } from "@/lib/format";
 import type { ChatMessage } from "@/lib/wa";
 
-function Ticks() {
-  return (
-    <svg viewBox="0 0 18 10" className="inline size-3.5 text-ledger" aria-label="Read" role="img">
-      <path d="M1 5.5 4 8.5 10 1.5M7.5 8.5 14 1.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-const KIND_TAG: Partial<Record<ChatMessage["kind"], string>> = {
-  settled: "Round result",
-  failed: "Round failed",
-  bond_forfeited: "Bond forfeited",
-  delivery_confirmed: "Delivery",
-  auto_accepted: "Auto-accepted",
-  disputed: "Dispute",
-  dispute_resolved: "Dispute",
+const KIND_TAG: Partial<Record<ChatMessage["kind"], { text: string; tone: Tone }>> = {
+  settled: { text: "Round result", tone: "good" },
+  failed: { text: "Round failed", tone: "bad" },
+  bond_forfeited: { text: "Bond forfeited", tone: "info" },
+  delivery_confirmed: { text: "Delivery", tone: "good" },
+  auto_accepted: { text: "Auto-accepted", tone: "neutral" },
+  disputed: { text: "Dispute", tone: "warn" },
+  dispute_resolved: { text: "Dispute", tone: "warn" },
 };
 
 export function Bubble({ message, showSender }: { message: ChatMessage; showSender: boolean }) {
@@ -27,21 +21,21 @@ export function Bubble({ message, showSender }: { message: ChatMessage; showSend
     <li className={cn("flex", mine ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "relative max-w-[85%] rounded-lg px-3 py-2 text-[0.92rem] leading-snug shadow-[0_1px_0_rgba(42,33,24,0.25)]",
-          mine ? "rounded-tr-none bg-pandan-soft" : "rounded-tl-none bg-cream",
+          "max-w-[85%] rounded-2xl px-3.5 py-2.5 text-[0.94rem] leading-snug",
+          mine ? "rounded-br-md bg-brand-soft text-ink" : "rounded-bl-md border border-line bg-surface shadow-[0_1px_2px_rgba(15,42,34,0.05)]",
         )}
       >
         {showSender && (
-          <p className="mb-0.5 text-xs font-bold text-ledger">
-            Agent {shortAccount(message.account)} <span className="font-normal text-ink-soft">for {message.owner}</span>
+          <p className="mb-1 text-xs font-bold text-brand-ink">
+            Agent {shortAccount(message.account)} <span className="font-medium text-muted">for {message.owner}</span>
           </p>
         )}
-        {mine && <p className="mb-0.5 text-xs font-bold text-pandan">{message.owner}</p>}
-        {tag && <p className="mb-0.5 text-[0.65rem] font-bold uppercase tracking-wider text-chili">{tag}</p>}
+        {mine && <p className="mb-1 text-xs font-bold text-brand-ink">{message.owner}</p>}
+        {tag && <Chip tone={tag.tone} className="mb-1.5">{tag.text}</Chip>}
         <p>{message.text}</p>
-        <p className="num mt-1 flex items-center justify-end gap-1 text-[0.68rem] text-ink-soft">
+        <p className="num mt-1 flex items-center justify-end gap-1 text-[0.7rem] text-muted">
           <time dateTime={new Date(message.t).toISOString()}>{formatClock(message.t)}</time>
-          {mine && <Ticks />}
+          {mine && <CheckCheck className="size-3.5 text-brand" aria-label="Read" role="img" />}
         </p>
       </div>
     </li>

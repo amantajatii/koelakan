@@ -1,0 +1,72 @@
+{
+  "buildPath": "code",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-12T10:16:33.406Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-12T10:16:33.446Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-12T10:16:33.480Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "gray-on-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-11-12T10:16:33.522Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-consumer.html"
+        ],
+        "createdAt": "2026-11-12T10:16:33.559Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-consumer.html"
+        ],
+        "createdAt": "2026-11-12T10:16:33.592Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-11-12T10:16:33.630Z",
+        "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      }
+    ]
+  }
+}

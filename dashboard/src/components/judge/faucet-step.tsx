@@ -22,6 +22,7 @@ export function FaucetStep({ accountId, tidr, marketAvailable, onDone, index = "
   return (
     <StepCard
       index={index}
+      stepId="faucet"
       title="Get test rupiah"
       state={state}
       intro={<>The faucet gives <span className="num">Rp1,000,000</span> tIDR (test rupiah), once per hour per account, and registers your account on the token. Needs a full wallet signature.</>}

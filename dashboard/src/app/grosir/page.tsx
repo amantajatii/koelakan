@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { GrosirTable } from "@/components/grosir-table";
-import { Panel, SectionTitle } from "@/components/ui/panel";
+import { PageHeader } from "@/components/ui/page-header";
+import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
 import { AGENTS_README_URL } from "@/lib/config";
 
 export const metadata = {
@@ -39,71 +40,84 @@ const TERMS = [
 
 function Code({ children, label }: { children: string; label: string }) {
   return (
-    <pre aria-label={label} className="num overflow-x-auto rounded-md border-2 border-ink bg-ink p-3 text-xs leading-relaxed text-cream"><code>{children}</code></pre>
+    <pre aria-label={label} className="overflow-x-auto rounded-2xl bg-ink p-4 font-mono text-xs leading-relaxed text-[#d8efe6]"><code>{children}</code></pre>
   );
 }
+
+const STEP_BADGE = "flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-bold text-brand-ink";
 
 export default function GrosirPage() {
   return (
     <>
-      <h1 className="font-display text-4xl font-bold tracking-tight">For wholesalers</h1>
-      <p className="mb-8 mt-2 max-w-2xl text-ink-soft">
+      <PageHeader title="For wholesalers">
         A grosir (wholesaler) sells to many warungs at once. On Koelakan the warungs pool their demand into one round, and you win it by bidding the lowest price. One round, one big order, one delivery run.
-      </p>
+      </PageHeader>
 
-      <section aria-labelledby="role" className="mb-10">
-        <SectionTitle><span id="role">How a grosir wins a round</span></SectionTitle>
-        <ul className="grid gap-3 sm:grid-cols-2">
-          {TERMS.map(([title, body]) => (
-            <li key={title} className="rounded-lg border-2 border-ink/80 bg-cream p-4">
-              <h3 className="font-display text-lg font-semibold">{title}</h3>
-              <p className="mt-1 text-sm text-ink-soft">{body}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <div className="space-y-6">
+        <Panel aria-labelledby="role">
+          <SectionTitle><span id="role">How a grosir wins a round</span></SectionTitle>
+          <dl className="grid gap-x-10 gap-y-5 sm:grid-cols-2">
+            {TERMS.map(([title, body]) => (
+              <div key={title} className="border-t border-line pt-4 first:border-t-0 first:pt-0 sm:[&:nth-child(-n+2)]:border-t-0 sm:[&:nth-child(-n+2)]:pt-0">
+                <dt className="font-bold">{title}</dt>
+                <dd className="mt-1 text-sm text-muted">{body}</dd>
+              </div>
+            ))}
+          </dl>
+        </Panel>
 
-      <section aria-labelledby="live" className="mb-10">
-        <SectionTitle><span id="live">Grosir agents running now</span></SectionTitle>
-        <GrosirTable />
-        <p className="mt-2 text-xs text-ink-soft">
-          These are the service&apos;s own test grosirs. Their costs are assumptions (0.85 to 0.97 times HET, the government ceiling price), not real wholesale prices. Real grosirs bid their real costs.
-        </p>
-      </section>
-
-      <section aria-labelledby="run" className="mb-10">
-        <SectionTitle><span id="run">Run your own grosir agent</span></SectionTitle>
-        <Panel className="space-y-5">
-          <aside className="rounded-md border-2 border-kunyit bg-kunyit-soft/60 p-3 text-sm">
-            <strong>Why you run it yourself.</strong> Committing a bond moves tIDR out of your own wallet, which needs a full-access key (RULES section 4). A restricted function-call key cannot attach that deposit, and we will never ask you to hand a full-access key to a service. Your key stays on your machine.
-          </aside>
-          <ol className="space-y-5 text-sm">
-            <li>
-              <p className="font-semibold">1. Create a testnet account and get tIDR.</p>
-              <p className="mt-1 text-ink-soft">Fund it with a little NEAR for gas, then call the tIDR faucet for the bond. Keep tIDR in the wallet, not in the market balance.</p>
-            </li>
-            <li>
-              <p className="font-semibold">2. Write your price list.</p>
-              <p className="mb-2 mt-1 text-ink-soft"><code className="num">cost</code> is your cost per unit in tIDR; <code className="num">margin_bps</code> is your margin in basis points (500 = 5%). Your bid is cost plus margin, and the agent never bids above a round&apos;s maximum price.</p>
-              <Code label="Example pricing file">{PRICING_EXAMPLE}</Code>
-            </li>
-            <li>
-              <p className="font-semibold">3. Start the agent.</p>
-              <div className="mt-2"><Code label="Run with pnpm">{RUN_NATIVE}</Code></div>
-              <p className="mb-2 mt-3 text-ink-soft">Or with Docker:</p>
-              <Code label="Run with docker">{RUN_DOCKER}</Code>
-            </li>
-            <li>
-              <p className="font-semibold">4. Watch it work.</p>
-              <p className="mt-1 text-ink-soft">The agent commits and reveals on every open round for items you priced. Follow rounds on the <Link className="underline underline-offset-4" href="/rounds">rounds page</Link>, and withdraw your earnings from the market balance once buyers confirm delivery.</p>
-            </li>
-          </ol>
-          <p className="text-sm">
-            Full options (<code className="num">MIN_BID</code>, <code className="num">MAX_BOND</code>, salts, keys) are in{" "}
-            <a className="font-semibold underline underline-offset-4 hover:text-chili" href={AGENTS_README_URL} target="_blank" rel="noreferrer">agents/README.md</a>, section &quot;Run your own grosir agent&quot;.
+        <Panel aria-labelledby="live">
+          <SectionTitle><span id="live">Grosir agents running now</span></SectionTitle>
+          <GrosirTable />
+          <p className="mt-4 text-xs text-muted">
+            These are the service&apos;s own test grosirs. Their costs are assumptions (0.85 to 0.97 times HET, the government ceiling price), not real wholesale prices. Real grosirs bid their real costs.
           </p>
         </Panel>
-      </section>
+
+        <Panel aria-labelledby="run" className="space-y-6">
+          <SectionTitle className="mb-0"><span id="run">Run your own grosir agent</span></SectionTitle>
+          <aside className="rounded-2xl bg-warn-soft p-4 text-sm ring-1 ring-inset ring-warn/20">
+            <strong className="font-semibold">Why you run it yourself.</strong> Committing a bond moves tIDR out of your own wallet, which needs a full-access key (RULES section 4). A restricted function-call key cannot attach that deposit, and we will never ask you to hand a full-access key to a service. Your key stays on your machine.
+          </aside>
+          <ol className="space-y-6 text-sm">
+            <li className="flex gap-4">
+              <span aria-hidden className={STEP_BADGE}>1</span>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold">Create a testnet account and get tIDR.</p>
+                <p className="mt-1 text-muted">Fund it with a little NEAR for gas, then call the tIDR faucet for the bond. Keep tIDR in the wallet, not in the market balance.</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span aria-hidden className={STEP_BADGE}>2</span>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold">Write your price list.</p>
+                <p className="mb-3 mt-1 text-muted"><code className="rounded bg-ground px-1.5 py-0.5 font-mono text-xs text-ink">cost</code> is your cost per unit in tIDR; <code className="rounded bg-ground px-1.5 py-0.5 font-mono text-xs text-ink">margin_bps</code> is your margin in basis points (500 = 5%). Your bid is cost plus margin, and the agent never bids above a round&apos;s maximum price.</p>
+                <Code label="Example pricing file">{PRICING_EXAMPLE}</Code>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span aria-hidden className={STEP_BADGE}>3</span>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold">Start the agent.</p>
+                <div className="mt-3"><Code label="Run with pnpm">{RUN_NATIVE}</Code></div>
+                <p className="mb-3 mt-4 text-muted">Or with Docker:</p>
+                <Code label="Run with docker">{RUN_DOCKER}</Code>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <span aria-hidden className={STEP_BADGE}>4</span>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold">Watch it work.</p>
+                <p className="mt-1 text-muted">The agent commits and reveals on every open round for items you priced. Follow rounds on the <Link className={linkClass} href="/rounds">rounds page</Link>, and withdraw your earnings from the market balance once buyers confirm delivery.</p>
+              </div>
+            </li>
+          </ol>
+          <p className="border-t border-line pt-4 text-sm text-muted">
+            Full options (<code className="font-mono text-xs text-ink">MIN_BID</code>, <code className="font-mono text-xs text-ink">MAX_BOND</code>, salts, keys) are in{" "}
+            <a className={linkClass} href={AGENTS_README_URL} target="_blank" rel="noreferrer">agents/README.md</a>, section &quot;Run your own grosir agent&quot;.
+          </p>
+        </Panel>
+      </div>
     </>
   );
 }

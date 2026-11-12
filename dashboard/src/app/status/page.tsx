@@ -1,4 +1,5 @@
 import { StatusView } from "@/components/status-view";
+import { PageHeader } from "@/components/ui/page-header";
 
 export const metadata = {
   title: "Service status",
@@ -8,10 +9,9 @@ export const metadata = {
 export default function StatusPage() {
   return (
     <>
-      <h1 className="font-display text-4xl font-bold tracking-tight">Service status</h1>
-      <p className="mb-6 mt-2 max-w-2xl text-ink-soft">
+      <PageHeader title="Service status">
         The Koelakan agent service opens rounds on a schedule and runs the seeded grosir agents. This page shows what it is doing right now. Round data itself always comes straight from the chain.
-      </p>
+      </PageHeader>
       <StatusView />
     </>
   );

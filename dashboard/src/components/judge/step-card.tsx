@@ -1,19 +1,48 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { createContext, useContext, useState, type ReactNode } from "react";
+import { Check, ChevronDown, Lock } from "lucide-react";
 import { cn } from "@/components/ui/cn";
-import { Stamp, type Tone } from "@/components/ui/stamp";
+import { Chip, type Tone } from "@/components/ui/chip";
+import { Notice } from "@/components/ui/notice";
+import { linkClass } from "@/components/ui/panel";
 import type { CallResult } from "@/lib/wallet";
 import { txUrl } from "@/lib/config";
+import type { StepId } from "@/lib/steps";
+
+export { Field, inputClass } from "@/components/ui/field";
 
 export type StepState = "done" | "ready" | "locked" | "optional" | "next" | "todo";
 
 const BADGE: Record<StepState, { text: string; tone: Tone }> = {
   done: { text: "Done", tone: "good" },
-  ready: { text: "Ready", tone: "warn" },
-  next: { text: "Next up", tone: "warn" },
+  ready: { text: "Ready", tone: "info" },
+  next: { text: "Next up", tone: "info" },
   todo: { text: "To do", tone: "neutral" },
   locked: { text: "Locked", tone: "neutral" },
-  optional: { text: "Optional", tone: "info" },
+  optional: { text: "Optional", tone: "neutral" },
 };
+
+interface StepperValue {
+  open: StepId | null;
+  toggle: (id: StepId) => void;
+}
+const StepperContext = createContext<StepperValue | null>(null);
+
+/**
+ * Vertical stepper: the current step is expanded, the others collapse to a one-line row with a state chip.
+ * Opening another row is the user's choice and resets when the current step advances.
+ */
+export function Stepper({ nextId, children, label }: { nextId: StepId | null; children: ReactNode; label: string }) {
+  const [pick, setPick] = useState<{ forNext: StepId | null; id: StepId | null } | null>(null);
+  const open = pick && pick.forNext === nextId ? pick.id : nextId;
+  const toggle = (id: StepId): void => setPick({ forNext: nextId, id: open === id ? null : id });
+  return (
+    <StepperContext.Provider value={{ open, toggle }}>
+      <ol aria-label={label} className="divide-y divide-line">{children}</ol>
+    </StepperContext.Provider>
+  );
+}
 
 interface StepCardProps {
   index: string;
@@ -21,33 +50,74 @@ interface StepCardProps {
   state: StepState;
   intro: ReactNode;
   children?: ReactNode;
+  /** Set when the step lives inside a Stepper. Without it the step renders as a plain, always-open section. */
+  stepId?: StepId;
 }
 
-export function StepCard({ index, title, state, intro, children }: StepCardProps) {
-  const badge = BADGE[state];
+function Marker({ state, index }: { state: StepState; index: string }) {
   return (
-    <section
-      aria-labelledby={`step-${index}`}
+    <span
+      aria-hidden
       className={cn(
-        "rounded-lg border-2 border-ink/80 bg-cream p-4 sm:p-5",
-        state === "locked" && "border-dashed border-rule bg-cream/60",
-        (state === "ready" || state === "next") && "shadow-[3px_3px_0_0_rgba(42,33,24,0.85)]",
+        "flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors duration-200",
+        state === "done" && "bg-brand text-white",
+        (state === "next" || state === "ready") && "bg-brand-soft text-brand-ink outline outline-2 outline-brand",
+        (state === "todo" || state === "optional") && "bg-ground text-muted outline outline-1 outline-line-strong",
+        state === "locked" && "bg-ground text-muted",
       )}
     >
-      <header className="flex items-start gap-3">
-        <span aria-hidden className={cn("flex size-9 shrink-0 items-center justify-center rounded-full border-2 border-ink font-display text-lg font-bold", state === "done" ? "bg-pandan text-cream" : "bg-kunyit-soft")}>
-          {state === "done" ? "✓" : index}
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 id={`step-${index}`} className="font-display text-xl font-semibold">{title}</h3>
-            <Stamp tone={badge.tone}>{badge.text}</Stamp>
-          </div>
-          <div className="mt-1 text-sm text-ink-soft">{intro}</div>
-        </div>
-      </header>
-      {children && <div className="mt-4 space-y-3 sm:pl-12">{children}</div>}
-    </section>
+      {state === "done" ? <Check className="size-4" strokeWidth={3} /> : state === "locked" ? <Lock className="size-3.5" /> : index}
+    </span>
+  );
+}
+
+export function StepCard({ index, title, state, intro, children, stepId }: StepCardProps) {
+  const ctx = useContext(StepperContext);
+  const badge = BADGE[state];
+  const accordion = ctx !== null && stepId !== undefined;
+  const open = accordion ? ctx.open === stepId && state !== "locked" : true;
+  const bodyId = `step-body-${stepId ?? index}`;
+  const titleId = `step-${stepId ?? index}`;
+
+  const head = (
+    <>
+      <Marker state={state} index={index} />
+      <span className="min-w-0 flex-1 text-left">
+        <span id={titleId} className={cn("block font-bold", state === "locked" && "text-muted")}>{title}</span>
+      </span>
+      <Chip tone={badge.tone}>{badge.text}</Chip>
+      {accordion && <ChevronDown aria-hidden className={cn("size-4 shrink-0 text-muted transition-transform duration-200", open && "rotate-180", state === "locked" && "invisible")} />}
+    </>
+  );
+  const body = open && (
+    <div id={bodyId} className="pb-5 pt-1 sm:pl-12">
+      <div className="text-sm text-muted">{intro}</div>
+      {children && <div className="mt-4 space-y-3">{children}</div>}
+    </div>
+  );
+
+  if (!accordion) {
+    return (
+      <section aria-labelledby={titleId} className="py-1">
+        <div className="flex min-h-12 items-center gap-3 py-2">{head}</div>
+        {body}
+      </section>
+    );
+  }
+  return (
+    <li aria-labelledby={titleId}>
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={bodyId}
+        disabled={state === "locked"}
+        onClick={() => ctx.toggle(stepId)}
+        className="flex min-h-14 w-full items-center gap-3 rounded-xl py-2 transition-colors duration-150 enabled:hover:bg-ground/70 disabled:cursor-not-allowed"
+      >
+        {head}
+      </button>
+      {body}
+    </li>
   );
 }
 
@@ -55,26 +125,13 @@ export function StepCard({ index, title, state, intro, children }: StepCardProps
 export function TxResult({ result }: { result: CallResult | null }) {
   if (!result) return null;
   return (
-    <p role="status" className={cn("rounded-md border-2 px-3 py-2 text-sm", result.ok ? "border-pandan bg-pandan-soft/60" : "border-chili bg-chili-soft/60")}>
+    <Notice tone={result.ok ? "ok" : "error"}>
       {result.ok ? "Transaction succeeded." : result.error ?? "Transaction failed."}{" "}
       {result.hash && (
-        <a className="num underline underline-offset-4" target="_blank" rel="noreferrer" href={txUrl(result.hash)}>
+        <a className={`num ${linkClass}`} target="_blank" rel="noreferrer" href={txUrl(result.hash)}>
           view on nearblocks
         </a>
       )}
-    </p>
+    </Notice>
   );
 }
-
-export function Field({ id, label, hint, children }: { id: string; label: string; hint?: string; children: ReactNode }) {
-  return (
-    <div>
-      <label htmlFor={id} className="mb-1 block text-sm font-semibold">{label}</label>
-      {children}
-      {hint && <p id={`${id}-hint`} className="mt-1 text-xs text-ink-soft">{hint}</p>}
-    </div>
-  );
-}
-
-export const inputClass =
-  "num min-h-11 w-full rounded-md border-2 border-ink bg-white/70 px-3 text-base focus-visible:outline-offset-0";

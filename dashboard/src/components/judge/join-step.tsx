@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Countdown } from "@/components/countdown";
 import { Button } from "@/components/ui/button";
 import { Field, StepCard, TxResult, inputClass, type StepState } from "@/components/judge/step-card";
-import { cn } from "@/components/ui/cn";
+import { Notice } from "@/components/ui/notice";
 import { useNow } from "@/hooks/use-now";
 import { useTx } from "@/hooks/use-tx";
 import type { AccountSnapshot } from "@/hooks/use-judge";
@@ -58,7 +58,7 @@ export function JoinStep({ accountId, rounds, items, account, clockOffsetMs, onD
       {accountId && (
         <>
           {open.length === 0 ? (
-            <p className="rounded-md border-2 border-dashed border-rule p-3 text-sm">
+            <p className="rounded-xl border border-dashed border-line-strong p-3.5 text-sm text-muted">
               No round is accepting joins right now. Rounds open automatically; check back when the next one opens.
             </p>
           ) : (
@@ -74,7 +74,7 @@ export function JoinStep({ accountId, rounds, items, account, clockOffsetMs, onD
             </div>
           )}
           {round && (
-            <p className="text-sm text-ink-soft">
+            <p className="text-sm text-muted">
               Joining closes in <Countdown deadlineMs={nsToMs(round.join_deadline)} nowMs={now} />
               {cost !== null && <> · funds locked <strong className="num text-ink">{rupiah(cost)}</strong> ({qty} x {rupiah(round.ceiling_price)})</>}
             </p>
@@ -101,9 +101,11 @@ function PreCheck({ problems, hasRound }: { problems: ReturnType<typeof checkJoi
   if (!hasRound) return null;
   const ok = problems.length === 0;
   return (
-    <div aria-live="polite" className={cn("rounded-md border-2 px-3 py-2 text-sm", ok ? "border-pandan bg-pandan-soft/60" : "border-kunyit bg-kunyit-soft/60")}>
-      <p className="font-semibold">{ok ? "Pre-check passed: the contract will accept this join." : "The contract will reject this join:"}</p>
-      {!ok && <ul className="mt-1 list-disc space-y-0.5 pl-5">{problems.map((p) => <li key={p.code}>{p.message}</li>)}</ul>}
+    <div aria-live="polite">
+      <Notice tone={ok ? "ok" : "warn"} role="none">
+        <p className="font-semibold">{ok ? "Pre-check passed: the contract will accept this join." : "The contract will reject this join:"}</p>
+        {!ok && <ul className="mt-1 list-disc space-y-0.5 pl-5">{problems.map((p) => <li key={p.code}>{p.message}</li>)}</ul>}
+      </Notice>
     </div>
   );
 }

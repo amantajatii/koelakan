@@ -1,46 +1,63 @@
-import { cn } from "@/components/ui/cn";
+import { Check, Minus } from "lucide-react";
 import { Countdown } from "@/components/countdown";
+import { cn } from "@/components/ui/cn";
 import { formatDateTime } from "@/lib/format";
 import { buildTimeline, PHASE_HINT, derivePhase, type StepStatus } from "@/lib/phase";
 import type { RoundView } from "@/lib/types";
 
-const MARK: Record<StepStatus, string> = {
-  done: "bg-pandan border-pandan text-cream",
-  current: "bg-kunyit border-ink text-ink",
-  upcoming: "bg-cream border-rule text-ink-soft",
-  skipped: "bg-cream border-rule text-rule line-through",
-};
-const MARK_TEXT: Record<StepStatus, string> = { done: "✓", current: "●", upcoming: "", skipped: "–" };
 const STATUS_SR: Record<StepStatus, string> = { done: "done", current: "in progress", upcoming: "not started", skipped: "skipped" };
 
+function Node({ status }: { status: StepStatus }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full ring-4 ring-surface transition-colors duration-200",
+        status === "done" && "bg-brand text-white",
+        status === "current" && "bg-brand-soft text-brand-ink ring-brand/0 outline outline-2 outline-brand",
+        status === "upcoming" && "bg-ground text-muted outline outline-1 outline-line-strong",
+        status === "skipped" && "bg-ground text-muted",
+      )}
+    >
+      {status === "done" && <Check className="size-4" strokeWidth={3} />}
+      {status === "current" && <span className="live-dot size-2.5 rounded-full bg-brand" />}
+      {status === "skipped" && <Minus className="size-4" />}
+    </span>
+  );
+}
+
+/** Horizontal stepper from md up, vertical below. */
 export function Timeline({ round, nowMs }: { round: RoundView; nowMs: number }) {
   const steps = buildTimeline(round, nowMs);
   const phase = derivePhase(round, nowMs);
   return (
     <div>
-      <ol className="space-y-0">
+      <ol className="grid gap-5 md:grid-flow-col md:auto-cols-fr md:gap-3">
         {steps.map((s, i) => (
-          <li key={s.key} className="relative flex gap-3 pb-5 last:pb-0">
-            {i < steps.length - 1 && <span aria-hidden className="absolute left-[0.8rem] top-7 h-[calc(100%-1.5rem)] w-0.5 bg-rule" />}
-            <span aria-hidden className={cn("z-10 flex size-7 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold", MARK[s.status])}>
-              {MARK_TEXT[s.status]}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className={cn("font-semibold", s.status === "upcoming" && "text-ink-soft")}>
+          <li key={s.key} className="relative flex gap-3 md:block">
+            {i < steps.length - 1 && (
+              <>
+                <span aria-hidden className={cn("absolute left-4 top-8 h-[calc(100%-0.5rem)] w-px md:hidden", s.status === "done" ? "bg-brand" : "bg-line-strong")} />
+                <span aria-hidden className={cn("absolute left-8 top-4 hidden h-px w-[calc(100%-1rem)] md:block", s.status === "done" ? "bg-brand" : "bg-line-strong")} />
+              </>
+            )}
+            <Node status={s.status} />
+            <div className="min-w-0 md:mt-3">
+              <p className={cn("text-sm font-bold", s.status === "upcoming" && "text-muted", s.status === "skipped" && "text-muted line-through")}>
                 {s.label} <span className="sr-only">({STATUS_SR[s.status]})</span>
               </p>
-              <p className="num text-xs text-ink-soft">
+              <p className="num mt-0.5 text-xs text-muted">
                 {s.key === "settle" ? "after " : "until "}
                 {formatDateTime(s.deadlineMs)}
                 {s.status === "current" && s.key !== "settle" && (
-                  <> · <Countdown deadlineMs={s.deadlineMs} nowMs={nowMs} /></>
+                  <> · <span className="font-semibold text-brand-ink"><Countdown deadlineMs={s.deadlineMs} nowMs={nowMs} /></span></>
                 )}
               </p>
             </div>
           </li>
         ))}
       </ol>
-      <p className="mt-4 rounded border-l-4 border-kunyit bg-kunyit-soft/50 px-3 py-2 text-sm">{PHASE_HINT[phase]}</p>
+      <p className="mt-6 rounded-xl bg-ground px-4 py-3 text-sm text-muted">{PHASE_HINT[phase]}</p>
     </div>
   );
 }

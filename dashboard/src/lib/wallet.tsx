@@ -50,7 +50,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const modalRef = useRef<WalletSelectorModal | null>(null);
   const [ready, setReady] = useState(false);
   const [initError, setInitError] = useState<string | null>(null);
-  const [accountId, setAccountId] = useState<string | null>(null);
+  const [accountId, setAccountId] = useState<string | null>(config.devFixtureAccount);
   const [walletId, setWalletId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         const sync = (): void => {
           const state = selector.store.getState();
           const active = state.accounts.find((a) => a.active) ?? state.accounts[0];
-          setAccountId(active?.accountId ?? null);
+          setAccountId(config.devFixtureAccount ?? active?.accountId ?? null);
           setWalletId(state.selectedWalletId);
         };
         sync();

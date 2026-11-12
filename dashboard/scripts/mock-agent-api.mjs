@@ -6,6 +6,12 @@ const port = Number(process.argv[2] ?? 8799);
 const started = Date.now();
 const iso = (offsetMs) => new Date(Date.now() + offsetMs).toISOString();
 const warungs = new Map();
+// Seed one owner so a design-review session with NEXT_PUBLIC_DEV_FIXTURE_ACCOUNT=warung-01.koelakan.testnet shows a filled screen.
+warungs.set("warung-01.koelakan.testnet", {
+  account_id: "warung-01.koelakan.testnet", demand: { "beras-medium": 20, "gula-pasir": 10, "telur-ayam": 0, "minyak-curah": 0 },
+  registered_at: new Date().toISOString(), updated_at: new Date().toISOString(), delegated: true, auto_join: true,
+  last_actions: [{ at: new Date(Date.now() - 90_000).toISOString(), round_id: 1, action: "joined", qty: 20, reason: null, tx: null }],
+});
 
 const status = () => ({
   ok: true, network: "testnet", market: "market.koelakan.testnet",

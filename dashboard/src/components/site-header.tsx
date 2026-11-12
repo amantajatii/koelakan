@@ -1,69 +1,43 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/components/ui/cn";
+import { UserRound } from "lucide-react";
+import { LogoMark } from "@/components/logo";
 import { StatusBadge } from "@/components/status-badge";
+import { cn } from "@/components/ui/cn";
 import { shortAccount } from "@/lib/format";
 import { useWallet } from "@/lib/wallet";
 
-const NAV = [
-  { href: "/", label: "Overview" },
-  { href: "/warung", label: "Run your warung" },
-  { href: "/rounds", label: "Rounds" },
-  { href: "/chat", label: "Agent chat" },
-  { href: "/grosir", label: "For wholesalers" },
-  { href: "/status", label: "Status" },
-] as const;
-
-function Crate() {
-  return (
-    <svg viewBox="0 0 32 32" className="size-8" aria-hidden>
-      <rect x="3" y="9" width="26" height="19" rx="2" fill="#c98a12" stroke="#2a2118" strokeWidth="2" />
-      <path d="M3 15h26M3 21h26M11 9v19M21 9v19" stroke="#2a2118" strokeWidth="1.5" opacity=".55" />
-      <path d="M8 9c0-4 3-6 8-6s8 2 8 6" fill="none" stroke="#2a2118" strokeWidth="2" />
-    </svg>
-  );
-}
-
+/** Top bar: brand on phones, a quiet utility area (agent status, account) everywhere. */
 export function SiteHeader() {
-  const pathname = usePathname();
   const { accountId, ready, signIn } = useWallet();
-  const active = (href: string): boolean => (href === "/" ? pathname === "/" : pathname.startsWith(href));
-
   return (
-    <header className="border-b-2 border-ink bg-paper-deep/70 backdrop-blur-sm">
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="Koelakan, go to the overview">
-          <Crate />
-          <span className="font-display text-2xl font-bold leading-none tracking-tight">Koelakan</span>
-        </Link>
-        <div className="order-2 ml-auto flex items-center gap-3 sm:order-3 sm:ml-0">
-        <StatusBadge compact className="hidden min-[420px]:inline-flex" />
+    <header className="mx-auto flex w-full max-w-[78rem] items-center justify-between gap-3 px-4 py-3 sm:px-8 sm:py-4">
+      <Link href="/" className="flex items-center gap-2.5 rounded-xl lg:hidden" aria-label="Koelakan, go to the overview">
+        <LogoMark className="size-9" />
+        <span className="text-lg font-extrabold tracking-tight">Koelakan</span>
+      </Link>
+      <p className="hidden text-sm font-medium text-muted lg:block">NEAR testnet · test rupiah (tIDR)</p>
+      <div className="ml-auto flex items-center gap-2">
+        <StatusBadge compact />
         <button
           type="button"
           onClick={signIn}
           disabled={!ready}
-          className="min-h-10 rounded-md border-2 border-ink bg-cream px-3 text-sm font-semibold hover:bg-kunyit-soft disabled:opacity-50"
+          className={cn(
+            "inline-flex min-h-11 items-center gap-2 rounded-full border text-sm font-semibold transition-[background-color,border-color] duration-150 disabled:opacity-60",
+            accountId ? "border-line-strong bg-surface py-1 pl-1 pr-3.5 hover:border-brand/50" : "border-transparent bg-brand px-4 text-white hover:bg-brand-hover",
+          )}
         >
-          {accountId ? <span className="num">{shortAccount(accountId).slice(0, 18)}</span> : "Sign in"}
+          {accountId ? (
+            <>
+              <span aria-hidden className="flex size-9 items-center justify-center rounded-full bg-brand-soft text-brand-ink"><UserRound className="size-4" /></span>
+              <span className="num max-w-[6.5rem] truncate sm:max-w-[11rem]">{shortAccount(accountId)}</span>
+            </>
+          ) : (
+            "Sign in"
+          )}
         </button>
-        </div>
-        <nav aria-label="Main" className="order-3 -mx-1 flex w-full gap-1 overflow-x-auto sm:order-2 sm:mx-0 sm:w-auto">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={active(item.href) ? "page" : undefined}
-              className={cn(
-                "whitespace-nowrap rounded-md px-3 py-2 text-sm font-semibold",
-                active(item.href) ? "bg-ink text-cream" : "text-ink-soft hover:bg-kunyit-soft hover:text-ink",
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
       </div>
     </header>
   );

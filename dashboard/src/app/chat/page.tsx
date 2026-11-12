@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { ChatLive } from "@/components/chat/chat-live";
+import { PageHeader } from "@/components/ui/page-header";
 import { Skeleton } from "@/components/ui/states";
 import { loadOverview } from "@/lib/overview";
 
@@ -10,11 +11,10 @@ export default async function ChatPage() {
   const { data } = await loadOverview();
   return (
     <>
-      <h1 className="font-display text-4xl font-bold tracking-tight">Agent chat</h1>
-      <p className="mb-6 mt-2 max-w-2xl text-ink-soft">
+      <PageHeader title="Agent chat">
         This is what it feels like for a warung owner: the agent reports in plain language, with no blocks or hashes to read.
-      </p>
-      <Suspense fallback={<Skeleton className="h-96" />}>
+      </PageHeader>
+      <Suspense fallback={<Skeleton className="h-[34rem]" />}>
         <ChatLive initial={data} />
       </Suspense>
     </>

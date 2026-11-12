@@ -1,5 +1,8 @@
 "use client";
 
+import { CloudOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/components/ui/cn";
 import { useAgentStatus } from "@/hooks/use-agent-status";
 import { OFFLINE_MESSAGE } from "@/lib/agent-api";
 
@@ -8,9 +11,12 @@ export function OfflineNote({ className }: { className?: string }) {
   const { status, loading, refresh } = useAgentStatus();
   if (loading || status) return null;
   return (
-    <div role="status" className={`flex flex-wrap items-center justify-between gap-3 rounded-lg border-2 border-kunyit bg-kunyit-soft/60 p-3 text-sm ${className ?? ""}`}>
-      <p><strong>{OFFLINE_MESSAGE.split(". ")[0]}.</strong> On-chain data is still live; the 24/7 agents will resume when the service is back.</p>
-      <button type="button" onClick={refresh} className="rounded-md border-2 border-ink bg-cream px-3 py-1.5 text-xs font-semibold hover:bg-kunyit-soft">Check again</button>
+    <div role="status" className={cn("flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-warn-soft p-4 text-sm ring-1 ring-inset ring-warn/20", className)}>
+      <p className="flex items-start gap-2.5">
+        <CloudOff className="mt-0.5 size-4 shrink-0 text-warn" aria-hidden />
+        <span><strong className="font-semibold">{OFFLINE_MESSAGE.split(". ")[0]}.</strong> On-chain data is still live; the 24/7 agents will resume when the service is back.</span>
+      </p>
+      <Button variant="secondary" onClick={refresh} className="min-h-10">Check again</Button>
     </div>
   );
 }

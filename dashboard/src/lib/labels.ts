@@ -1,4 +1,4 @@
-import type { Tone } from "@/components/ui/stamp";
+import type { Tone } from "@/components/ui/chip";
 import type { Bid, Delivery, RoundView } from "./types";
 
 export function deliveryLabel(d: Delivery): { text: string; tone: Tone } {

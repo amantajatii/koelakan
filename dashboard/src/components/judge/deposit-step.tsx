@@ -30,16 +30,17 @@ export function DepositStep({ accountId, tidr, available, onDone, index = "3", s
   return (
     <StepCard
       index={index}
+      stepId="deposit"
       title="Deposit to market"
       state={state}
-      intro={<>Moves tIDR into your pooled balance in the contract via <code className="num">ft_transfer_call</code> (message <code className="num">deposit</code>, 1 yocto). This is the money that gets locked when you join a round.</>}
+      intro={<>Moves tIDR into your pooled balance in the contract via <code className="font-mono text-xs text-ink">ft_transfer_call</code> (message <code className="font-mono text-xs text-ink">deposit</code>, 1 yocto). This is the money that gets locked when you join a round.</>}
     >
       {accountId && (
         <>
           <Field id="deposit-amount" label="Deposit amount (tIDR)" hint={amount ? `Deposit ${rupiah(amount)}` : undefined}>
             <input id="deposit-amount" inputMode="numeric" className={inputClass} value={raw} onChange={(e) => setRaw(e.target.value)} aria-invalid={error !== null} aria-describedby={error ? "deposit-err" : "deposit-amount-hint"} />
           </Field>
-          {error && <p id="deposit-err" className="text-sm font-semibold text-chili">{error}</p>}
+          {error && <p id="deposit-err" className="text-sm font-semibold text-danger">{error}</p>}
           <Button onClick={() => amount !== null && void tx.run(depositCall(amount))} busy={tx.busy} disabled={error !== null}>Deposit to market</Button>
           <TxResult result={tx.result} />
         </>

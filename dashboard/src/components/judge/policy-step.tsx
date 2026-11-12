@@ -46,9 +46,10 @@ export function PolicyStep({ accountId, items, policy, onDone, index = "4", stat
   return (
     <StepCard
       index={index}
+      stepId="policy"
       title="Set your policy"
       state={state}
-      intro={<>A price limit per item and a weekly budget, enforced by the contract, not by the agent. <code className="num">set_policy</code> needs 1 yocto, so only your own full-access key can change it.</>}
+      intro={<>A price limit per item and a weekly budget, enforced by the contract, not by the agent. <code className="font-mono text-xs text-ink">set_policy</code> needs 1 yocto, so only your own full-access key can change it.</>}
     >
       {accountId && (
         <>
@@ -63,17 +64,17 @@ export function PolicyStep({ accountId, items, policy, onDone, index = "4", stat
           <Field id="budget" label="Weekly budget (tIDR)" hint="Total that may be locked or spent per 7 days.">
             <input id="budget" inputMode="numeric" className={inputClass} value={budgetRaw} onChange={(e) => setBudgetEdit(e.target.value)} />
           </Field>
-          <label className="flex cursor-pointer items-start gap-3 rounded-md border-2 border-rule bg-paper/40 p-3 text-sm">
-            <input type="checkbox" className="mt-1 size-5 shrink-0 accent-[#28634a]" checked={autoJoin} onChange={(e) => setAutoEdit(e.target.checked)} />
+          <label className="flex min-h-11 cursor-pointer items-start gap-3 rounded-xl bg-ground p-3.5 text-sm transition-colors duration-150 hover:bg-brand-soft">
+            <input type="checkbox" className="mt-0.5 size-5 shrink-0" checked={autoJoin} onChange={(e) => setAutoEdit(e.target.checked)} />
             <span>
-              <strong>Let my agent join rounds automatically</strong> (<code className="num">auto_join</code>)
-              <span className="mt-0.5 block text-ink-soft">
+              <strong>Let my agent join rounds automatically</strong> (<code className="font-mono text-xs text-ink">auto_join</code>)
+              <span className="mt-0.5 block text-muted">
                 On: the agent may join on your behalf, always inside the limits above. Off: the contract rejects every agent join and only you can join, with your own key.
               </span>
             </span>
           </label>
-          {policy && <p className="text-sm text-ink-soft">Active policy: budget <span className="num">{rupiah(policy.weekly_budget)}</span>, {Object.keys(policy.max_price).length} items, auto_join {policy.auto_join ? "on" : "off"}.</p>}
-          {parsed === null && <p className="text-sm font-semibold text-chili">Every field must be a number greater than 0.</p>}
+          {policy && <p className="text-sm text-muted">Active policy: budget <span className="num">{rupiah(policy.weekly_budget)}</span>, {Object.keys(policy.max_price).length} items, auto_join {policy.auto_join ? "on" : "off"}.</p>}
+          {parsed === null && <p className="text-sm font-semibold text-danger">Every field must be a number greater than 0.</p>}
           <Button onClick={() => parsed && void tx.run(setPolicyCall(parsed))} busy={tx.busy} disabled={parsed === null}>
             {policy ? "Update policy" : "Save policy"}
           </Button>

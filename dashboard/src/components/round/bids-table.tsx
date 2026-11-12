@@ -1,42 +1,42 @@
-import { Stamp } from "@/components/ui/stamp";
+import { Chip } from "@/components/ui/chip";
+import { TableWrap, tableClass, td, tdRight, th, thRight, theadClass, trClass } from "@/components/ui/table";
 import { accountUrl } from "@/lib/config";
 import { rupiah, shortAccount, shortHash } from "@/lib/format";
 import { BID_LABEL, bidStatus } from "@/lib/labels";
+import { linkClass } from "@/components/ui/panel";
 import type { RoundView } from "@/lib/types";
 
 export function BidsTable({ round }: { round: RoundView }) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[36rem] text-left text-sm">
+    <TableWrap>
+      <table className={`${tableClass} min-w-[36rem]`}>
         <caption className="sr-only">Grosir bids for round #{round.id}</caption>
-        <thead>
-          <tr className="border-b-2 border-ink text-xs uppercase tracking-wider text-ink-soft">
-            <th scope="col" className="py-2 pr-3 font-semibold">Grosir</th>
-            <th scope="col" className="py-2 pr-3 font-semibold">Status</th>
-            <th scope="col" className="py-2 pr-3 text-right font-semibold">Price</th>
-            <th scope="col" className="py-2 pr-3 text-right font-semibold">Bond</th>
-            <th scope="col" className="py-2 font-semibold">Commit hash</th>
+        <thead className={theadClass}>
+          <tr>
+            <th scope="col" className={th}>Grosir</th>
+            <th scope="col" className={th}>Status</th>
+            <th scope="col" className={thRight}>Price</th>
+            <th scope="col" className={thRight}>Bond</th>
+            <th scope="col" className={th}>Commit hash</th>
           </tr>
         </thead>
         <tbody>
           {round.bids.map((b, i) => {
             const st = BID_LABEL[bidStatus(round, b, i)];
             return (
-              <tr key={b.seller_id} className="border-b border-dashed border-rule">
-                <th scope="row" className="py-2 pr-3 font-normal">
-                  <a href={accountUrl(b.seller_id)} target="_blank" rel="noreferrer" className="num underline decoration-rule underline-offset-4 hover:text-chili">
-                    {shortAccount(b.seller_id)}
-                  </a>
+              <tr key={b.seller_id} className={trClass}>
+                <th scope="row" className={`${td} font-normal`}>
+                  <a href={accountUrl(b.seller_id)} target="_blank" rel="noreferrer" className={`num ${linkClass}`}>{shortAccount(b.seller_id)}</a>
                 </th>
-                <td className="py-2 pr-3"><Stamp tone={st.tone}>{st.text}</Stamp></td>
-                <td className="num py-2 pr-3 text-right">{b.revealed_price === null ? "sealed" : rupiah(b.revealed_price)}</td>
-                <td className="num py-2 pr-3 text-right">{rupiah(b.bond)}</td>
-                <td className="num py-2 text-xs text-ink-soft" title={b.hash}>{shortHash(b.hash)}</td>
+                <td className={td}><Chip tone={st.tone}>{st.text}</Chip></td>
+                <td className={tdRight}>{b.revealed_price === null ? "sealed" : rupiah(b.revealed_price)}</td>
+                <td className={tdRight}>{rupiah(b.bond)}</td>
+                <td className={`${td} num text-xs text-muted`} title={b.hash}>{shortHash(b.hash)}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
-    </div>
+    </TableWrap>
   );
 }

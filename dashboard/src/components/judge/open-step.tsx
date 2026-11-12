@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, StepCard, TxResult, inputClass } from "@/components/judge/step-card";
+import { Notice } from "@/components/ui/notice";
 import { useTx } from "@/hooks/use-tx";
 import { parseQty } from "@/lib/amount";
 import { DEMO_DURATIONS } from "@/lib/config";
@@ -26,7 +27,7 @@ export function OpenStep({ accountId, items, onDone }: { accountId: string | nul
       index="+"
       title="Open a round (demo)"
       state={accountId ? "optional" : "locked"}
-      intro={<>Anyone can call <code className="num">open_round</code>. The round max price is set to the PIHPS reference price (the highest allowed). Demo durations: joining {d.join} s, sealed bids {d.commit} s, reveal {d.reveal} s, delivery {d.delivery} s.</>}
+      intro={<>Anyone can call <code className="font-mono text-xs text-ink">open_round</code>. The round max price is set to the PIHPS reference price (the highest allowed). Demo durations: joining {d.join} s, sealed bids {d.commit} s, reveal {d.reveal} s, delivery {d.delivery} s.</>}
     >
       {accountId && item && (
         <>
@@ -44,13 +45,13 @@ export function OpenStep({ accountId, items, onDone }: { accountId: string | nul
             Open round
           </Button>
           <TxResult result={tx.result} />
-          <div className="rounded-md border-2 border-kunyit bg-kunyit-soft/60 p-3 text-sm">
+          <Notice tone="info" role="none">
             <p className="font-semibold">You do not need this: the 24/7 agent service already opens rounds on a schedule.</p>
             <p className="mt-1">
               The service&apos;s grosir agents bid on any open round now, including one you open here, so it should settle on its own.
               If the service is offline, nobody bids and the round <strong>fails</strong>; your funds are refunded in full.
             </p>
-          </div>
+          </Notice>
         </>
       )}
     </StepCard>

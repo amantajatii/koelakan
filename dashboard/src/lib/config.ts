@@ -38,6 +38,11 @@ export const config = {
   explorerUrl: validUrl(env(process.env.NEXT_PUBLIC_EXPLORER_URL, ""), "https://testnet.nearblocks.io"),
   agentApiUrl: validUrl(env(process.env.NEXT_PUBLIC_AGENT_API_URL, ""), DEFAULT_AGENT_API),
   siteUrl: validUrl(env(process.env.NEXT_PUBLIC_SITE_URL, ""), "http://localhost:3000"),
+  /**
+   * Development only: pretend this account is signed in so the owner screens can be reviewed without a wallet.
+   * Unset in production; it only changes what the UI shows, every transaction still needs a real wallet.
+   */
+  devFixtureAccount: validAccount(env(process.env.NEXT_PUBLIC_DEV_FIXTURE_ACCOUNT, ""), "") || null,
 } as const;
 
 export const accountUrl = (account: string): string => `${config.explorerUrl}/address/${account}`;

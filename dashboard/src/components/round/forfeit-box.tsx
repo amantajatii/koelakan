@@ -1,3 +1,4 @@
+import { Info } from "lucide-react";
 import { int, ownerName, rupiah, shortAccount } from "@/lib/format";
 import { forfeitedBids, forfeitedBond, proRataShares } from "@/lib/stats";
 import type { RoundView } from "@/lib/types";
@@ -9,25 +10,30 @@ export function ForfeitBox({ round }: { round: RoundView }) {
   const shares = proRataShares(total, round.participants.map((p) => BigInt(p.qty)));
   const names = forfeitedBids(round).map((b) => shortAccount(b.seller_id)).join(", ");
   return (
-    <div className="rounded-lg border-2 border-chili bg-chili-soft/50 p-4">
-      <p className="font-semibold">
-        Bond forfeited: <span className="num">{rupiah(total)}</span> from {names}
-      </p>
-      <p className="mt-1 text-sm text-ink-soft">
-        Did not reveal a bid in the reveal phase, so the bond is split among the {int(round.participants.length)} warungs in
-        proportion to their quantity. Rounding dust goes to the buyer with the largest quantity.
-      </p>
-      <details className="mt-3 text-sm">
-        <summary className="cursor-pointer font-semibold underline underline-offset-4">See the split per warung</summary>
-        <ul className="mt-2 grid gap-x-6 gap-y-1 sm:grid-cols-2">
-          {round.participants.map((p, i) => (
-            <li key={p.account_id} className="flex justify-between border-b border-dashed border-rule py-0.5">
-              <span>{shortAccount(p.account_id)} <span className="text-ink-soft">({ownerName(p.account_id)})</span></span>
-              <span className="num">{rupiah(shares[i] ?? 0n)}</span>
-            </li>
-          ))}
-        </ul>
-      </details>
-    </div>
+    <aside aria-label="Forfeited bond" className="rounded-card bg-info-soft p-5 ring-1 ring-inset ring-info/15 sm:p-6">
+      <div className="flex gap-3">
+        <Info className="mt-0.5 size-5 shrink-0 text-info" aria-hidden />
+        <div className="min-w-0 flex-1">
+          <p className="font-bold">
+            Bond forfeited: <span className="num">{rupiah(total)}</span> from {names}
+          </p>
+          <p className="mt-1 text-sm text-ink/80">
+            Did not reveal a bid in the reveal phase, so the bond is split among the {int(round.participants.length)} warungs in
+            proportion to their quantity. Rounding dust goes to the buyer with the largest quantity.
+          </p>
+          <details className="mt-3 text-sm">
+            <summary className="inline-flex min-h-10 cursor-pointer items-center font-semibold text-info underline underline-offset-4">See the split per warung</summary>
+            <ul className="mt-2 grid gap-x-8 sm:grid-cols-2">
+              {round.participants.map((p, i) => (
+                <li key={p.account_id} className="flex justify-between gap-3 border-b border-info/15 py-1.5">
+                  <span>{shortAccount(p.account_id)} <span className="text-muted">({ownerName(p.account_id)})</span></span>
+                  <span className="num font-semibold">{rupiah(shares[i] ?? 0n)}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </div>
+      </div>
+    </aside>
   );
 }
