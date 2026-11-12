@@ -21,6 +21,9 @@ use near_sdk::{
 #[cfg(test)]
 mod tests;
 
+#[cfg(test)]
+mod golden_tests;
+
 pub const MAX_PARTICIPANTS: usize = 50;
 pub const MAX_BIDS: usize = 10;
 pub const MIN_PHASE_SECS: u64 = 30;
