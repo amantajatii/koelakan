@@ -1,6 +1,6 @@
 # Koelakan
 
-> A NEAR Hackathon 2026 entry (tracks `swarms` and `realworld`): warung agents pool orders, grosir agents bid in a sealed-bid auction, and a NEAR testnet contract holds the money. Public dashboard: [DASHBOARD URL, added after deploy].
+> A NEAR Hackathon 2026 entry (tracks `swarms` and `realworld`): warung agents pool orders, grosir agents bid in a sealed-bid auction, and a NEAR testnet contract holds the money. Live dashboard: https://koelakan.vercel.app
 
 **Koelakan** (from *kulakan*: what Indonesian shop owners call restocking from a wholesaler) lets warungs restock together.
 
@@ -19,11 +19,11 @@ A *warung* is a small Indonesian shop. It buys in small quantities at retail pri
 | Agents (20 warung, 5 grosir, koordinator, arbiter) | live on testnet | accounts `warung-01..20`, `grosir-1..5`, `koordinator`, `arbiter` under `.koelakan.testnet` |
 | Live rounds | 2 closed | #1 beras: clearing Rp11,924, saving Rp1,422,526. #2 gula: Rp15,683, saving Rp1,514,785. Both matched the sim engine |
 | Agent service | running, one round every 60 min | https://agent.43-157-202-28.sslip.io/status |
-| Dashboard | runs locally; public deploy pending | `dashboard/` |
+| Dashboard | deployed on Vercel | https://koelakan.vercel.app (`dashboard/`) |
 
 ## Try it
 
-1. **Dashboard, owner view.** `cd dashboard && pnpm i && pnpm dev`, open http://localhost:3000/warung?demo=warung-20.koelakan.testnet. You see a seeded warung's limits, standing order and round activity, read-only, no wallet needed. Sign in at `/warung` with a NEAR testnet wallet to set up your own warung.
+1. **Dashboard, owner view.** Open https://koelakan.vercel.app/warung?demo=warung-20.koelakan.testnet (or run it locally: `cd dashboard && pnpm i && pnpm dev`, then the same path on http://localhost:3000). You see a seeded warung's limits, standing order and round activity, read-only, no wallet needed. Sign in at `/warung` with a NEAR testnet wallet to set up your own warung.
 2. **Live agent service.** Open https://agent.43-157-202-28.sslip.io/status. You see the round cadence, the next round and recent on-chain events with links.
 3. **A full live round.** `cd agents && pnpm i && pnpm round` (needs the one-off `pnpm run setup` and testnet keys; see [agents/README.md](agents/README.md)). You see a timeline with tx links, ending in `cross-check vs sim engine: MATCH`.
 4. **Simulation.** `cd sim && pnpm i && pnpm simulate`. You see the 20-warung, 5-grosir run with total saving vs PIHPS and a conservation check. `pnpm test` runs its 42 tests.
