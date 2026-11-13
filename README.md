@@ -58,6 +58,15 @@ Then build:
 ./scripts/build.sh    # writes res/tidr.wasm and res/market.wasm
 ```
 
+## Built with
+
+- **Hackathon window.** Every line was written during NEAR Hackathon 2026; the first commit is 2026-11-12. There is no pre-hackathon baseline.
+- **Contracts:** near-sdk 5 and near-contract-standards (NEP-141 for tIDR), built with cargo-near.
+- **Agents and sim:** TypeScript, near-api-js, vitest.
+- **Dashboard:** Next.js 16, React 19, Tailwind CSS 4, NEAR Wallet Selector, lucide-react icons, and Plus Jakarta Sans.
+- **Data:** PIHPS Nasional reference prices and HET, with sources in [data/prices.json](data/prices.json).
+- **AI assistance:** most code and docs were written with Claude Code, with the author directing and reviewing. The produce images and the first logo concepts were generated with Codex image generation; the logo was then redrawn by hand as SVG.
+
 ## License
 
 MIT, see [LICENSE](LICENSE).
