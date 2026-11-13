@@ -81,7 +81,7 @@ async function topUpWallet(rt: Runtime, g: GrosirAgent, wallet: bigint): Promise
 }
 
 /** Refreshes balances for /status, withdraws proceeds above the threshold, tops up the wallet. */
-export async function grosirHousekeeping(rt: Runtime, g: GrosirAgent): Promise<void> {
+async function grosirHousekeeping(rt: Runtime, g: GrosirAgent): Promise<void> {
   const [near, wallet, bal] = await Promise.all([rt.views.nearBalance(g.id), rt.views.tokenBalance(g.id), rt.views.balance(g.id)]);
   const wasLow = rt.health.isLow(g.id);
   rt.health.setBalance(g.id, near);

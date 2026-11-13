@@ -7,7 +7,7 @@ import type { StateStore, WarungRecord } from "./state.js";
 import type { StatusBody } from "./status.js";
 
 export const VERSION = "0.2.0";
-export const POST_LIMIT_PER_MIN = 10;
+const POST_LIMIT_PER_MIN = 10;
 const MINUTE_MS = 60_000;
 
 export interface ApiDeps {

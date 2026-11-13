@@ -16,7 +16,7 @@ function koordCtx(rt: Runtime): KoordCtx {
   return { dep: rt.cfg.dep, koordinator: rt.koord };
 }
 
-export const koordReady = (rt: Runtime): boolean => rt.koord !== null && !rt.health.isPaused(rt.koordId);
+const koordReady = (rt: Runtime): boolean => rt.koord !== null && !rt.health.isPaused(rt.koordId);
 
 export async function settleOrFinalize(rt: Runtime, r: RoundView): Promise<void> {
   const action = adminAction(r);

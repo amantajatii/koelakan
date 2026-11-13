@@ -2,14 +2,14 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { handleApi, type ApiDeps } from "./api.js";
 
-export const MAX_BODY_BYTES = 16 * 1024;
+const MAX_BODY_BYTES = 16 * 1024;
 
 export function corsHeaders(origin: string | undefined, allowed: readonly string[]): Record<string, string> {
   const base = { Vary: "Origin", "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Max-Age": "600" };
   return origin !== undefined && allowed.includes(origin) ? { ...base, "Access-Control-Allow-Origin": origin } : base;
 }
 
-export function clientIp(req: Pick<IncomingMessage, "headers" | "socket">, trustProxy: boolean): string {
+function clientIp(req: Pick<IncomingMessage, "headers" | "socket">, trustProxy: boolean): string {
   const fwd = req.headers["x-forwarded-for"];
   const first = (Array.isArray(fwd) ? fwd[0] : fwd)?.split(",")[0]?.trim();
   return trustProxy && first ? first : (req.socket.remoteAddress ?? "unknown");

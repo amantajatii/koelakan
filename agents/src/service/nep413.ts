@@ -2,11 +2,11 @@
 import { createHash } from "node:crypto";
 import { PublicKey, baseDecode } from "near-api-js";
 
-export const NEP413_TAG = 2147484061; // 2^31 + 413
+const NEP413_TAG = 2147484061; // 2^31 + 413
 export const NEP413_RECIPIENT = "koelakan-agent";
-export const NONCE_BYTES = 32;
-export const MAX_AGE_MS = 10 * 60 * 1000;
-export const MAX_DEMAND = 1000;
+const NONCE_BYTES = 32;
+const MAX_AGE_MS = 10 * 60 * 1000;
+const MAX_DEMAND = 1000;
 
 export type ErrorCode = "bad_request" | "bad_signature" | "not_full_access_key" | "expired" | "nonce_reused" | "unknown_item";
 
@@ -43,13 +43,13 @@ export function verifyNep413(publicKey: string, signature: Uint8Array, p: Nep413
   try {
     return PublicKey.fromString(publicKey).verify(nep413Digest(p), signature);
   } catch {
-    return false;
+    return false; // malformed key or signature bytes simply fail verification
   }
 }
 
 const B64 = /^[A-Za-z0-9+/]+={0,2}$/;
 
-export function decodeBase64(raw: unknown, what: string): Buffer {
+function decodeBase64(raw: unknown, what: string): Buffer {
   if (typeof raw !== "string" || raw.length === 0 || !B64.test(raw)) throw new ApiError(400, "bad_request", `${what} must be base64`);
   return Buffer.from(raw, "base64");
 }
@@ -57,7 +57,7 @@ export function decodeBase64(raw: unknown, what: string): Buffer {
 const SIG_PREFIX = "ed25519:";
 
 /** Wallet Selector returns base64; some wallets return "ed25519:<base58>". Accept both. */
-export function decodeSignature(raw: unknown): Buffer {
+function decodeSignature(raw: unknown): Buffer {
   if (typeof raw === "string" && raw.startsWith(SIG_PREFIX)) {
     try {
       return Buffer.from(baseDecode(raw.slice(SIG_PREFIX.length)));

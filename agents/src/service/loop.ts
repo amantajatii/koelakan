@@ -44,7 +44,7 @@ export async function runLoop(rt: Runtime, roles: TickRoles, stop: Stopper): Pro
   await rt.cache.background; // let in-flight housekeeping txs finish
 }
 
-export const SHUTDOWN_GRACE_MS = 30_000;
+const SHUTDOWN_GRACE_MS = 30_000;
 
 /** SIGTERM/SIGINT: ask the loop to finish its current tx, then run `onDone` (close server). */
 export function installShutdown(rt: Runtime, stop: Stopper, loopDone: Promise<void>, onDone: () => Promise<void>): void {

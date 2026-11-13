@@ -1,11 +1,12 @@
 /** Pure scheduling decisions: which round to open, which to settle/finalize, who acts. No I/O. */
+import { mulberry32 } from "../sim-bridge.js";
 import type { ItemView, RoundView } from "../chain/views.js";
 import type { SchedulerState } from "./state.js";
 
 const NS_PER_MS = 1_000_000;
 const MS_PER_MIN = 60_000;
 
-export const isTerminal = (r: RoundView): boolean => r.phase === "Failed" || r.phase === "Closed";
+const isTerminal = (r: RoundView): boolean => r.phase === "Failed" || r.phase === "Closed";
 export const activeRounds = (rounds: readonly RoundView[]): RoundView[] => rounds.filter((r) => !isTerminal(r));
 
 export type AdminAction = "settle" | "finalize";
@@ -65,18 +66,7 @@ export function advanceScan(rounds: readonly RoundView[], scanFrom: number): num
   return cursor;
 }
 
-// ---- seeded, deterministic randomness (restarts make the same choices)
-export function mulberry32(seed: number): () => number {
-  let a = seed >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) >>> 0;
-    let t = a;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
+// Seeded, deterministic randomness: restarts make the same choices.
 const hashStr = (s: string): number => [...s].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0, 2166136261);
 const rngFor = (seed: number, roundId: number, salt: string): (() => number) => mulberry32(seed ^ Math.imul(roundId + 1, 2654435761) ^ hashStr(salt));
 

@@ -10,8 +10,8 @@ export interface AgentEvent {
 
 export type EventInput = Partial<Omit<AgentEvent, "at" | "kind" | "message">> & { readonly kind: string; readonly message: string };
 
-export const RING_SIZE = 200;
-export const RECENT_EVENTS = 50;
+const RING_SIZE = 200;
+const RECENT_EVENTS = 50;
 
 export class Events {
   private ring: readonly AgentEvent[] = [];

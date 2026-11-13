@@ -10,9 +10,9 @@ import { startServer } from "./server.js";
 import { buildStatus } from "./status.js";
 import type { TickRoles } from "./tick.js";
 
-export const DAEMON_ROLES: TickRoles = { koordinator: true, grosirs: true, seeded: true, delegated: true };
+const DAEMON_ROLES: TickRoles = { koordinator: true, grosirs: true, seeded: true, delegated: true };
 
-export function apiDeps(rt: Runtime): ApiDeps {
+function apiDeps(rt: Runtime): ApiDeps {
   return {
     state: rt.state, events: rt.events, now: Date.now, startedAtMs: Date.now(),
     items: async () => rt.cache.items?.list ?? (await rt.views.items()),
@@ -22,7 +22,7 @@ export function apiDeps(rt: Runtime): ApiDeps {
   };
 }
 
-export function announce(rt: Runtime, cfg: DaemonConfig): void {
+function announce(rt: Runtime, cfg: DaemonConfig): void {
   const est = estimateBurn(cfg);
   const c = cfg.cadence;
   rt.events.emit({

@@ -11,7 +11,7 @@ export function heldOf(s: MarketState, a: AccountId): bigint {
   return s.held[a] ?? 0n;
 }
 
-export function spentKey(a: AccountId, week: bigint): string {
+function spentKey(a: AccountId, week: bigint): string {
   return `${a}|${week}`;
 }
 

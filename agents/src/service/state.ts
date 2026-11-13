@@ -30,7 +30,7 @@ export interface SchedulerState {
   readonly faucet_at: Readonly<Record<string, number>>;
 }
 
-export const MAX_LAST_ACTIONS = 20;
+const MAX_LAST_ACTIONS = 20;
 export const NONCE_TTL_MS = 60 * 60 * 1000;
 
 export const EMPTY_SCHEDULER: SchedulerState = { scan_from: 0, last_open_at_ms: null, rotation: 0, attempts: {}, faucet_at: {} };
@@ -54,7 +54,7 @@ export class StateStore {
     return this.path("salts.json");
   }
 
-  // ---- registry
+  // Registry
   warung(account: string): WarungRecord | null {
     return this.warungs[account] ?? null;
   }
@@ -91,7 +91,7 @@ export class StateStore {
     atomicWriteJson(this.path("registry.json"), { warungs: next });
   }
 
-  // ---- NEP-413 nonces
+  // NEP-413 nonces
   hasNonce(nonce: string): boolean {
     return this.nonces[nonce] !== undefined;
   }
@@ -102,7 +102,7 @@ export class StateStore {
     atomicWriteJson(this.path("nonces.json"), { nonces: this.nonces });
   }
 
-  // ---- scheduler
+  // Scheduler
   scheduler(): SchedulerState {
     return this.sched;
   }

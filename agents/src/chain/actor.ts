@@ -38,7 +38,7 @@ export function parseEvents(logs: readonly string[]): ChainEvent[] {
         const j = JSON.parse(l.slice(EVENT_PREFIX.length)) as { event: string; data: unknown[] };
         return (j.data ?? []).map((data) => ({ event: j.event, data }));
       } catch {
-        return [];
+        return []; // a malformed event line must not fail an otherwise successful transaction
       }
     });
 }
@@ -52,7 +52,7 @@ export function decodeStatus(status: unknown): { ok: boolean; result: unknown; e
     try {
       return { ok: true, result: JSON.parse(text), error: null };
     } catch {
-      return { ok: true, result: text, error: null };
+      return { ok: true, result: text, error: null }; // non-JSON return value: keep the raw text
     }
   }
   return { ok: false, result: null, error: typeof status === "string" ? status : JSON.stringify(status) };
@@ -87,7 +87,7 @@ export class Actor {
   /** Serialise any task on this actor's account (all keys share one queue). */
   enqueue<T>(task: () => Promise<T>): Promise<T> {
     const run = this.tail.then(task, task);
-    this.tail = run.catch(() => undefined);
+    this.tail = run.catch(() => undefined); // the caller sees the rejection via `run`; the queue just keeps going
     return run;
   }
 

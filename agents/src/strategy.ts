@@ -21,7 +21,7 @@ export function grosirQuote(pop: Population, short: string, item: string): bigin
   return g === undefined ? 0n : quote(g, item);
 }
 
-/** This grosir commits but never reveals (forfeit path). */
+/** True for the scripted grosir that commits but never reveals (see FORGETFUL_GROSIR in sim config). */
 export const neverReveals = (short: string): boolean => short === FORGETFUL_GROSIR;
 
 export type JoinDecision =

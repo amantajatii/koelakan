@@ -9,11 +9,9 @@ import {
   balanceOf,
   credit,
   getRound,
-  heldOf,
   putRound,
   setBalance,
   spentOf,
-  subHeld,
 } from "./ledger.js";
 import type { AccountId, Ctx, Item, MarketState, Policy, Round } from "./types.js";
 import {
@@ -35,6 +33,7 @@ export * from "./ledger.js";
 export * from "./settle.js";
 export * from "./types.js";
 export * from "./util.js";
+export * from "./views.js";
 
 const HEX64 = /^[0-9a-f]{64}$/;
 
@@ -53,7 +52,7 @@ export function newMarket(admin: AccountId, arbiter: AccountId, token: AccountId
   };
 }
 
-// ------------------------------------------------------------ admin / owner
+// Admin and owner operations
 
 export function setItem(s: MarketState, ctx: Ctx, item: Item): MarketState {
   assertOneYocto(ctx.yocto);
@@ -88,7 +87,7 @@ export function withdrawRefunded(s: MarketState, account: AccountId, amount: big
   return { ...credit(s, account, amount), tokenHeld: s.tokenHeld + amount };
 }
 
-// ------------------------------------------------------------ ft receiver
+// NEP-141 receiver (ft_on_transfer)
 
 export interface FtResult {
   readonly state: MarketState;
@@ -169,7 +168,7 @@ function tryCommit(s: MarketState, now: bigint, seller: AccountId, amount: bigin
   return { ...addHeld(next, seller, bond), tokenHeld: next.tokenHeld + amount };
 }
 
-// ------------------------------------------------------------ rounds
+// Round lifecycle
 
 export interface OpenRoundArgs {
   readonly item: string;
@@ -266,27 +265,4 @@ export function revealBid(
   const valid = unitPrice >= 1n && unitPrice <= r.ceilingPrice;
   const bids = r.bids.map((b, i) => (i === idx ? { ...b, revealedPrice: unitPrice, valid } : b));
   return putRound(s, { ...r, bids });
-}
-
-// ------------------------------------------------------------ views
-
-export function getBalance(s: MarketState, a: AccountId): { available: bigint; held: bigint } {
-  return { available: balanceOf(s, a), held: heldOf(s, a) };
-}
-
-export function saving(r: Round): bigint | null {
-  return r.clearingPrice === null ? null : (r.refPrice - r.clearingPrice) * r.totalQty;
-}
-
-/** Conservation invariant: tokenHeld == sum(available) + sum(held in rounds). */
-export function checkInvariant(s: MarketState): void {
-  const avail = Object.values(s.balances).reduce((a, b) => a + b, 0n);
-  let inRounds = 0n;
-  for (const r of s.rounds) {
-    inRounds += r.participants.reduce((a, p) => a + p.held, 0n);
-    inRounds += r.bids.reduce((a, b) => a + b.bondHeld, 0n);
-  }
-  const heldMap = Object.values(s.held).reduce((a, b) => a + b, 0n);
-  if (heldMap !== inRounds) throw new Error("held map out of sync");
-  if (s.tokenHeld !== avail + inRounds) throw new Error("conservation invariant broken");
 }

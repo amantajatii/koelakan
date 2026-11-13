@@ -14,7 +14,7 @@ const PAGE = 50;
 /** Time-critical phases first, so a slow join batch never delays a reveal. */
 const PRIORITY: Readonly<Record<string, number>> = { Reveal: 0, Commit: 0, ReadyToSettle: 1, AwaitingFinalize: 1, Delivery: 2, Join: 3 };
 
-export async function fetchWindow(rt: Runtime, from: number): Promise<RoundView[]> {
+async function fetchWindow(rt: Runtime, from: number): Promise<RoundView[]> {
   const all: RoundView[] = [];
   for (let start = from; ; start += PAGE) {
     const page = await rt.views.listRounds(start, PAGE);

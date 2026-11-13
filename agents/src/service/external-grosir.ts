@@ -46,7 +46,7 @@ export interface ExternalGrosirConfig {
   readonly maxBond: bigint | undefined;
 }
 
-export function loadExternalConfig(env: Env): ExternalGrosirConfig {
+function loadExternalConfig(env: Env): ExternalGrosirConfig {
   const accountId = env.ACCOUNT_ID?.trim();
   if (!accountId) throw new Error("ACCOUNT_ID is required (the grosir's NEAR account)");
   const file = env.PRICING_FILE?.trim();
@@ -60,14 +60,14 @@ export function loadExternalConfig(env: Env): ExternalGrosirConfig {
   };
 }
 
-export function externalPolicy(c: ExternalGrosirConfig): GrosirPolicy {
+function externalPolicy(c: ExternalGrosirConfig): GrosirPolicy {
   return {
     quote: (item) => priceOf(c.pricing, item), bids: (_r: RoundView) => true, forgets: () => false,
     ...(c.minBid !== undefined ? { minBid: c.minBid } : {}), ...(c.maxBond !== undefined ? { maxBond: c.maxBond } : {}),
   };
 }
 
-export const externalRoles = (c: ExternalGrosirConfig): TickRoles => ({
+const externalRoles = (c: ExternalGrosirConfig): TickRoles => ({
   koordinator: false, grosirs: true, seeded: false, delegated: false, grosirPolicy: () => externalPolicy(c),
 });
 

@@ -2,6 +2,7 @@
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { grosirIds, warungIds } from "./sim-bridge.js";
 
 export const NETWORK = "testnet";
 export const DEFAULT_ROOT = "koelakan.testnet";
@@ -13,14 +14,13 @@ export const DEFAULT_RPC_URLS: readonly string[] = [
 
 export const AGENTS_DIR = fileURLToPath(new URL("..", import.meta.url));
 export const KEYS_DIR = join(AGENTS_DIR, ".keys");
-export const STATE_DIR = join(AGENTS_DIR, ".state");
+const STATE_DIR = join(AGENTS_DIR, ".state");
 export const OUT_DIR = join(AGENTS_DIR, "out");
 export const SALTS_FILE = join(STATE_DIR, "salts.json");
 export const CREDENTIALS_DIR = join(homedir(), ".near-credentials", NETWORK);
 
-export const YOCTO_PER_NEAR = 10n ** 24n;
 export const ONE_YOCTO = 1n;
-export const TGAS = 10n ** 12n;
+const TGAS = 10n ** 12n;
 
 /**
  * Gas budgets per method (prepaid; unused gas is refunded). The runtime checks the signer can afford
@@ -40,17 +40,15 @@ export const GAS = {
   finalize: 150n * TGAS,
 } as const;
 
-// ---- setup economics
+// Setup economics
 export const ACCOUNT_FUNDING = 90n * 10n ** 21n; // 0.09 NEAR
 export const ROOT_MIN_BALANCE = 5n * 10n ** 23n; // never drop root below 0.5 NEAR
 export const FC_KEY_ALLOWANCE = 5n * 10n ** 22n; // 0.05 NEAR of gas
 export const WARUNG_DEPOSIT = 900_000n;
 export const WARUNG_WEEKLY_BUDGET = 2_000_000n;
 export const GROSIR_MIN_WALLET = 500_000n; // faucet again below this
-export const NUM_WARUNGS = 20;
-export const NUM_GROSIR = 5;
 
-// ---- round defaults (seconds); the contract allows 30 s .. 30 days
+// Round defaults (seconds); the contract allows 30 s .. 30 days
 export const DEFAULT_PHASES = { join: 90, commit: 60, reveal: 60, delivery: 60 } as const;
 export const MIN_PHASE_SECS = 30;
 export const MAX_PHASE_SECS = 30 * 24 * 3600;
@@ -76,8 +74,8 @@ export function deployment(root: string = DEFAULT_ROOT): Deployment {
   };
 }
 
-const pad = (n: number): string => String(n).padStart(2, "0");
-export const warungShortIds = (): string[] => Array.from({ length: NUM_WARUNGS }, (_, i) => `warung-${pad(i + 1)}`);
-export const grosirShortIds = (): string[] => Array.from({ length: NUM_GROSIR }, (_, i) => `grosir-${i + 1}`);
+/** Same population as the sim (shared via sim-bridge), so live rounds can be cross-checked against it. */
+export const warungShortIds = warungIds;
+export const grosirShortIds = grosirIds;
 export const fullId = (short: string, root: string): string => `${short}.${root}`;
 export const shortId = (account: string): string => account.split(".")[0] ?? account;

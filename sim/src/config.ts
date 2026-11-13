@@ -10,28 +10,29 @@
  *   - ASSUMPTION: minyak-curah has no HET, so its cost base is 0.80 x ref_price.
  *   - All randomness comes from a seeded PRNG, so runs are deterministic.
  */
+import { randInt, mulberry32, type Rng } from "./rng.js";
 import type { Item } from "./types.js";
 
 export const SEED = 20261111;
 export const T0_NS = 1_000_000_000_000n; // 1000 s after epoch, inside week 0
 export const ROUND_SPACING_NS = 2_000n * 1_000_000_000n;
 
-export const NUM_WARUNGS = 20;
-export const NUM_GROSIR = 5;
+const NUM_WARUNGS = 20;
+const NUM_GROSIR = 5;
 /** This grosir commits but never reveals (forfeit path). */
 export const FORGETFUL_GROSIR = "grosir-5";
 
-export const COST_FACTOR_MIN_BPS = 8_500n; // 0.85 x HET
-export const COST_FACTOR_MAX_BPS = 9_700n; // 0.97 x HET
-export const NO_HET_BASE_BPS = 8_000n; // ASSUMPTION: 0.80 x ref_price when het is null
-export const MARGIN_MIN_BPS = 200n; // ASSUMPTION: 2%
-export const MARGIN_MAX_BPS = 800n; // ASSUMPTION: 8%
+const COST_FACTOR_MIN_BPS = 8_500n; // 0.85 x HET
+const COST_FACTOR_MAX_BPS = 9_700n; // 0.97 x HET
+const NO_HET_BASE_BPS = 8_000n; // ASSUMPTION: 0.80 x ref_price when het is null
+const MARGIN_MIN_BPS = 200n; // ASSUMPTION: 2%
+const MARGIN_MAX_BPS = 800n; // ASSUMPTION: 8%
 
 export const WARUNG_DEPOSIT = 3_000_000n;
 export const WARUNG_MAX_PRICE_SLACK_BPS = 10_500n; // owner accepts up to 1.05 x ref_price
 export const WARUNG_WEEKLY_BUDGET = 2_000_000n;
-export const WARUNG_QTY_MIN = 5;
-export const WARUNG_QTY_MAX = 25;
+const WARUNG_QTY_MIN = 5;
+const WARUNG_QTY_MAX = 25;
 export const MIN_TOTAL_QTY = 100n;
 export const GROSIR_WALLET = 1_000_000_000n;
 
@@ -61,25 +62,6 @@ export const CATALOGUE: readonly Item[] = [
   { id: "minyak-curah", name: "Minyak goreng curah", unit: "kg", refPrice: 20800n, het: null, source: "PIHPS Nasional", asOf: "2026-11-11" },
 ];
 
-/** mulberry32: small, fast, seeded PRNG returning floats in [0, 1). */
-export function mulberry32(seed: number): () => number {
-  let a = seed >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) >>> 0;
-    let t = a;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4_294_967_296;
-  };
-}
-
-export type Rng = () => number;
-
-/** Integer in [lo, hi] (inclusive). */
-export function randInt(rng: Rng, lo: bigint, hi: bigint): bigint {
-  return lo + BigInt(Math.floor(rng() * Number(hi - lo + 1n)));
-}
-
 export interface GrosirProfile {
   readonly id: string;
   /** Cost per item id, in tIDR per unit. ASSUMPTION (invented). */
@@ -88,11 +70,11 @@ export interface GrosirProfile {
   readonly marginBps: bigint;
 }
 
-export function costBase(item: Item): bigint {
+function costBase(item: Item): bigint {
   return item.het !== null ? item.het : (item.refPrice * NO_HET_BASE_BPS) / 10_000n;
 }
 
-export function makeGrosir(rng: Rng, id: string): GrosirProfile {
+function makeGrosir(rng: Rng, id: string): GrosirProfile {
   const cost: Record<string, bigint> = {};
   for (const item of CATALOGUE) {
     const factor = randInt(rng, COST_FACTOR_MIN_BPS, COST_FACTOR_MAX_BPS);
@@ -118,7 +100,12 @@ export function makeWarung(rng: Rng, id: string): WarungProfile {
   return { id, qty };
 }
 
-export function buildPopulation(seed: number = SEED) {
+export interface Population {
+  readonly warungs: WarungProfile[];
+  readonly grosirs: GrosirProfile[];
+}
+
+export function buildPopulation(seed: number = SEED): Population {
   const rng = mulberry32(seed);
   const warungs = warungIds().map((id) => makeWarung(rng, id));
   const grosirs = grosirIds().map((id) => makeGrosir(rng, id));

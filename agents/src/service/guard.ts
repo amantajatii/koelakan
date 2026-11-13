@@ -35,7 +35,7 @@ export function noteSkip(rt: Runtime, actor: string, role: string, method: strin
   return rec;
 }
 
-export const JOIN_DEADLINE_MARGIN_MS = 2_000;
+const JOIN_DEADLINE_MARGIN_MS = 2_000;
 
 /** True while a join sent now can still land (deadline is block time in ns; keep a small safety margin). */
 export const joinStillOpen = (joinDeadlineNs: number, nowMs: number = Date.now()): boolean =>

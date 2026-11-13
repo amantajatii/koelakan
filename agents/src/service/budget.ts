@@ -2,11 +2,11 @@
 import type { DaemonConfig } from "./env.js";
 
 /** Testnet minimum gas price: 1e8 yocto per gas, so 1 Tgas costs 0.0001 NEAR. */
-export const NEAR_PER_TGAS = 0.0001;
+const NEAR_PER_TGAS = 0.0001;
 export const MIN_ACCOUNT_NEAR = 20n * 10n ** 21n; // 0.02 NEAR: below this we stop signing for the account
 export const MIN_WARUNG_NEAR = 10n * 10n ** 21n; // seeded warungs only pay for joins, confirms and top-ups
-export const ROUNDS_PER_DAY_MIN = 1_440;
-export const SAFETY_MARGIN = 1.15;
+const ROUNDS_PER_DAY_MIN = 1_440;
+const SAFETY_MARGIN = 1.15;
 
 /**
  * Calibrated on testnet (see README "NEAR budget math"): a live run of 142 transactions across all 26
@@ -35,12 +35,6 @@ export function estimateBurn(cfg: Pick<DaemonConfig, "cadence" | "seededJoinMin"
   const roundsPerDay = ROUNDS_PER_DAY_MIN / cfg.cadence.round_every_min;
   return { rounds_per_day: roundsPerDay, near_per_round: perRound, near_per_day: perRound * roundsPerDay };
 }
-
-export const formatNearShort = (yocto: bigint): string => {
-  const whole = yocto / 10n ** 24n;
-  const frac = (yocto % 10n ** 24n).toString().padStart(24, "0").slice(0, 4);
-  return `${whole}.${frac}`;
-};
 
 /** Tracks last-known NEAR balances and which accounts are paused (too low or no key). */
 export class Health {

@@ -2,7 +2,7 @@
 import type { Provider } from "near-api-js";
 import { Actor } from "./chain/actor.js";
 import { fcKeyPath, generateKey, loadFcKey, loadFullAccessKey, saveFcKey, saveFullAccessKey, type StoredKey } from "./chain/keys.js";
-import { createProbeProvider, createProvider, isTransientError, withRetry } from "./chain/provider.js";
+import { createProbeProvider, createProvider, isNotFoundError, isTransientError, withRetry } from "./chain/provider.js";
 import { Recorder, type ActionRecord } from "./chain/recorder.js";
 import { Views } from "./chain/views.js";
 import {
@@ -11,7 +11,7 @@ import {
 } from "./config.js";
 import type { Logger } from "./log.js";
 import { DEPOSIT_MSG, ftTransferCallArgs, policyArgs, policyMatches } from "./protocol.js";
-import { formatNear, mapLimit } from "./util.js";
+import { formatNear, mapLimit, sleep } from "./util.js";
 
 export interface SetupSummary {
   readonly created: readonly string[];
@@ -20,22 +20,19 @@ export interface SetupSummary {
   readonly rootAfter: bigint;
 }
 
-const NOT_FOUND = /does not exist|UNKNOWN_ACCOUNT|unknown_access_key|AccessKeyDoesNotExist/i;
 const COOLDOWN = /wait one hour/i;
 const WAIT_KEY_ATTEMPTS = 15;
 const WAIT_KEY_MS = 1_500;
 const SETUP_CONCURRENCY = 2;
 const SETUP_RETRY = { attempts: 5, baseMs: 4_000, isRetryable: isTransientError } as const;
 
-const isNotFound = (e: unknown): boolean => NOT_FOUND.test(e instanceof Error ? `${e.name} ${e.message}` : String(e));
-const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
 
 async function accountExists(p: Provider, id: string): Promise<boolean> {
   try {
     await p.viewAccount({ accountId: id });
     return true;
   } catch (e) {
-    if (isNotFound(e)) return false;
+    if (isNotFoundError(e)) return false;
     throw e;
   }
 }
@@ -44,7 +41,7 @@ async function keyOnChain(p: Provider, account: string, publicKey: string) {
   try {
     return await p.viewAccessKey({ accountId: account, publicKey });
   } catch (e) {
-    if (isNotFound(e)) return null;
+    if (isNotFoundError(e)) return null;
     throw e;
   }
 }

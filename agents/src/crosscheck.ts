@@ -65,7 +65,7 @@ function seed(run: RoundRun): MarketState {
   });
 }
 
-function revealedHash(r: RoundView, seller: string, reveals: readonly ActionRecord[]): string | null {
+function revealedHash(seller: string, reveals: readonly ActionRecord[]): string | null {
   const rv = reveals.find((a) => a.actor === seller);
   if (rv === undefined) return null;
   const args = rv.args as { unit_price: string; salt: string };
@@ -82,7 +82,7 @@ function replay(run: RoundRun): Replay {
   const reveals = okActions(run.actions, "reveal_bid");
   const bond = (b: RoundView["bids"][number]) => big(b.bond);
   for (const b of after.bids) {
-    const hash = revealedHash(after, b.seller_id, reveals) ?? b.hash;
+    const hash = revealedHash(b.seller_id, reveals) ?? b.hash;
     s = commitBid(s, big(after.join_deadline) + OFFSET_NS, b.seller_id, bond(b), 0, hash);
   }
   for (const a of reveals) {

@@ -34,9 +34,9 @@ export interface DaemonConfig {
   readonly housekeepSecs: number;
 }
 
-/** 60 min keeps the burn at about 0.3 NEAR/day across all accounts (see budget.ts). */
-export const DEFAULT_ROUND_EVERY_MIN = 60;
-export const LOCALHOST_ORIGIN = "http://localhost:3000";
+/** Default cadence; the resulting NEAR burn per day is derived by estimateBurn() in budget.ts. */
+const DEFAULT_ROUND_EVERY_MIN = 60;
+const LOCALHOST_ORIGIN = "http://localhost:3000";
 
 export function intEnv(env: Env, name: string, fallback: number, min: number, max: number): number {
   const raw = env[name]?.trim();
@@ -46,7 +46,7 @@ export function intEnv(env: Env, name: string, fallback: number, min: number, ma
   return n;
 }
 
-export function floatEnv(env: Env, name: string, fallback: number, min: number, max: number): number {
+function floatEnv(env: Env, name: string, fallback: number, min: number, max: number): number {
   const raw = env[name]?.trim();
   if (raw === undefined || raw === "") return fallback;
   const n = Number(raw);

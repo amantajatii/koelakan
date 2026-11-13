@@ -8,46 +8,14 @@ import {
 } from "./config.js";
 import {
   ContractPanic, bidHash, checkInvariant, commitBid, confirmDelivery, deposit, dispute, finalize,
-  joinRound, newMarket, openRound, proRataShares, requiredBond, resolveDispute, revealBid, saving,
+  joinRound, newMarket, openRound, requiredBond, resolveDispute, revealBid,
   setItem, setPolicy, settle, withdraw, NS,
   type Item, type MarketState, type Round,
 } from "./engine.js";
+import { buildRoundReport, type RoundReport, type RunReport } from "./report.js";
 
 const SEC = NS;
 const SALT_BYTES = 16;
-
-export interface BidReport {
-  seller: string;
-  bond: bigint;
-  revealedPrice: bigint | null;
-  valid: boolean;
-}
-
-export interface RoundReport {
-  round: number;
-  item: string;
-  refPrice: bigint;
-  ceilingPrice: bigint;
-  participants: number;
-  rejectedJoins: { account: string; reason: string }[];
-  totalQty: bigint;
-  state: string;
-  bids: BidReport[];
-  winner: string | null;
-  clearingPrice: bigint | null;
-  saving: bigint | null;
-  forfeited: bigint;
-  forfeitShares: { account: string; amount: bigint }[];
-  disputes: { account: string; refunded: boolean }[];
-}
-
-export interface RunReport {
-  seed: number;
-  rounds: RoundReport[];
-  totalIn: bigint;
-  totalOut: bigint;
-  conserved: boolean;
-}
 
 interface Sim {
   state: MarketState;
@@ -133,29 +101,6 @@ function deliver(sim: Sim, roundId: number, t: bigint): { account: string; refun
   return disputes;
 }
 
-function report(roundId: number, before: Round, after: Round, rejected: RoundReport["rejectedJoins"], disputes: RoundReport["disputes"]): RoundReport {
-  const unrevealed = after.bids.filter((b) => b.revealedPrice === null);
-  const forfeited = unrevealed.reduce((a, b) => a + b.bond, 0n);
-  const shares = forfeited > 0n ? proRataShares(forfeited, after.participants.map((p) => p.qty)) : [];
-  return {
-    round: roundId,
-    item: after.item,
-    refPrice: after.refPrice,
-    ceilingPrice: after.ceilingPrice,
-    participants: before.participants.length,
-    rejectedJoins: rejected,
-    totalQty: after.totalQty,
-    state: after.state,
-    bids: after.bids.map((b) => ({ seller: b.sellerId, bond: b.bond, revealedPrice: b.revealedPrice, valid: b.valid })),
-    winner: after.winner === null ? null : (after.bids[after.winner]?.sellerId ?? null),
-    clearingPrice: after.clearingPrice,
-    saving: saving(after),
-    forfeited,
-    forfeitShares: after.participants.map((p, i) => ({ account: p.accountId, amount: shares[i] ?? 0n })).filter(() => forfeited > 0n),
-    disputes,
-  };
-}
-
 function runRound(sim: Sim, k: number, item: Item, pop: ReturnType<typeof buildPopulation>): RoundReport {
   const base = T0_NS + BigInt(k) * ROUND_SPACING_NS;
   const at = (secs: bigint) => base + secs * SEC;
@@ -176,7 +121,7 @@ function runRound(sim: Sim, k: number, item: Item, pop: ReturnType<typeof buildP
     sim.state = finalize(sim.state, ctx(KOORDINATOR, finalAt), roundId).state;
   }
   checkInvariant(sim.state);
-  return report(roundId, joined, sim.state.rounds[roundId] as Round, rejected, disputes);
+  return buildRoundReport(roundId, joined, sim.state.rounds[roundId] as Round, rejected, disputes);
 }
 
 function withdrawAll(sim: Sim, now: bigint): bigint {

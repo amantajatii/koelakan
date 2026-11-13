@@ -1,13 +1,14 @@
 /** RPC provider with failover plus retry/backoff helpers. */
 import { JsonRpcProvider, type Provider } from "near-api-js";
 import { DEFAULT_RPC_URLS } from "../config.js";
+import { sleep as realSleep } from "../util.js";
 
 const RPC_RETRIES = 6;
 const RPC_WAIT_MS = 700;
 const RPC_BACKOFF = 1.6;
 /** Public RPCs rate-limit hard: ~5 requests/s, then a pause after any 429. */
-export const THROTTLE_GAP_MS = 200;
-export const THROTTLE_COOLDOWN_MS = 3_000;
+const THROTTLE_GAP_MS = 200;
+const THROTTLE_COOLDOWN_MS = 3_000;
 
 /** `NEAR_RPC_URL` (if set) goes first; the defaults follow as fallbacks. */
 export function rpcUrls(env: Record<string, string | undefined> = process.env): string[] {
@@ -18,8 +19,17 @@ export function rpcUrls(env: Record<string, string | undefined> = process.env): 
 
 const TRANSIENT = /429|too many requests|rate limit|timeout|timed out|ECONNRESET|ETIMEDOUT|fetch failed|502|503|504|socket hang up|Exceeded \d+ providers/i;
 
+const NOT_FOUND = /does not exist|UNKNOWN_ACCOUNT|unknown_access_key|AccessKeyDoesNotExist/i;
+
+const errorText = (e: unknown): string => (e instanceof Error ? `${e.name} ${e.message}` : String(e));
+
 export function isTransientError(e: unknown): boolean {
-  return TRANSIENT.test(e instanceof Error ? `${e.name} ${e.message}` : String(e));
+  return TRANSIENT.test(errorText(e));
+}
+
+/** RPC "account or access key does not exist" errors (a normal answer for existence probes). */
+export function isNotFoundError(e: unknown): boolean {
+  return NOT_FOUND.test(errorText(e));
 }
 
 export interface RetryOptions {
@@ -29,11 +39,10 @@ export interface RetryOptions {
   readonly sleep?: (ms: number) => Promise<void>;
 }
 
-export const sleepMs = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
 
 /** Exponential backoff: baseMs, 2x, 4x ... Rethrows the last error. */
 export async function withRetry<T>(fn: () => Promise<T>, opts: RetryOptions): Promise<T> {
-  const sleep = opts.sleep ?? sleepMs;
+  const sleep = opts.sleep ?? realSleep;
   let lastError: unknown;
   for (let i = 0; i < opts.attempts; i += 1) {
     try {
@@ -64,7 +73,7 @@ export function throttleFetch(base: typeof fetch, o: ThrottleOptions = {}): type
   const gap = o.gapMs ?? THROTTLE_GAP_MS;
   const cooldown = o.cooldownMs ?? THROTTLE_COOLDOWN_MS;
   const clock = o.clock ?? Date.now;
-  const sleep = o.sleep ?? sleepMs;
+  const sleep = o.sleep ?? realSleep;
   let nextAt = 0;
   return async (input, init) => {
     const slot = Math.max(clock(), nextAt);
@@ -80,7 +89,7 @@ export function throttleFetch(base: typeof fetch, o: ThrottleOptions = {}): type
 let throttleInstalled = false;
 
 /** Installs the throttle on the global fetch used by near-api-js (idempotent). */
-export function installThrottle(): void {
+function installThrottle(): void {
   if (throttleInstalled) return;
   throttleInstalled = true;
   globalThis.fetch = throttleFetch(globalThis.fetch.bind(globalThis));

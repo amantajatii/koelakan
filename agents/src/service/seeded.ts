@@ -8,15 +8,15 @@ import { claim, joinStillOpen, noteSkip, safely } from "./guard.js";
 import { pickSubset } from "./scheduler.js";
 import type { Runtime, SeededAgent } from "./runtime.js";
 
-export const SEEDED_WEEKLY_BUDGET = 1_000_000_000_000n; // owner raised it: the sim warungs buy every few minutes
-export const TOPUP_BELOW = 400_000n;
-export const TOPUP_AMOUNT = 1_000_000n;
+const SEEDED_WEEKLY_BUDGET = 1_000_000_000_000n; // effectively unlimited: the weekly budget must never block the sim warungs
+const TOPUP_BELOW = 400_000n;
+const TOPUP_AMOUNT = 1_000_000n;
 const FAUCET_COOLDOWN_MS = 61 * 60 * 1000;
 const FC_MIN_ALLOWANCE = 5n * 10n ** 21n; // 0.005 NEAR: below this joins fall back to the full key
 const MAX_ATTEMPTS = 2;
 
 /** True when a policy already covers every item at its ref price with a big enough budget. */
-export function policyIsAdequate(p: PolicyJson | null, refs: Readonly<Record<string, bigint>>): boolean {
+function policyIsAdequate(p: PolicyJson | null, refs: Readonly<Record<string, bigint>>): boolean {
   if (p === null || !p.auto_join || BigInt(p.weekly_budget) < SEEDED_WEEKLY_BUDGET) return false;
   return Object.entries(refs).every(([item, ref]) => p.max_price[item] !== undefined && BigInt(p.max_price[item] as string) >= ref);
 }

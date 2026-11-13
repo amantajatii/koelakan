@@ -75,13 +75,13 @@ export interface DelegationInfo {
   readonly autoJoin: boolean | null;
 }
 
-export const newCache = (): RuntimeCache => ({
+const newCache = (): RuntimeCache => ({
   items: null, policySignature: null, lastTickAt: null, lastOpenTryMs: 0, lastTry: new Map(), grosirStats: new Map(),
   delegatedActors: new Map(), delegation: new Map(), housekeptAt: 0, warungHousekeptAt: 0, nextOpenAtMs: null,
   activeRounds: [], fcExhausted: new Set(), background: null,
 });
 
-export function roundIdOf(r: ActionRecord): number | null {
+function roundIdOf(r: ActionRecord): number | null {
   const a = r.args as { round_id?: unknown; msg?: unknown } | null;
   if (typeof a?.round_id === "number") return a.round_id;
   if (r.method === "open_round" && typeof r.result === "number") return r.result;
@@ -90,13 +90,13 @@ export function roundIdOf(r: ActionRecord): number | null {
       const id = (JSON.parse(a.msg) as { commit?: { round_id?: unknown } }).commit?.round_id;
       return typeof id === "number" ? id : null;
     } catch {
-      return null;
+      return null; // msg is not a commit payload: no round id to extract
     }
   }
   return null;
 }
 
-export function recordToEvent(r: ActionRecord): EventInput {
+function recordToEvent(r: ActionRecord): EventInput {
   const who = r.actor.split(".")[0] ?? r.actor;
   const ok = r.status === "ok";
   const detail = ok ? (r.note ?? "") : (r.error ?? r.note ?? "");

@@ -15,12 +15,12 @@ export interface WaMessage {
 }
 
 /** Fictional owner names for the 20 simulated warungs. */
-export const OWNER_NAMES: readonly string[] = [
+const OWNER_NAMES: readonly string[] = [
   "Pak Budi", "Bu Siti", "Pak Agus", "Bu Wati", "Pak Joko", "Bu Rina", "Pak Dedi", "Bu Yanti", "Pak Eko", "Bu Lastri",
   "Pak Hendra", "Bu Tini", "Pak Slamet", "Bu Dewi", "Pak Rudi", "Bu Ani", "Pak Wahyu", "Bu Endang", "Pak Teguh", "Bu Sri",
 ];
 
-export function ownerName(account: string): string {
+function ownerName(account: string): string {
   const n = Number(/^warung-(\d+)/.exec(account)?.[1] ?? "0");
   return OWNER_NAMES[(n - 1 + OWNER_NAMES.length) % OWNER_NAMES.length] ?? "Pak/Bu";
 }

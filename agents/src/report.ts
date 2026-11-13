@@ -3,11 +3,13 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { NETWORK, OUT_DIR, type Deployment } from "./config.js";
 import type { CrossCheck } from "./crosscheck.js";
-import type { RoundRun } from "./round.js";
+import type { ActionRecord } from "./chain/recorder.js";
+import type { RoundView } from "./chain/views.js";
+import type { BalanceSnapshot, RoundParams, RoundRun } from "./round.js";
 import { toJson } from "./util.js";
 import type { WaMessage } from "./wa.js";
 
-export const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 1;
 
 export interface Summary {
   readonly state: string;
@@ -41,7 +43,26 @@ export function summarize(run: RoundRun): Summary {
   };
 }
 
-export function buildReport(dep: Deployment, run: RoundRun, wa: readonly WaMessage[], cross: CrossCheck) {
+export interface RoundReportJson {
+  readonly schema_version: number;
+  readonly network: string;
+  readonly contracts: { readonly market: string; readonly tidr: string; readonly koordinator: string; readonly arbiter: string };
+  readonly round_id: RoundRun["roundId"];
+  readonly item: RoundRun["item"];
+  readonly params: RoundParams;
+  readonly started_at: RoundRun["startedAt"];
+  readonly finished_at: RoundRun["finishedAt"];
+  readonly summary: Summary;
+  readonly round_before: RoundView;
+  readonly round_after: RoundView;
+  readonly balances_before: BalanceSnapshot;
+  readonly balances_after: BalanceSnapshot;
+  readonly actions: readonly ActionRecord[];
+  readonly wa: readonly WaMessage[];
+  readonly crosscheck: CrossCheck;
+}
+
+export function buildReport(dep: Deployment, run: RoundRun, wa: readonly WaMessage[], cross: CrossCheck): RoundReportJson {
   return {
     schema_version: SCHEMA_VERSION,
     network: NETWORK,
@@ -62,7 +83,7 @@ export function buildReport(dep: Deployment, run: RoundRun, wa: readonly WaMessa
   };
 }
 
-export async function writeReport(report: ReturnType<typeof buildReport>, dir: string = OUT_DIR): Promise<string> {
+export async function writeReport(report: RoundReportJson, dir: string = OUT_DIR): Promise<string> {
   await mkdir(dir, { recursive: true });
   const path = join(dir, `round-${report.round_id}.json`);
   await writeFile(path, toJson(report), "utf8");

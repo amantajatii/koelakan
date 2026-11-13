@@ -1,7 +1,7 @@
 /** Is the SERVICE public key currently a join_round-only function-call key on an account? (cached 30 s) */
 import type { DelegationInfo, Runtime } from "./runtime.js";
 
-export const DELEGATION_TTL_MS = 30_000;
+const DELEGATION_TTL_MS = 30_000;
 const JOIN_METHOD = "join_round";
 
 export async function serviceDelegation(rt: Runtime, account: string, now: number = Date.now()): Promise<DelegationInfo> {

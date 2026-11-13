@@ -21,11 +21,16 @@ export function rupiah(n: bigint | number | string): string {
   return `Rp${s}`;
 }
 
-export const formatNear = (yocto: bigint): string => {
+/** yoctoNEAR as a number with four decimals, no unit: 1.5e24 -> "1.5000". */
+export const formatNearShort = (yocto: bigint): string => {
   const whole = yocto / 10n ** 24n;
   const frac = (yocto % 10n ** 24n).toString().padStart(24, "0").slice(0, 4);
-  return `${whole}.${frac} NEAR`;
+  return `${whole}.${frac}`;
 };
+
+export const formatNear = (yocto: bigint): string => `${formatNearShort(yocto)} NEAR`;
+
+export const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
 
 /** JSON.stringify that renders bigint as a decimal string. */
 export const toJson = (v: unknown, indent = 2): string =>

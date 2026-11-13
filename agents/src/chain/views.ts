@@ -1,6 +1,6 @@
 /** Typed read-only access to the market and token contracts. */
 import type { Provider } from "near-api-js";
-import { VIEW_RETRY, withRetry } from "./provider.js";
+import { VIEW_RETRY, isNotFoundError, withRetry } from "./provider.js";
 import type { PolicyJson } from "../protocol.js";
 
 export type PhaseName =
@@ -65,11 +65,8 @@ export type AccessKeyInfo =
   | { readonly kind: "full" }
   | { readonly kind: "function-call"; readonly receiver: string; readonly methods: readonly string[]; readonly allowance: bigint | null };
 
-const NOT_FOUND = /does not exist|UNKNOWN_ACCOUNT|unknown_access_key|AccessKeyDoesNotExist|UNKNOWN_ACCESS_KEY/i;
-export const isNotFoundError = (e: unknown): boolean => NOT_FOUND.test(e instanceof Error ? `${e.name} ${e.message}` : String(e));
-
 /** Accepts both the RPC shape `{FunctionCall:{...}}` and the string "FullAccess". */
-export function describeAccessKey(permission: unknown): AccessKeyInfo {
+function describeAccessKey(permission: unknown): AccessKeyInfo {
   if (permission === "FullAccess") return { kind: "full" };
   const fc = (permission as { FunctionCall?: { receiver_id: string; method_names: string[]; allowance: string | bigint | null } } | null)?.FunctionCall;
   if (fc === undefined) return { kind: "full" };

@@ -1,6 +1,7 @@
 /** Builds the GET /status body (exact contract shared with the dashboard). */
 import { NETWORK } from "../config.js";
-import { estimateBurn, formatNearShort } from "./budget.js";
+import { formatNearShort } from "../util.js";
+import { estimateBurn } from "./budget.js";
 import type { Cadence } from "./env.js";
 import type { AgentEvent } from "./events.js";
 import type { Runtime } from "./runtime.js";

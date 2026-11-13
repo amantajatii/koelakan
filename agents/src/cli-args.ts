@@ -11,8 +11,8 @@ export interface RoundCli {
   readonly minQty: number;
 }
 
-export const DEFAULT_ITEM = "beras-medium";
-export const DEFAULT_MIN_QTY = 100;
+const DEFAULT_ITEM = "beras-medium";
+const DEFAULT_MIN_QTY = 100;
 
 function secs(name: string, raw: string | undefined, fallback: number): number {
   if (raw === undefined) return fallback;

@@ -51,7 +51,17 @@ export interface OpenRoundParams {
   readonly deliverySecs: number;
 }
 
-export function openRoundArgs(p: OpenRoundParams) {
+export interface OpenRoundArgsJson {
+  readonly item: string;
+  readonly ceiling_price: string;
+  readonly min_total_qty: number;
+  readonly join_secs: number;
+  readonly commit_secs: number;
+  readonly reveal_secs: number;
+  readonly delivery_secs: number;
+}
+
+export function openRoundArgs(p: OpenRoundParams): OpenRoundArgsJson {
   return {
     item: p.item,
     ceiling_price: p.ceilingPrice.toString(),
@@ -63,13 +73,13 @@ export function openRoundArgs(p: OpenRoundParams) {
   };
 }
 
-export const joinRoundArgs = (roundId: number, qty: bigint) => ({ round_id: roundId, qty: Number(qty) });
-export const revealArgs = (roundId: number, unitPrice: bigint, salt: string) => ({
+export const joinRoundArgs = (roundId: number, qty: bigint): { round_id: number; qty: number } => ({ round_id: roundId, qty: Number(qty) });
+export const revealArgs = (roundId: number, unitPrice: bigint, salt: string): { round_id: number; unit_price: string; salt: string } => ({
   round_id: roundId,
   unit_price: unitPrice.toString(),
   salt,
 });
-export const roundIdArgs = (roundId: number) => ({ round_id: roundId });
+export const roundIdArgs = (roundId: number): { round_id: number } => ({ round_id: roundId });
 
 export interface PolicyJson {
   readonly max_price: Record<string, string>;

@@ -2,7 +2,8 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { runSimulation, type RoundReport, type RunReport } from "./runner.js";
+import type { RoundReport, RunReport } from "./report.js";
+import { runSimulation } from "./runner.js";
 
 const fmt = (n: bigint | null): string => (n === null ? "-" : n.toLocaleString("en-US"));
 
