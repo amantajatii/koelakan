@@ -48,7 +48,7 @@ enum StorageKey {
 
 // ---------------------------------------------------------------- types
 
-/// §1a — catalogue item with an on-chain reference price.
+/// §1a: catalogue item with an on-chain reference price.
 #[near(serializers = [borsh, json])]
 #[derive(Clone, Debug, PartialEq)]
 pub struct Item {
@@ -63,7 +63,7 @@ pub struct Item {
     pub as_of: String,
 }
 
-/// §3 — owner policy, enforced by `join_round`.
+/// §3: owner policy, enforced by `join_round`.
 #[near(serializers = [borsh, json])]
 #[derive(Clone, Debug, PartialEq)]
 pub struct Policy {
@@ -75,7 +75,7 @@ pub struct Policy {
 #[near(serializers = [borsh, json])]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum RoundState {
-    /// OPEN / COMMIT / REVEAL — the phase is derived from time (§5).
+    /// OPEN / COMMIT / REVEAL: the phase is derived from time (§5).
     Active,
     Failed,
     Settled,
@@ -95,7 +95,7 @@ pub enum Phase {
     Closed,
 }
 
-/// §6 — delivery status of one buyer.
+/// §6: delivery status of one buyer.
 #[near(serializers = [borsh, json])]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Delivery {
@@ -196,7 +196,7 @@ pub struct Market {
     policies: LookupMap<AccountId, Policy>,
     /// Available balance (§2).
     balances: LookupMap<AccountId, u128>,
-    /// Amount held in rounds per account (locks, escrow, bonds) — for views.
+    /// Amount held in rounds per account (locks, escrow, bonds). Used for views.
     held: LookupMap<AccountId, u128>,
     /// (account, week) -> amount counted against the weekly budget.
     spent: LookupMap<(AccountId, u64), u128>,
@@ -298,7 +298,7 @@ impl Market {
 
     // ------------------------------------------------------------ owner
 
-    /// §3 — owner only (1 yocto: function-call keys cannot attach it).
+    /// §3: owner only (1 yocto: function-call keys cannot attach it).
     #[payable]
     pub fn set_policy(&mut self, policy: Policy) {
         assert_one_yocto();
@@ -310,7 +310,7 @@ impl Market {
         self.policies.insert(owner, policy);
     }
 
-    /// §2.5 — debit first, then transfer; a failed transfer is credited back.
+    /// §2.5: debit first, then transfer; a failed transfer is credited back.
     #[payable]
     pub fn withdraw(&mut self, amount: U128) -> Promise {
         assert_one_yocto();
@@ -350,7 +350,7 @@ impl Market {
 
     // ------------------------------------------------------------ rounds
 
-    /// §5.1 — anyone may open a round.
+    /// §5.1: anyone may open a round.
     #[allow(clippy::too_many_arguments)]
     pub fn open_round(
         &mut self,
@@ -408,7 +408,7 @@ impl Market {
         id
     }
 
-    /// §5.2 — callable by the owner or its agent (function-call key).
+    /// §5.2: callable by the owner or its agent (function-call key).
     #[payable]
     pub fn join_round(&mut self, round_id: u64, qty: u64) {
         let account = env::predecessor_account_id();
@@ -489,7 +489,7 @@ impl Market {
         self.rounds.replace(round_id as u32, r);
     }
 
-    /// §5.5 — anyone, once.
+    /// §5.5: anyone, once.
     pub fn settle(&mut self, round_id: u64) -> RoundState {
         let now = env::block_timestamp();
         let mut r = self.get_round_mut(round_id).clone();
@@ -576,7 +576,7 @@ impl Market {
         state
     }
 
-    /// §6 — owner only.
+    /// §6: owner only.
     #[payable]
     pub fn confirm_delivery(&mut self, round_id: u64) {
         assert_one_yocto();
@@ -599,7 +599,7 @@ impl Market {
         self.rounds.replace(round_id as u32, r);
     }
 
-    /// §6 — owner only.
+    /// §6: owner only.
     #[payable]
     pub fn dispute(&mut self, round_id: u64) {
         assert_one_yocto();
@@ -614,7 +614,7 @@ impl Market {
         self.rounds.replace(round_id as u32, r);
     }
 
-    /// §6 — arbiter only, before `arbiter_deadline`.
+    /// §6: arbiter only, before `arbiter_deadline`.
     pub fn resolve_dispute(&mut self, round_id: u64, buyer: AccountId, refund_buyer: bool) {
         require!(env::predecessor_account_id() == self.arbiter, "arbiter only");
         let now = env::block_timestamp();
@@ -651,7 +651,7 @@ impl Market {
         self.rounds.replace(round_id as u32, r);
     }
 
-    /// §6 — anyone, after `delivery_deadline`; may be called again until CLOSED.
+    /// §6: anyone, after `delivery_deadline`; may be called again until CLOSED.
     pub fn finalize(&mut self, round_id: u64) -> RoundState {
         let now = env::block_timestamp();
         let mut r = self.get_round_mut(round_id).clone();

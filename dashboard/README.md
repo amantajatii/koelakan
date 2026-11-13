@@ -56,19 +56,19 @@ All optional; defaults point to the live deployment (see `.env.example`). Values
 
 ## Owner flow: do X, see Y
 
-Open `/warung`. Each step shows Done, Next up, To do or Locked, and progress is read from the chain and the API, so reloading resumes where you left off.
+Open `/warung`. The setup panel has four steps. Each shows Done, Next up, To do or Locked. Progress is read from the chain and the agent API, so reloading resumes where you left off. The demo view `/warung?demo=warung-20.koelakan.testnet` shows a seeded warung read-only, with no wallet.
 
-1. **Sign in** with MyNearWallet or Meteor (both support message signing). You see your account id and "Done".
-2. **Get test rupiah**: `Rp1,000,000` appears in "tIDR in wallet". A second claim within an hour shows the cooldown message.
-3. **Deposit to market**: "Available balance" in the side panel grows.
-4. **Set your policy**: max price per item (default = PIHPS reference), weekly budget, and the **auto_join** toggle (on by default; off means the contract rejects every agent join).
-5. **Delegate to the Koelakan agent**: approve an AddKey in the wallet (function-call key, `join_round` on the market only, 0.25 NEAR allowance). Status turns to "delegated". "Revoke agent key" removes it again.
-6. **Standing order**: enter kg per round per item (0 = skip) and click "Sign and save order". The wallet signs a NEP-413 message (no transaction, no fee); the saved order is shown under the button. All zeros unregisters.
-7. **Watch it work**: "My agent activity" lists joined/skipped per round (from the API) and your rounds with outcome, paid and refund (from the chain).
-8. **Needs action**: for settled rounds in the delivery window, "Rounds needing your action" appears at the top with "Confirm received" and "Report a problem" (both ask for confirmation and explain RULES section 6). Silence counts as received when the window ends.
-9. **Withdraw**: enter an amount (or Max) to move available balance back to your wallet.
+1. **Sign in with a wallet.** Click "Sign in with a NEAR wallet" and approve in the wallet. You see "Signed in as <account>" and a "Sign out" button. Sign-in creates a restricted browser key (`join_round` on the market only); owner actions still need your full-access key.
+2. **Add test money.** Enter an amount in "Test money to add (Rp)" and click "Add test money". The hint reads "Adds Rp... to your market balance." and the step turns Done.
+3. **Set your limits and let the agent shop.** Fill "Most you want to spend each week (Rp)" and a max price per item (default is the PIHPS reference price). Keep "Let the agent shop for me" ticked (off means the agent does nothing). Click "Allow the agent to shop for me" (or "Save limits and allow the agent" if limits are already set; "Update limits" later). One wallet approval saves the limits and adds the agent's function-call key. The page calls these settings "limits"; on-chain they are the owner policy in RULES section 3.
+4. **Your standing order.** Tick the staples you want and enter kg per round, then click "Save my order" ("Stop buying (clear my order)" if all are unticked). The wallet signs a NEP-413 message, which is not a transaction and costs no fee. You see "Order saved. Your agent uses it from the next round." and the chip changes from "Not set" to "Saved".
 
-"Advanced" holds manual join and demo open-round; the 24/7 service already opens rounds and bids on any open round.
+After setup, the page shows:
+
+- **Needs you**: for settled rounds in the delivery window, "Confirm now" and "Report a problem". Both ask for confirmation first (RULES section 6). If you do nothing, the delivery counts as received when the window ends.
+- **Stop the agent**: removes the agent's key. Your limits and balance stay.
+- **Withdraw to wallet**: enter an amount (or "All") and click "Withdraw to wallet".
+- **Edit standing order** (header link): jumps back to step 4.
 
 Wallets without `signMessage` get a message suggesting MyNearWallet or Meteor. Redirect-style wallets return the signature in the URL hash; the pending request is kept in `sessionStorage` and completed on return.
 

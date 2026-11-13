@@ -5,7 +5,7 @@ TypeScript agents that run a **real Koelakan round on NEAR testnet**, end to end
 - 20 **warung agents** join rounds with a function-call key that can only call `join_round`.
 - 5 **grosir agents** commit and reveal sealed bids (commit-reveal, bond in tIDR). `grosir-5` is scripted to never reveal, so the bond-forfeit path runs.
 - A **koordinator** opens the round, then settles and finalizes it.
-- After settle, most warung owners confirm delivery ("owner confirms via WhatsApp"). One stays silent, so the silence-means-acceptance path runs at finalize.
+- After settle, most warung owners confirm delivery. The confirm is scripted (full-access key, 1 yocto); there is no WhatsApp integration, and the dashboard shows the agent's updates as a WhatsApp-style chat. One stays silent, so the silence-means-acceptance path runs at finalize.
 - Afterwards the same actions are replayed through the sim's TypeScript engine and compared with the chain (`MATCH` / `MISMATCH`).
 
 Agents share their strategy with the simulation: warung demand and grosir cost/margin are imported from `sim/src/config.ts` (seeded; grosir costs are labelled ASSUMPTIONS there). Reference prices are the real PIHPS numbers stored on-chain.
@@ -162,7 +162,7 @@ src/
   round.ts           orchestrates one round from on-chain phases
   setup.ts           idempotent testnet setup
   crosscheck.ts      replay through the sim engine
-  wa.ts, report.ts   WhatsApp messages and the JSON report
+  wa.ts, report.ts   WhatsApp-style chat messages (text only, nothing is sent to WhatsApp) and the JSON report
   cli/               pnpm run setup, pnpm round
 test/                vitest unit tests (no network)
 ```

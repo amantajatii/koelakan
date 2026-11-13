@@ -29,13 +29,13 @@ export async function warungJoin(w: World, short: string, round: RoundView): Pro
   });
 }
 
-/** Owner action (full key, 1 yocto): the owner confirms goods arrived, e.g. by replying on WhatsApp. */
+/** Owner action (full key, 1 yocto): the owner confirms goods arrived. Scripted here; the dashboard renders it as a WhatsApp-style chat message. */
 export function warungConfirm(w: World, short: string, roundId: number): Promise<ActionRecord> {
   const actor = w.warungs.get(short);
   if (actor === undefined) throw new Error(`unknown warung ${short}`);
   return actor.call({
     contract: w.dep.market, method: "confirm_delivery", args: roundIdArgs(roundId), deposit: ONE_YOCTO,
     gas: GAS.confirm, key: "full", role: "owner",
-    note: "owner confirms via WhatsApp (full-access key, 1 yocto)",
+    note: "owner confirm, scripted (full-access key, 1 yocto)",
   });
 }

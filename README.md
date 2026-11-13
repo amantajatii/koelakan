@@ -1,29 +1,46 @@
 # Koelakan
 
-> Work in progress for NEAR HACKATHON 2026. Tracks: AI Swarms (`swarms`), Real-World Money (`realworld`).
+> A NEAR Hackathon 2026 entry (tracks `swarms` and `realworld`): warung agents pool orders, grosir agents bid in a sealed-bid auction, and a NEAR testnet contract holds the money. Public dashboard: [DASHBOARD URL, added after deploy].
 
 **Koelakan** (from *kulakan*: what Indonesian shop owners call restocking from a wholesaler) lets warungs restock together.
 
-Indonesian *warung* buy in small quantities at retail prices. In Koelakan, each warung's agent pools its order with nearby warungs, and *grosir* agents compete for the whole lot in a sealed-bid auction. A NEAR contract holds every rupiah in escrow and enforces each owner's limits on-chain. An agent can spend for a warung, but it cannot steal from it.
+A *warung* is a small Indonesian shop. It buys in small quantities at retail prices, and in the PIHPS data of 11 Nov 2026 national average rice and sugar prices were already above the official HET retail ceiling ([data/prices.json](data/prices.json)). In Koelakan each warung's agent pools its order with other warungs, and *grosir* (wholesaler) agents compete for the whole lot in a commit-reveal sealed-bid auction. A NEAR contract escrows every tIDR (test rupiah) and enforces each owner's limits (max price per item, weekly budget). The agent key is a function-call key limited to `join_round`, so it cannot withdraw funds. The contract is unaudited testnet code.
 
 - Rules (single source of truth): [RULES.md](RULES.md)
-- Reference prices (real data, with sources): [data/prices.json](data/prices.json)
+- Reference prices (real PIHPS data, with sources): [data/prices.json](data/prices.json)
 
 ## Status
 
-| Part | State |
-|---|---|
-| `contracts/tidr`: NEP-141 test rupiah plus faucet | done, 3 unit tests |
-| `contracts/market`: rounds, policy, commit-reveal, escrow, disputes | done, 40 unit tests |
-| Simulation (20 warungs, 5 grosir, no LLM) | todo |
-| Agents plus dashboard | todo |
-| Testnet deploy | todo |
+| Part | State | Evidence |
+|---|---|---|
+| `contracts/tidr`: NEP-141 test rupiah plus faucet | deployed on testnet | `tidr.koelakan.testnet`, 3 unit tests |
+| `contracts/market`: rounds, limits, commit-reveal, escrow, disputes | deployed on testnet | `market.koelakan.testnet`, 41 unit tests incl. conservation invariant |
+| Simulation (20 warungs, 5 grosir, no LLM) | done | `sim/`, 42 tests, 7 golden scenarios replayed by the contract tests |
+| Agents (20 warung, 5 grosir, koordinator, arbiter) | live on testnet | accounts `warung-01..20`, `grosir-1..5`, `koordinator`, `arbiter` under `.koelakan.testnet` |
+| Live rounds | 2 closed | #1 beras: clearing Rp11,924, saving Rp1,422,526. #2 gula: Rp15,683, saving Rp1,514,785. Both matched the sim engine |
+| Agent service | running, one round every 60 min | https://agent.43-157-202-28.sslip.io/status |
+| Dashboard | runs locally; public deploy pending | `dashboard/` |
 
-## Run the tests
+## Try it
 
-```sh
-cargo test            # 43 unit tests, including the conservation invariant
-```
+1. **Dashboard, owner view.** `cd dashboard && pnpm i && pnpm dev`, open http://localhost:3000/warung?demo=warung-20.koelakan.testnet. You see a seeded warung's limits, standing order and round activity, read-only, no wallet needed. Sign in at `/warung` with a NEAR testnet wallet to set up your own warung.
+2. **Live agent service.** Open https://agent.43-157-202-28.sslip.io/status. You see the round cadence, the next round and recent on-chain events with links.
+3. **A full live round.** `cd agents && pnpm i && pnpm round` (needs the one-off `pnpm run setup` and testnet keys; see [agents/README.md](agents/README.md)). You see a timeline with tx links, ending in `cross-check vs sim engine: MATCH`.
+4. **Simulation.** `cd sim && pnpm i && pnpm simulate`. You see the 20-warung, 5-grosir run with total saving vs PIHPS and a conservation check. `pnpm test` runs its 42 tests.
+5. **Contract tests.** `cargo test` from the repo root. You see 44 tests pass (41 market, 3 tidr).
+
+## What is real and what is assumed
+
+Real: the PIHPS reference prices and HET in `data/prices.json` (with source URLs), and on-chain rounds and escrow on NEAR testnet. Assumed: grosir costs are seeded (0.85 to 0.97 x HET), warung and owner names are fictional, and tIDR is test money, so every saving shown is measured against PIHPS in testnet rounds with simulated grosir costs. The owner confirm in live rounds is scripted, and the dashboard shows agent updates as a WhatsApp-style chat; nothing is sent to WhatsApp.
+
+Koelakan is asset-light: it never holds inventory. KitaBeli, Ula and GudangAda held stock, and they failed. Grosirs and Koperasi Desa Merah Putih stay the sellers.
+
+## Out of scope
+
+- Rupiah on-ramp (tIDR is test money).
+- Intents settlement (no testnet).
+- Proof of delivery (the owner confirms or disputes; an arbiter rules).
+- A security audit of the contracts.
 
 ## Build the contracts
 

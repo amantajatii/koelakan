@@ -1,9 +1,9 @@
 # Koelakan: Market Rules
 
-> Status: **v0.3. Implemented in `contracts/market` (40 unit tests).**
+> Status: **v0.3. Implemented in `contracts/market` (41 unit tests).**
 > Track: AI Swarms (`swarms`), also Real-World Money (`realworld`)
 
-Small Indonesian shops (*warung*) buy in small quantities at retail prices, which is a big reason they lose to minimarkets. In Koelakan, each warung has an agent. The agents pool their orders into one wholesale lot, and supplier agents (*grosir*) compete for that lot in a sealed-bid auction. A NEAR contract holds all money in escrow and enforces each owner's limits, so an agent can act for a warung without being able to steal from it.
+Small Indonesian shops (*warung*) buy in small quantities at retail prices. In the PIHPS data of 11 Nov 2026, national average rice and sugar prices were already above the official HET retail ceiling (see `data/prices.json`). In Koelakan, each warung has an agent. The agents pool their orders into one wholesale lot, and supplier agents (*grosir*) compete for that lot in a sealed-bid auction. A NEAR contract holds all money in escrow and enforces each owner's limits, so an agent key (limited to `join_round`) cannot withdraw a warung's funds. This is unaudited testnet code.
 
 **What makes this different from generic group-buying swarms:**
 

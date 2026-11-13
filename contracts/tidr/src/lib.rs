@@ -1,4 +1,4 @@
-//! tIDR — a NEP-141 *test* rupiah stablecoin for Koelakan.
+//! tIDR: a NEP-141 *test* rupiah stablecoin for Koelakan.
 //!
 //! 0 decimals: 1 tIDR = Rp1. Testnet only. Anyone can call `faucet()` once per
 //! hour to receive 1,000,000 tIDR; the faucet also registers the caller's
