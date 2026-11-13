@@ -39,7 +39,7 @@ export function Stepper({ nextId, children, label }: { nextId: StepId | null; ch
   const toggle = (id: StepId): void => setPick({ forNext: nextId, id: open === id ? null : id });
   return (
     <StepperContext.Provider value={{ open, toggle }}>
-      <ol aria-label={label} className="divide-y divide-line">{children}</ol>
+      <ol aria-label={label} className="space-y-2.5">{children}</ol>
     </StepperContext.Provider>
   );
 }
@@ -60,10 +60,10 @@ function Marker({ state, index }: { state: StepState; index: string }) {
       aria-hidden
       className={cn(
         "flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors duration-200",
-        state === "done" && "bg-brand text-white",
-        (state === "next" || state === "ready") && "bg-brand-soft text-brand-ink outline outline-2 outline-brand",
-        (state === "todo" || state === "optional") && "bg-ground text-muted outline outline-1 outline-line-strong",
-        state === "locked" && "bg-ground text-muted",
+        state === "done" && "bg-brand text-ink",
+        (state === "next" || state === "ready") && "bg-night text-white",
+        (state === "todo" || state === "optional") && "bg-surface text-muted",
+        state === "locked" && "bg-surface text-muted",
       )}
     >
       {state === "done" ? <Check className="size-4" strokeWidth={3} /> : state === "locked" ? <Lock className="size-3.5" /> : index}
@@ -90,7 +90,7 @@ export function StepCard({ index, title, state, intro, children, stepId }: StepC
     </>
   );
   const body = open && (
-    <div id={bodyId} className="pb-5 pt-1 sm:pl-12">
+    <div id={bodyId} className="pb-5 pt-1 sm:pl-11">
       <div className="text-sm text-muted">{intro}</div>
       {children && <div className="mt-4 space-y-3">{children}</div>}
     </div>
@@ -105,14 +105,14 @@ export function StepCard({ index, title, state, intro, children, stepId }: StepC
     );
   }
   return (
-    <li aria-labelledby={titleId}>
+    <li aria-labelledby={titleId} className={cn("rounded-2xl bg-ground px-3 sm:px-4",)}>
       <button
         type="button"
         aria-expanded={open}
         aria-controls={bodyId}
         disabled={state === "locked"}
         onClick={() => ctx.toggle(stepId)}
-        className="flex min-h-14 w-full items-center gap-3 rounded-xl py-2 transition-colors duration-150 enabled:hover:bg-ground/70 disabled:cursor-not-allowed"
+        className="flex min-h-14 w-full items-center gap-3 rounded-xl py-2 transition-colors duration-150 enabled:hover:text-ink disabled:cursor-not-allowed"
       >
         {head}
       </button>

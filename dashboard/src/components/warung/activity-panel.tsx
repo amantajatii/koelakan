@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
 import { Chip } from "@/components/ui/chip";
-import { TableWrap, tableClass, td, tdRight, th, thRight, theadClass, trClass } from "@/components/ui/table";
+import { ItemImage } from "@/components/produce-art";
 import { txUrl } from "@/lib/config";
 import { rupiah } from "@/lib/format";
 import { itemLabel } from "@/lib/items";
@@ -25,15 +25,6 @@ function describe(row: OwnerRoundRow, items: Item[]): string {
   return row.qty === null ? name : `${name} · ${row.qty} ${item?.unit ?? "units"}`;
 }
 
-function Outcome({ row }: { row: OwnerRoundRow }) {
-  return (
-    <>
-      <Chip tone={row.tone}>{row.outcome}</Chip>
-      {row.reason && <span className="mt-1 block text-xs text-muted">{row.reason}</span>}
-    </>
-  );
-}
-
 function Receipt({ tx }: { tx: string | null }) {
   return tx ? <a className={`num text-xs ${linkClass}`} target="_blank" rel="noreferrer" href={txUrl(tx)}>receipt</a> : null;
 }
@@ -52,54 +43,31 @@ export function ActivityPanel({ actions, apiDown, participations, items, rounds 
         </p>
       ) : (
         <>
-          <ul className="divide-y divide-line sm:hidden">
+          <ul aria-label="Your rounds with outcome, amount paid and refund" className="space-y-2">
             {rows.map((row) => (
-              <li key={row.roundId} className="space-y-1.5 py-3 first:pt-0 last:pb-0">
-                <p className="font-semibold">
-                  <Link href={`/rounds/${row.roundId}`} className={`num ${linkClass}`}>#{row.roundId}</Link>
-                  <span className="text-muted"> · </span>
-                  {describe(row, items)}
-                </p>
-                <p><Outcome row={row} /></p>
-                {row.paid !== null && row.refund !== null && (
-                  <p className="num flex flex-wrap items-baseline gap-x-4 text-sm">
-                    <span><span className="text-muted">Paid </span><strong>{rupiah(row.paid)}</strong></span>
-                    <span><span className="text-muted">Refund </span><strong>{rupiah(row.refund)}</strong></span>
-                    <Receipt tx={row.tx} />
+              <li key={row.roundId} className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl bg-ground p-3">
+                {row.itemId ? <ItemImage itemId={row.itemId} size="md" plain /> : <span aria-hidden className="size-12 shrink-0 rounded-full bg-surface" />}
+                <div className="min-w-0 flex-1 basis-40">
+                  <p className="font-bold">
+                    <Link href={`/rounds/${row.roundId}`} className={`num ${linkClass}`}>#{row.roundId}</Link>
+                    <span className="text-muted"> · </span>
+                    {describe(row, items)}
                   </p>
-                )}
+                  {row.paid !== null && row.refund !== null ? (
+                    <p className="num mt-0.5 flex flex-wrap items-baseline gap-x-3 text-sm text-muted">
+                      <span>Paid <strong className="font-semibold text-ink">{rupiah(row.paid)}</strong></span>
+                      <span>Refund <strong className="font-semibold text-ink">{rupiah(row.refund)}</strong></span>
+                      <Receipt tx={row.tx} />
+                    </p>
+                  ) : (
+                    <p className="mt-0.5 text-sm text-muted"><Receipt tx={row.tx} /></p>
+                  )}
+                  {row.reason && <p className="mt-0.5 text-xs text-muted">{row.reason}</p>}
+                </div>
+                <Chip tone={row.tone}>{row.outcome}</Chip>
               </li>
             ))}
           </ul>
-          <TableWrap className="hidden sm:block">
-            <table className={tableClass}>
-              <caption className="sr-only">Your rounds with outcome, amount paid and refund</caption>
-              <thead className={theadClass}>
-                <tr>
-                  <th scope="col" className={th}>Round</th>
-                  <th scope="col" className={th}>Outcome</th>
-                  <th scope="col" className={thRight}>Paid</th>
-                  <th scope="col" className={thRight}>Refund</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr key={row.roundId} className={trClass}>
-                    <th scope="row" className={`${td} font-normal`}>
-                      <Link href={`/rounds/${row.roundId}`} className={`num ${linkClass}`}>#{row.roundId}</Link>
-                      <span className="block text-xs text-muted">{describe(row, items)}</span>
-                    </th>
-                    <td className={td}><Outcome row={row} /></td>
-                    <td className={tdRight}>{row.paid === null ? "-" : rupiah(row.paid)}</td>
-                    <td className={tdRight}>
-                      {row.refund === null ? "-" : rupiah(row.refund)}
-                      {row.tx && <span className="block"><Receipt tx={row.tx} /></span>}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </TableWrap>
         </>
       )}
     </Panel>

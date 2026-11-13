@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { WarungFlow } from "@/components/warung/warung-flow";
-import { Skeleton } from "@/components/ui/states";
+import { LoadingRegion, Skeleton } from "@/components/ui/states";
 
 export const metadata = {
   title: "Run your warung",
@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function WarungPage() {
   return (
-    <Suspense fallback={<Skeleton className="h-72" />}>
+    <Suspense fallback={<LoadingRegion label="Loading your warung…"><Skeleton className="h-72" /></LoadingRegion>}>
       <WarungFlow />
     </Suspense>
   );

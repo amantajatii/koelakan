@@ -15,7 +15,7 @@ import { ServicePulse } from "@/components/service-pulse";
 import { Button, buttonClass } from "@/components/ui/button";
 import { Notice } from "@/components/ui/notice";
 import { SectionTitle } from "@/components/ui/panel";
-import { ErrorNote, Skeleton } from "@/components/ui/states";
+import { ErrorNote, LoadingRegion, Skeleton } from "@/components/ui/states";
 import { ActivityPanel } from "@/components/warung/activity-panel";
 import { AgentFeed } from "@/components/warung/agent-feed";
 import { PendingActions } from "@/components/warung/pending-actions";
@@ -92,7 +92,7 @@ export function WarungFlow() {
   const spent = account?.spent ?? 0n;
   const stateOrder = stepList.find((s) => s.id === "order")?.status ?? "locked";
 
-  const savedLine = (who: string): string => (week.rounds > 0 ? `${who} saved ${rupiah(week.saving)} this week.` : "");
+  const savedLine = (who: string): string => (week.rounds > 0 ? `${who} saved ${rupiah(week.saving)} test rupiah this week.` : "");
   const banner = readOnly ? (
     <HeroBanner
       title={week.rounds > 0 ? savedLine(`${ownerName(demo)}'s warung`) : `${ownerName(demo)}'s demo warung.`}
@@ -105,13 +105,13 @@ export function WarungFlow() {
     >
       <BannerLine loading={!overview}>
         {week.rounds > 0
-          ? <>Against the PIHPS market price, across {week.rounds} {week.rounds === 1 ? "round" : "rounds"} this agent bought in. Everything below is real test data from the blockchain.</>
+          ? <>Against the PIHPS market price, across {week.rounds} {week.rounds === 1 ? "round" : "rounds"} this agent bought in. Everything below is read from the testnet blockchain. The demo warung is seeded.</>
           : <>This agent shops for the warung on its own inside the owner&apos;s limits. Once a round settles, the saving against the PIHPS market price shows up here.</>}
       </BannerLine>
     </HeroBanner>
   ) : accountId ? (
     <HeroBanner
-      title={week.rounds > 0 ? `You saved ${rupiah(week.saving)} this week.` : `Welcome back, ${shortAccount(accountId)}.`}
+      title={week.rounds > 0 ? `You saved ${rupiah(week.saving)} test rupiah this week.` : `Welcome back, ${shortAccount(accountId)}.`}
       actions={
         allDone ? (
           <a href="#standing-order" className={buttonClass("onBrand", "gap-2 px-5")}>Edit standing order</a>
@@ -195,7 +195,7 @@ export function WarungFlow() {
           <section aria-labelledby="my-staples">
             <SectionTitle><span id="my-staples">Your four staples</span></SectionTitle>
             {!overview ? (
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4" role="status" aria-label="Loading your staples"><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /></div>
+              <LoadingRegion label="Loading your staples" className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4"><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /><Skeleton className="h-64" /></LoadingRegion>
             ) : (
               <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
                 {ownerSnapshots(overview.items, participations, warung.record?.demand ?? null).map((s) => (
@@ -205,7 +205,7 @@ export function WarungFlow() {
             )}
           </section>
 
-          <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-2">
+          <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 xl:grid-cols-[minmax(0,1fr)_24rem]">
             <div className="space-y-6">
               {!hasPending && pendingPanel}
               {overview && <AgentFeed account={accountId} feed={feed} />}
@@ -218,6 +218,7 @@ export function WarungFlow() {
                 <Skeleton className="h-96" />
               ))}
               <AccountSummary accountId={accountId} account={account} items={overview?.items ?? []} loading={data.loading} onDone={afterTx} readOnly={readOnly} />
+              <SecurityNote />
             </div>
           </div>
 
@@ -235,12 +236,11 @@ export function WarungFlow() {
               onDone={afterTx}
             />
           )}
-          <SecurityNote />
         </>
       )}
 
       {overview && !readOnly && (
-        <details className="group rounded-card border border-line bg-surface p-5 shadow-card sm:p-6">
+        <details className="group rounded-card bg-surface p-5 shadow-card sm:p-6">
           <summary className="flex list-none min-h-11 cursor-pointer items-center justify-between gap-3 text-lg font-bold tracking-tight">
             Advanced: join or open a round by hand
             <ChevronDown className="size-5 shrink-0 text-muted transition-transform duration-200 group-open:rotate-180" aria-hidden />

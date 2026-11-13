@@ -11,6 +11,6 @@ export function Field({ id, label, hint, children }: { id: string; label: string
 }
 
 export const inputBase =
-  "num min-h-11 rounded-xl border border-line-strong bg-surface px-3.5 text-base text-ink transition-[border-color,box-shadow] duration-150 hover:border-brand/50 focus-visible:border-brand focus-visible:outline-offset-0 aria-[invalid=true]:border-danger disabled:cursor-not-allowed disabled:bg-ground disabled:opacity-60";
+  "num min-h-11 rounded-xl border border-control bg-surface px-3.5 text-base text-ink transition-[border-color,box-shadow] duration-150 hover:border-ink/60 focus-visible:border-ink focus-visible:outline-offset-0 aria-[invalid=true]:border-danger disabled:cursor-not-allowed disabled:bg-ground disabled:opacity-60";
 
 export const inputClass = `${inputBase} w-full`;

@@ -18,7 +18,7 @@ export function WithdrawRow({ available, onDone, readOnly = false }: { available
   const ok = amount !== null && amount > 0n && amount <= available && !readOnly;
 
   return (
-    <div className="border-b border-line py-3">
+    <div className="pt-3">
       <div className="grid grid-cols-[1fr_auto] items-end gap-2">
         <Field id="withdraw-amount" label="Withdraw to your wallet (Rp)">
           <input id="withdraw-amount" inputMode="numeric" className={inputClass} value={raw} onChange={(e) => setRaw(e.target.value)} disabled={readOnly} aria-invalid={error !== null} aria-describedby={error ? "withdraw-err" : undefined} />

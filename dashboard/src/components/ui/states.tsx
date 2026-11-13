@@ -4,7 +4,17 @@ import { Button } from "./button";
 import { cn } from "./cn";
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div aria-hidden className={cn("animate-pulse rounded-xl bg-[#dbe8e2]", className)} />;
+  return <div aria-hidden className={cn("animate-pulse rounded-xl bg-line-strong/70", className)} />;
+}
+
+/** Placeholder block with an announced label, for a loading region built from skeletons. */
+export function LoadingRegion({ label, className, children }: { label: string; className?: string; children: ReactNode }) {
+  return (
+    <div role="status" className={className}>
+      <span className="sr-only">{label}</span>
+      {children}
+    </div>
+  );
 }
 
 /** Empty states teach: say what belongs here and what to do next. */

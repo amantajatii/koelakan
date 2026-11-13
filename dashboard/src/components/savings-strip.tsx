@@ -52,7 +52,7 @@ export function SavingsStrip({ refPrice, paid, unit, refClass = "text-muted", si
         aria-label={`${percent(below)} below the PIHPS price`}
         className={cn("mt-2 overflow-hidden rounded-full", large ? "h-2.5" : "h-1.5", trackClass)}
       >
-        <div className="h-full rounded-full bg-brand transition-[width] duration-500 ease-out" style={{ width: `${width}%` }} />
+        <div className="h-full rounded-full bg-ink transition-[width] duration-500 ease-out" style={{ width: `${width}%` }} />
       </div>
       <p className="num mt-1.5 text-xs font-semibold text-brand-ink">{percent(below)} below PIHPS</p>
     </div>

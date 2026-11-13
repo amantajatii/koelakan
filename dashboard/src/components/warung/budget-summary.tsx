@@ -66,9 +66,9 @@ export function BudgetSummary({ plan, weeklyBudget, spent, showUsage = true, edi
             aria-valuemin={0}
             aria-valuemax={100}
             aria-valuenow={Math.round(plan.usedPercent)}
-            className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-line-strong/60"
+            className="mt-1.5 h-2 overflow-hidden rounded-full bg-ink/10"
           >
-            <div className="h-full rounded-full bg-brand transition-[width] duration-500 ease-out" style={{ width: `${Math.max(plan.usedPercent, spent > 0n ? 2 : 0)}%` }} />
+            <div className="h-full rounded-full bg-night transition-[width] duration-500 ease-out" style={{ width: `${Math.max(plan.usedPercent, spent > 0n ? 2 : 0)}%` }} />
           </div>
         </div>
       )}

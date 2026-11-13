@@ -37,7 +37,7 @@ export function ServicePulse({ heading = "Agent service", showBadge = true }: { 
       ) : (
         <p className="mt-3 text-sm text-muted">Agent service offline. On-chain data is still live.</p>
       )}
-      <Link href="/status" className="mt-4 inline-flex min-h-10 items-center gap-1.5 text-sm font-semibold text-brand-ink hover:text-brand">
+      <Link href="/status" className="mt-4 inline-flex min-h-10 items-center gap-1.5 text-sm font-semibold text-brand-ink hover:text-brand-ink">
         Full status <ArrowRight className="size-4" aria-hidden />
       </Link>
     </Panel>

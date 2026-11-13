@@ -39,9 +39,9 @@ export function SetupComplete({ accountId, items, policy, servicePublicKey, allo
   }
 
   return (
-    <details id="setup" className="group scroll-mt-6 rounded-card border border-line bg-surface p-5 shadow-card sm:p-6">
+    <details id="setup" className="group scroll-mt-6 rounded-card bg-surface p-5 shadow-card sm:p-6">
       <summary className="flex min-h-11 cursor-pointer list-none items-center gap-3">
-        <span aria-hidden className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-white"><CircleCheck className="size-4" /></span>
+        <span aria-hidden className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-ink"><CircleCheck className="size-4" /></span>
         <span className="min-w-0 flex-1">
           <span className="font-bold tracking-tight">Setup complete</span>
           <span className="text-muted"> · edit limits or stop the agent</span>

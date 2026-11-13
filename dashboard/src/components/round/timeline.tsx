@@ -13,14 +13,14 @@ function Node({ status }: { status: StepStatus }) {
       aria-hidden
       className={cn(
         "relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full ring-4 ring-surface transition-colors duration-200",
-        status === "done" && "bg-brand text-white",
-        status === "current" && "bg-brand-soft text-brand-ink ring-brand/0 outline outline-2 outline-brand",
+        status === "done" && "bg-night text-white",
+        status === "current" && "bg-brand text-ink outline outline-2 outline-offset-0 outline-night",
         status === "upcoming" && "bg-ground text-muted outline outline-1 outline-line-strong",
         status === "skipped" && "bg-ground text-muted",
       )}
     >
       {status === "done" && <Check className="size-4" strokeWidth={3} />}
-      {status === "current" && <span className="live-dot size-2.5 rounded-full bg-brand" />}
+      {status === "current" && <span className="live-dot size-2.5 rounded-full bg-night" />}
       {status === "skipped" && <Minus className="size-4" />}
     </span>
   );
@@ -37,8 +37,8 @@ export function Timeline({ round, nowMs }: { round: RoundView; nowMs: number }) 
           <li key={s.key} className="relative flex gap-3 md:block">
             {i < steps.length - 1 && (
               <>
-                <span aria-hidden className={cn("absolute left-4 top-8 h-[calc(100%-0.5rem)] w-px md:hidden", s.status === "done" ? "bg-brand" : "bg-line-strong")} />
-                <span aria-hidden className={cn("absolute left-8 top-4 hidden h-px w-[calc(100%-1rem)] md:block", s.status === "done" ? "bg-brand" : "bg-line-strong")} />
+                <span aria-hidden className={cn("absolute left-4 top-8 h-[calc(100%-0.5rem)] w-0.5 md:hidden", s.status === "done" ? "bg-night" : "bg-line-strong")} />
+                <span aria-hidden className={cn("absolute left-8 top-4 hidden h-0.5 w-[calc(100%-1rem)] md:block", s.status === "done" ? "bg-night" : "bg-line-strong")} />
               </>
             )}
             <Node status={s.status} />
@@ -57,7 +57,7 @@ export function Timeline({ round, nowMs }: { round: RoundView; nowMs: number }) 
           </li>
         ))}
       </ol>
-      <p className="mt-6 rounded-xl bg-ground px-4 py-3 text-sm text-muted">{PHASE_HINT[phase]}</p>
+      <p className="mt-6 rounded-2xl bg-ground px-4 py-3 text-sm text-muted">{PHASE_HINT[phase]}</p>
     </div>
   );
 }

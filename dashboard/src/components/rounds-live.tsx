@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { RoundTable } from "@/components/round-table";
+import { RoundList } from "@/components/round/round-list";
 import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
-import { EmptyState, ErrorNote, Skeleton } from "@/components/ui/states";
+import { EmptyState, ErrorNote, LoadingRegion, Skeleton } from "@/components/ui/states";
 import { FilterTabs, type TabOption } from "@/components/ui/tabs";
 import { useLive } from "@/hooks/use-live";
 import { useNow } from "@/hooks/use-now";
@@ -49,7 +49,7 @@ export function RoundsLive({ initial, renderedAt }: { initial: Overview | null; 
 
   if (!data) {
     return loading
-      ? <div role="status" aria-label="Loading rounds"><Skeleton className="h-96" /></div>
+      ? <LoadingRegion label="Loading rounds…"><Skeleton className="h-96" /></LoadingRegion>
       : <ErrorNote message={error ?? "No response."} onRetry={refresh} />;
   }
   if (data.rounds.length === 0) {
@@ -72,7 +72,7 @@ export function RoundsLive({ initial, renderedAt }: { initial: Overview | null; 
             {filter === "all" ? null : <>Switch to <button type="button" onClick={() => setFilter("all")} className={linkClass}>All</button> to see every round.</>}
           </EmptyState>
         ) : (
-          <RoundTable rounds={shown} items={data.items} nowMs={now} caption="All Koelakan rounds" />
+          <RoundList rounds={shown} items={data.items} nowMs={now} label="All Koelakan rounds" />
         )}
       </Panel>
     </div>

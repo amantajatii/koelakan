@@ -5,16 +5,16 @@ import { cn } from "./cn";
 export type ButtonVariant = "primary" | "secondary" | "soft" | "ghost" | "danger" | "onBrand";
 
 const VARIANT: Record<ButtonVariant, string> = {
-  primary: "bg-brand text-white shadow-[0_1px_2px_rgba(8,105,79,0.3)] hover:bg-brand-hover active:bg-brand-deep",
-  secondary: "border border-line-strong bg-surface text-ink hover:border-brand/50 hover:bg-brand-soft active:bg-brand-soft",
-  soft: "bg-brand-soft text-brand-ink hover:bg-[#d4eee4] active:bg-[#c6e8dc]",
-  ghost: "text-muted hover:bg-brand-soft hover:text-ink",
-  danger: "bg-danger text-white hover:bg-[#8f1c13] active:bg-[#7a170f]",
-  onBrand: "bg-white text-brand-ink shadow-[0_1px_2px_rgba(0,0,0,0.12)] hover:bg-brand-soft active:bg-[#d4eee4]",
+  primary: "bg-brand text-ink hover:bg-brand-hover active:translate-y-px",
+  secondary: "border border-line-strong bg-surface text-ink hover:border-ink/30 hover:bg-ground active:translate-y-px",
+  soft: "bg-brand-soft text-brand-ink hover:bg-brand/50 active:translate-y-px",
+  ghost: "text-muted hover:bg-ground hover:text-ink",
+  danger: "bg-danger text-white hover:bg-danger/90 active:translate-y-px",
+  onBrand: "bg-white/10 text-white ring-1 ring-inset ring-white/25 hover:bg-white/15 active:translate-y-px",
 };
 
 const BASE =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition-[background-color,border-color,color,box-shadow] duration-200 ease-out disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition-[background-color,border-color,color,box-shadow,transform] duration-200 ease-out disabled:cursor-not-allowed disabled:opacity-50";
 
 /** Class string for links that should look like buttons. */
 export const buttonClass = (variant: ButtonVariant = "primary", className?: string): string => cn(BASE, VARIANT[variant], className);

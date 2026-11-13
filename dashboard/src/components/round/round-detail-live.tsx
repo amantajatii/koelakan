@@ -8,20 +8,20 @@ import { BidsTable } from "@/components/round/bids-table";
 import { ForfeitBox } from "@/components/round/forfeit-box";
 import { ParticipantsTable } from "@/components/round/participants-table";
 import { PriceCompare } from "@/components/round/price-compare";
+import { ResultCard } from "@/components/round/result-card";
 import { Timeline } from "@/components/round/timeline";
-import { SavingsStrip } from "@/components/savings-strip";
 import { buttonClass } from "@/components/ui/button";
 import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
-import { EmptyState, ErrorNote, Skeleton } from "@/components/ui/states";
+import { EmptyState, ErrorNote, LoadingRegion, Skeleton } from "@/components/ui/states";
 import { useLive } from "@/hooks/use-live";
 import { useNow } from "@/hooks/use-now";
 import { accountUrl } from "@/lib/config";
-import { formatDateTime, int, percent, rupiah, shortAccount } from "@/lib/format";
+import { formatDateTime, int, shortAccount } from "@/lib/format";
 import { nsToMs } from "@/lib/json";
 import { fetchRoundBundle, type RoundBundle } from "@/lib/overview";
 import { itemLabel } from "@/lib/items";
 import { derivePhase } from "@/lib/phase";
-import { isSettled, itemOf, savingOf, savingPercent, winnerBid } from "@/lib/stats";
+import { isSettled, itemOf } from "@/lib/stats";
 import type { RoundView } from "@/lib/types";
 
 const REFRESH_MS = 10_000;
@@ -42,7 +42,7 @@ export function RoundDetailLive({ id, initial, renderedAt }: { id: number; initi
 
   if (!data) {
     return loading
-      ? <div role="status" aria-label="Loading round" className="space-y-4"><Skeleton className="h-32" /><Skeleton className="h-48" /><Skeleton className="h-64" /></div>
+      ? <LoadingRegion label="Loading round…" className="space-y-4"><Skeleton className="h-32" /><Skeleton className="h-48" /><Skeleton className="h-64" /></LoadingRegion>
       : <ErrorNote message={error ?? "No response."} onRetry={refresh} />;
   }
   const round = data.round;
@@ -56,7 +56,6 @@ export function RoundDetailLive({ id, initial, renderedAt }: { id: number; initi
   const item = itemOf(data.items, round.item);
   const unit = item?.unit ?? "unit";
   const phase = derivePhase(round, now);
-  const winner = winnerBid(round);
   const settled = isSettled(round);
 
   return (
@@ -88,43 +87,17 @@ export function RoundDetailLive({ id, initial, renderedAt }: { id: number; initi
         </Link>
       </Panel>
 
+      <ResultCard round={round} unit={unit} />
+
+      <Panel aria-labelledby="ladder">
+        <SectionTitle><span id="ladder">Price ladder</span></SectionTitle>
+        <PriceCompare round={round} item={item} />
+      </Panel>
+
       <Panel aria-labelledby="phases">
         <SectionTitle><span id="phases">Phases and deadlines</span></SectionTitle>
         <Timeline round={round} nowMs={now} />
       </Panel>
-
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[1.25fr_1fr]">
-        <Panel aria-labelledby="result" className="bg-brand-soft/60">
-          <SectionTitle><span id="result">Auction result</span></SectionTitle>
-          {settled && winner && round.clearing_price !== null ? (
-            <>
-              <SavingsStrip refPrice={round.ref_price} paid={round.clearing_price} unit={unit} size="lg" trackClass="bg-white" />
-              <div className="mt-5 rounded-2xl bg-white p-4">
-                <p className="text-sm text-muted">Saved vs PIHPS</p>
-                <p className="num text-2xl font-extrabold text-brand-ink">{rupiah(savingOf(round))}</p>
-                <p className="num mt-1 text-sm text-muted">
-                  ({rupiah(round.ref_price)} - {rupiah(round.clearing_price)}) x {int(round.total_qty)} {unit} · {percent(savingPercent(round))} below the market price
-                </p>
-              </div>
-              <p className="mt-4 text-sm text-muted">
-                Winner:{" "}
-                <a className={`num ${linkClass}`} target="_blank" rel="noreferrer" href={accountUrl(winner.seller_id)}>{shortAccount(winner.seller_id)}</a>
-              </p>
-            </>
-          ) : (
-            <p className="rounded-xl bg-white px-4 py-3 text-sm">
-              {round.state === "Failed"
-                ? "Round failed: no valid bid, or demand was below the minimum. All funds were refunded."
-                : "The winner is picked once the reveal phase ends."}
-            </p>
-          )}
-        </Panel>
-
-        <Panel aria-labelledby="ladder">
-          <SectionTitle><span id="ladder">Price ladder</span></SectionTitle>
-          <PriceCompare round={round} item={item} />
-        </Panel>
-      </div>
 
       <Panel aria-labelledby="participants">
         <SectionTitle aside={<span className="num text-sm text-muted">{round.participants.length} warungs · {int(round.total_qty)} {unit}</span>}>

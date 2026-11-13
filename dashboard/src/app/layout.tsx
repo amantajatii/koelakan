@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "@near-wallet-selector/modal-ui/styles.css";
 import "./globals.css";
 import { SiteFooter } from "@/components/site-footer";
@@ -9,11 +9,11 @@ import { AgentStatusProvider } from "@/hooks/use-agent-status";
 import { config } from "@/lib/config";
 import { WalletProvider } from "@/lib/wallet";
 
-const figtree = Figtree({ subsets: ["latin"], variable: "--font-figtree", display: "swap" });
+// Plus Jakarta Sans: a geometric sans drawn for Jakarta, the city this product is about.
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", display: "swap" });
 
-const TITLE = "Koelakan: group restocking, wholesale prices for warungs";
-const DESCRIPTION =
-  "Warung agents pool their orders into one round, grosir (wholesaler) agents compete in a sealed-bid auction, and a NEAR contract escrows the funds and enforces owner limits.";
+const TITLE = "Koelakan: Warungs pool orders. Grosirs bid for them.";
+const DESCRIPTION = "Group restocking for Indonesian warungs on NEAR testnet, priced against real PIHPS data.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(config.siteUrl),
@@ -24,24 +24,24 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
-export const viewport: Viewport = { themeColor: "#eef6f2", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#f4f4ef", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={figtree.variable}>
+    <html lang="en" className={jakarta.variable}>
       <body>
         <WalletProvider>
           <AgentStatusProvider>
           <a
             href="#content"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-xl focus:bg-brand focus:px-4 focus:py-2.5 focus:text-white"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-xl focus:bg-night focus:px-4 focus:py-2.5 focus:text-white focus-visible:outline-brand"
           >
             Skip to content
           </a>
           <SideRail />
-          <div className="lg:pl-[5.75rem]">
+          <div className="lg:pl-[16.5rem]">
             <SiteHeader />
-            <main id="content" className="mx-auto w-full max-w-[78rem] px-4 pb-6 pt-2 sm:px-8">
+            <main id="content" tabIndex={-1} className="mx-auto w-full max-w-[84rem] px-4 pb-6 pt-1 sm:px-8">
               {children}
             </main>
             <SiteFooter />

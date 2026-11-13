@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Countdown } from "@/components/countdown";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
+import { SectionTitle } from "@/components/ui/panel";
 import { Chip } from "@/components/ui/chip";
 import { ItemImage } from "@/components/produce-art";
 import { Notice } from "@/components/ui/notice";
@@ -36,44 +36,45 @@ export function PendingActions({ actions, items, nowMs, onDone, readOnly = false
     if (r.ok) setAsking(null);
   }
 
+  const hasAny = actions.length > 0;
   return (
-    <Panel aria-labelledby="needs-action">
-      <SectionTitle aside={actions.length > 0 ? <Chip tone="warn">{actions.length} waiting</Chip> : null}>
+    <section aria-labelledby="needs-action" className={hasAny ? "on-dark rounded-card bg-night p-5 text-white sm:p-6" : "rounded-card bg-surface p-5 shadow-card sm:p-6"}>
+      <SectionTitle aside={hasAny ? <Chip tone="warn">{actions.length} waiting</Chip> : null}>
         <span id="needs-action">Needs you</span>
       </SectionTitle>
-      {actions.length === 0 ? (
+      {!hasAny ? (
         <div className="flex items-start gap-3 text-sm text-muted">
-          <PackageCheck className="mt-0.5 size-5 shrink-0 text-brand" aria-hidden />
-          <p><strong className="font-semibold text-ink">Nothing needs you right now.</strong> When goods are on their way you see them here. If you do nothing, an order counts as received on its own when the delivery time ends.</p>
+          <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand-ink"><PackageCheck className="size-5" /></span>
+          <p className="pt-1"><strong className="font-semibold text-ink">Nothing needs you right now.</strong> When goods are on their way you see them here. If you do nothing, an order counts as received on its own when the delivery time ends.</p>
         </div>
       ) : (
         <>
-          <ul className="divide-y divide-line">
+          <ul className="space-y-3">
             {actions.map((a) => {
               const item = itemOf(items, a.round.item);
               return (
-                <li key={a.round.id} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 py-3.5 first:pt-0 last:pb-0">
+                <li key={a.round.id} className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-2xl bg-night-raised p-4">
                   <div className="flex min-w-0 flex-1 basis-64 items-center gap-3 text-sm">
                     <ItemImage itemId={a.round.item} size="md" plain />
                     <div className="min-w-0">
-                      <p className="font-semibold">
+                      <p className="font-bold">
                         {a.participant.qty} {item?.unit ?? "units"} {itemPlainName(item, a.round.item)} from{" "}
-                        <Link href={`/rounds/${a.round.id}`} className={linkClass}>round #{a.round.id}</Link>
+                        <Link href={`/rounds/${a.round.id}`} className="font-semibold underline decoration-white/40 underline-offset-4 hover:decoration-brand">round #{a.round.id}</Link>
                       </p>
-                      <p className="mt-0.5 text-muted">
-                        If it arrived fine, do nothing: it counts as received at <span className="num font-semibold text-ink">{receivedAt(a.deadlineMs, nowMs)}</span> (<Countdown deadlineMs={a.deadlineMs} nowMs={nowMs} /> left). <span className="num">{rupiah(a.amount)}</span> is held until then.
+                      <p className="mt-0.5 text-night-muted">
+                        If it arrived fine, do nothing: it counts as received at <span className="num font-semibold text-white">{receivedAt(a.deadlineMs, nowMs)}</span> (<Countdown deadlineMs={a.deadlineMs} nowMs={nowMs} /> left). <span className="num">{rupiah(a.amount)}</span> is held until then.
                       </p>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <Button disabled={readOnly} onClick={() => { tx.reset(); setAsking({ kind: "dispute", action: a }); }}>Report a problem</Button>
-                    <Button variant="secondary" disabled={readOnly} onClick={() => { tx.reset(); setAsking({ kind: "confirm", action: a }); }}>Confirm now</Button>
+                    <Button variant="onBrand" disabled={readOnly} onClick={() => { tx.reset(); setAsking({ kind: "dispute", action: a }); }}>Report a problem</Button>
+                    <Button disabled={readOnly} onClick={() => { tx.reset(); setAsking({ kind: "confirm", action: a }); }}>Confirm now</Button>
                   </div>
                 </li>
               );
             })}
           </ul>
-          {readOnly && <p className="mt-3 text-sm text-muted">Only the owner can report a problem or confirm. Sign in to act on your own deliveries.</p>}
+          {readOnly && <p className="mt-3 text-sm text-night-muted">Only the owner can report a problem or confirm. Sign in to act on your own deliveries.</p>}
         </>
       )}
       <div className="mt-3"><TxResult result={asking ? null : tx.result} /></div>
@@ -103,6 +104,6 @@ export function PendingActions({ actions, items, nowMs, onDone, readOnly = false
         ) : null}
         {tx.result && !tx.result.ok && <Notice tone="error" role="alert">{tx.result.error}</Notice>}
       </ConfirmDialog>
-    </Panel>
+    </section>
   );
 }

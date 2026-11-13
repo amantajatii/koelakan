@@ -10,7 +10,7 @@ export function ForfeitBox({ round }: { round: RoundView }) {
   const shares = proRataShares(total, round.participants.map((p) => BigInt(p.qty)));
   const names = forfeitedBids(round).map((b) => shortAccount(b.seller_id)).join(", ");
   return (
-    <aside aria-label="Forfeited bond" className="rounded-card bg-info-soft p-5 ring-1 ring-inset ring-info/15 sm:p-6">
+    <aside aria-label="Forfeited bond" className="rounded-card bg-info-soft p-5 sm:p-6">
       <div className="flex gap-3">
         <Info className="mt-0.5 size-5 shrink-0 text-info" aria-hidden />
         <div className="min-w-0 flex-1">

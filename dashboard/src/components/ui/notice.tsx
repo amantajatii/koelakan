@@ -5,7 +5,7 @@ import { cn } from "./cn";
 export type NoticeTone = "ok" | "error" | "warn" | "info";
 
 const STYLE: Record<NoticeTone, { box: string; icon: string; Icon: LucideIcon }> = {
-  ok: { box: "bg-brand-soft ring-brand/20", icon: "text-brand", Icon: CircleCheck },
+  ok: { box: "bg-brand-soft ring-brand-ink/15", icon: "text-brand-ink", Icon: CircleCheck },
   error: { box: "bg-danger-soft ring-danger/20", icon: "text-danger", Icon: CircleAlert },
   warn: { box: "bg-warn-soft ring-warn/20", icon: "text-warn", Icon: TriangleAlert },
   info: { box: "bg-info-soft ring-info/20", icon: "text-info", Icon: Info },

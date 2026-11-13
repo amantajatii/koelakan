@@ -4,17 +4,18 @@ import { config } from "@/lib/config";
 
 export function SecurityNote() {
   return (
-    <aside aria-labelledby="security" className="rounded-card bg-brand-soft p-5 ring-1 ring-inset ring-brand/15 sm:p-6">
-      <h2 id="security" className="flex items-center gap-2.5 text-lg font-bold tracking-tight text-brand-ink">
-        <ShieldCheck className="size-5" aria-hidden /> Why letting the agent shop is safe
+    <aside aria-labelledby="security" className="rounded-card bg-surface p-5 shadow-card sm:p-6">
+      <h2 id="security" className="flex items-center gap-3 text-lg font-bold tracking-tight">
+        <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand-ink"><ShieldCheck className="size-5" /></span> What the agent key can and cannot do
       </h2>
-      <ul className="mt-3 space-y-3 text-sm text-ink/85">
-        <li>The agent can only join group buys for you. It can never take money out of your balance.</li>
+      <ul className="mt-3 space-y-3 text-sm text-muted">
+        <li>The agent key can only join group buys for you. It cannot withdraw from your balance.</li>
         <li>Only you can withdraw, change your limits or confirm and report deliveries. Your wallet has to approve each of those.</li>
-        <li>Your price limits and weekly budget are enforced by the contract, not by the agent. Even a hacked agent could only buy what your limits already allow.</li>
-        <li>You can stop the agent any time. Your standing order is signed with your wallet, never with a password.</li>
+        <li>Your price limits and weekly budget are enforced by the contract, not by the agent. The key can only join rounds, so it cannot buy past those limits.</li>
+        <li>You can stop the agent any time. Your standing order is signed with your wallet, not with a password.</li>
+        <li>This is a testnet contract and it has not been audited.</li>
       </ul>
-      <TechNote className="mt-4 bg-white/70">
+      <TechNote className="mt-4">
         <p>
           The agent&apos;s function-call key can only call <code className={codeClass}>join_round</code> on <code className={codeClass}>{config.marketId}</code>. A function-call key cannot attach a deposit, so it cannot move funds.
         </p>

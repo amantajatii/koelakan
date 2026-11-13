@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Coins, EyeOff, PackageCheck, TriangleAlert, type LucideIcon } from "lucide-react";
 import { GrosirTable } from "@/components/grosir-table";
 import { PageHeader } from "@/components/ui/page-header";
 import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
@@ -31,20 +32,20 @@ docker run -d --name my-grosir --restart unless-stopped \\
   -v my-grosir-data:/data \\
   koelakan-agent node dist/agents/src/cli/grosir.js`;
 
-const TERMS = [
-  ["Sealed bid", "You submit a hash of your unit price, so nobody sees it until the reveal phase. The lowest valid revealed price wins the whole round."],
-  ["5% bond", "With the commit you lock a bond of 5% of the round's maximum value in tIDR. It protects buyers from bidders that vanish."],
-  ["Forfeited if not revealed", "Skip the reveal and the bond is split among the buying warungs. There is no way to withdraw a bid quietly."],
-  ["Paid on delivery", "Buyers' payments sit in escrow. Each one is released when that owner confirms delivery, or automatically when the delivery window ends without a dispute."],
-] as const;
+const TERMS: readonly (readonly [string, string, LucideIcon, string])[] = [
+  ["Sealed bid", "You submit a hash of your unit price, so nobody sees it until the reveal phase. The lowest valid revealed price wins the whole round.", EyeOff, "bg-info-soft text-info"],
+  ["5% bond", "With the commit you lock a bond of 5% of the round's maximum value in tIDR. It protects buyers from bidders that vanish.", Coins, "bg-eggs text-eggs-ink"],
+  ["Forfeited if not revealed", "Skip the reveal and the bond is split among the buying warungs. There is no way to withdraw a bid quietly.", TriangleAlert, "bg-sugar text-sugar-ink"],
+  ["Paid on delivery", "Buyers' payments sit in escrow. Each one is released when that owner confirms delivery, or automatically when the delivery window ends without a dispute.", PackageCheck, "bg-brand-soft text-brand-ink"],
+];
 
 function Code({ children, label }: { children: string; label: string }) {
   return (
-    <pre aria-label={label} className="max-w-full overflow-x-auto rounded-2xl bg-ink p-4 font-mono text-xs leading-relaxed text-[#d8efe6]"><code>{children}</code></pre>
+    <pre aria-label={label} className="max-w-full whitespace-pre-wrap break-words rounded-2xl bg-night p-4 font-mono text-xs leading-relaxed text-white/90 sm:p-5"><code>{children}</code></pre>
   );
 }
 
-const STEP_BADGE = "flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-soft text-sm font-bold text-brand-ink";
+const STEP_BADGE = "flex size-7 shrink-0 items-center justify-center rounded-full bg-night text-sm font-bold text-white";
 
 export default function GrosirPage() {
   return (
@@ -56,11 +57,14 @@ export default function GrosirPage() {
       <div className="min-w-0 space-y-6">
         <Panel aria-labelledby="role" className="min-w-0">
           <SectionTitle><span id="role">How a grosir wins a round</span></SectionTitle>
-          <dl className="grid gap-x-10 gap-y-5 sm:grid-cols-[repeat(2,minmax(0,1fr))]">
-            {TERMS.map(([title, body]) => (
-              <div key={title} className="border-t border-line pt-4 first:border-t-0 first:pt-0 sm:[&:nth-child(-n+2)]:border-t-0 sm:[&:nth-child(-n+2)]:pt-0">
-                <dt className="font-bold">{title}</dt>
-                <dd className="mt-1 text-sm text-muted">{body}</dd>
+          <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-[repeat(2,minmax(0,1fr))]">
+            {TERMS.map(([title, body, Icon, tint]) => (
+              <div key={title} className="flex min-w-0 gap-4">
+                <span aria-hidden className={`flex size-11 shrink-0 items-center justify-center rounded-2xl ${tint}`}><Icon className="size-5" /></span>
+                <div className="min-w-0">
+                  <dt className="font-bold">{title}</dt>
+                  <dd className="mt-1 text-sm text-muted">{body}</dd>
+                </div>
               </div>
             ))}
           </dl>
@@ -70,13 +74,13 @@ export default function GrosirPage() {
           <SectionTitle><span id="live">Grosir agents running now</span></SectionTitle>
           <GrosirTable />
           <p className="mt-4 text-xs text-muted">
-            These are the service&apos;s own test grosirs. Their costs are assumptions (0.85 to 0.97 times HET, the government ceiling price), not real wholesale prices. Real grosirs bid their real costs.
+            These are the service&apos;s own test grosirs. Their costs are assumptions (0.85 to 0.97 times HET, the government ceiling price), not real wholesale prices. A real grosir would set its own costs in pricing.json.
           </p>
         </Panel>
 
         <Panel aria-labelledby="run" className="min-w-0 space-y-6">
           <SectionTitle className="mb-0"><span id="run">Run your own grosir agent</span></SectionTitle>
-          <aside className="rounded-2xl bg-warn-soft p-4 text-sm ring-1 ring-inset ring-warn/20">
+          <aside className="rounded-2xl bg-warn-soft p-4 text-sm">
             <strong className="font-semibold">Why you run it yourself.</strong> Committing a bond moves tIDR out of your own wallet, which needs a full-access key (RULES section 4). A restricted function-call key cannot attach that deposit, and we will never ask you to hand a full-access key to a service. Your key stays on your machine.
           </aside>
           <ol className="min-w-0 space-y-6 text-sm">

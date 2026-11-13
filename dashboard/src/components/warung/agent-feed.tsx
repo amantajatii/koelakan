@@ -14,9 +14,9 @@ function NextRoundLine() {
   const { status } = useAgentStatus();
   const now = useNow(0);
   return (
-    <p className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t border-line pt-3 text-sm">
+    <p className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 pt-1 text-sm">
       <span className="flex items-center gap-2 text-muted">
-        <Clock className="size-4 shrink-0 text-brand" aria-hidden />
+        <Clock className="size-4 shrink-0 text-muted" aria-hidden />
         {status ? (
           <>Next round <strong className="num font-semibold text-ink">{now === 0 ? "..." : formatNextOpen(status.next_open_at, now)}</strong></>
         ) : (
@@ -39,11 +39,11 @@ export function AgentFeed({ account, feed }: { account: string; feed: FeedResult
       </SectionTitle>
       {feed.messages.length === 0 ? (
         <div className="flex items-start gap-3 text-sm text-muted">
-          <MessageCircle className="mt-0.5 size-5 shrink-0 text-brand" aria-hidden />
-          <p><strong className="font-semibold text-ink">No messages yet.</strong> Once your agent joins a round it reports here in plain words: what it bought, at what price, and when the goods are due.</p>
+          <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-full bg-info-soft text-info"><MessageCircle className="size-5" /></span>
+          <p className="pt-1"><strong className="font-semibold text-ink">No messages yet.</strong> Once your agent joins a round it reports here in plain words: what it bought, at what price, and when the goods are due.</p>
         </div>
       ) : (
-        <ol aria-label="Latest messages from your agent" className="flex flex-col gap-2.5">
+        <ol aria-label="Latest messages from your agent" className="flex flex-col gap-2.5 rounded-2xl bg-ground p-3 sm:p-4">
           {feed.messages.map((m) => <Bubble key={m.id} message={m} showSender={false} />)}
         </ol>
       )}

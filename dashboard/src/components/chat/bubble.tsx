@@ -22,7 +22,7 @@ export function Bubble({ message, showSender }: { message: ChatMessage; showSend
       <div
         className={cn(
           "max-w-[85%] rounded-2xl px-3.5 py-2.5 text-[0.94rem] leading-snug",
-          mine ? "rounded-br-md bg-brand-soft text-ink" : "rounded-bl-md border border-line bg-surface shadow-[0_1px_2px_rgba(15,42,34,0.05)]",
+          mine ? "rounded-br-md bg-brand/45 text-ink" : "rounded-bl-md bg-surface text-ink shadow-card",
         )}
       >
         {showSender && (
@@ -33,9 +33,9 @@ export function Bubble({ message, showSender }: { message: ChatMessage; showSend
         {mine && <p className="mb-1 text-xs font-bold text-brand-ink">{message.owner}</p>}
         {tag && <Chip tone={tag.tone} className="mb-1.5">{tag.text}</Chip>}
         <p>{message.text}</p>
-        <p className="num mt-1 flex items-center justify-end gap-1 text-[0.7rem] text-muted">
+        <p className="num mt-1 flex items-center justify-end gap-1 text-[0.7rem] text-ink/70">
           <time dateTime={new Date(message.t).toISOString()}>{formatClock(message.t)}</time>
-          {mine && <CheckCheck className="size-3.5 text-brand" aria-label="Read" role="img" />}
+          {mine && <CheckCheck className="size-3.5 text-brand-ink" aria-hidden />}
         </p>
       </div>
     </li>

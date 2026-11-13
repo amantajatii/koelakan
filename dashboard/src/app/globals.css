@@ -1,20 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  /* Surfaces */
-  --color-ground: #eef6f2;
+  /* Surfaces: warm off-white canvas, white cards */
+  --color-ground: #f4f4ef;
   --color-surface: #ffffff;
-  --color-line: #e3ece8;
-  --color-line-strong: #c9d8d1;
-  /* Ink */
-  --color-ink: #0f2a22;
-  --color-muted: #55665f;
-  /* Emerald: the only action colour */
-  --color-brand: #0a7f61;
-  --color-brand-hover: #087458;
-  --color-brand-deep: #08694f;
-  --color-brand-soft: #e3f4ee;
-  --color-brand-ink: #066049;
+  --color-line: #ebebe4;
+  --color-line-strong: #dcdcd3;
+  /* Form control borders: 3.4:1 on white (non-text contrast). */
+  --color-control: #8a8a96;
+  /* Ink: deep navy for text, the sidebar and dark cards */
+  --color-ink: #1f1f2e;
+  --color-muted: #686874;
+  --color-night: #1f1f2e;
+  --color-night-raised: #2c2c3e;
+  --color-night-muted: #a3a3b5;
+  /* Lime: the one accent. A fill only (ink text on it, 13:1); brand-ink is its text form (7.8:1 on white). */
+  --color-brand: #d6f26b;
+  --color-brand-hover: #cae85a;
+  --color-brand-deep: #1f1f2e;
+  --color-brand-soft: #eef9c4;
+  --color-brand-ink: #435a00;
   /* One pastel per staple, each with a darker same-hue text tint */
   --color-rice: #ffebdd;
   --color-rice-ink: #9a4a12;
@@ -24,15 +29,15 @@
   --color-eggs-ink: #8a6a00;
   --color-oil: #e2f1fb;
   --color-oil-ink: #1b5e8c;
-  /* States (success is the brand emerald) */
+  /* States (success is lime). Info is lavender: "in progress". */
   --color-warn: #8a5a00;
   --color-warn-soft: #fff1d6;
   --color-danger: #b42318;
   --color-danger-soft: #fde8e8;
-  --color-info: #1b5e8c;
-  --color-info-soft: #e2f1fb;
+  --color-info: #4b3fa0;
+  --color-info-soft: #ece8ff;
 
-  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* Type scale, ratio 1.2 */
@@ -54,8 +59,8 @@
   --text-4xl--line-height: 2.8rem;
 
   --radius-card: 1.25rem;
-  --shadow-card: 0 1px 2px rgba(15, 42, 34, 0.04), 0 8px 24px rgba(15, 42, 34, 0.06);
-  --shadow-lift: 0 2px 4px rgba(15, 42, 34, 0.05), 0 14px 32px rgba(15, 42, 34, 0.1);
+  --shadow-card: 0 1px 2px rgba(31, 31, 46, 0.04), 0 6px 18px rgba(31, 31, 46, 0.04);
+  --shadow-lift: 0 2px 4px rgba(31, 31, 46, 0.06), 0 14px 32px rgba(31, 31, 46, 0.1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -63,7 +68,7 @@ html {
   background: var(--color-ground);
   color: var(--color-ink);
   -webkit-text-size-adjust: 100%;
-  scrollbar-color: #b3cbc1 transparent;
+  scrollbar-color: #c9c9c0 transparent;
   scrollbar-width: thin;
 }
 
@@ -72,12 +77,8 @@ body {
   font-family: var(--font-sans);
   font-feature-settings: "ss01" 0;
   background-color: var(--color-ground);
-  background-image:
-    radial-gradient(52rem 34rem at 108% -12%, rgba(10, 127, 97, 0.16), transparent 62%),
-    radial-gradient(40rem 30rem at -12% 105%, rgba(46, 160, 200, 0.1), transparent 60%);
-  background-repeat: no-repeat;
-  accent-color: var(--color-brand);
-  caret-color: var(--color-brand);
+  accent-color: var(--color-ink);
+  caret-color: var(--color-ink);
 }
 
 /* Money, quantities, times: aligned digits. */
@@ -91,14 +92,13 @@ h1, h2, h3 {
 }
 
 ::selection {
-  background: #bfe6d7;
+  background: var(--color-brand);
   color: var(--color-ink);
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-brand);
+  outline: 2px solid var(--color-ink);
   outline-offset: 2px;
-  border-radius: 0.5rem;
 }
 
 ::-webkit-scrollbar {
@@ -106,13 +106,13 @@ h1, h2, h3 {
   height: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #b3cbc1;
+  background: #c9c9c0;
   border-radius: 999px;
   border: 3px solid transparent;
   background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #8fb2a4;
+  background: #a8a89e;
   background-clip: content-box;
   border: 3px solid transparent;
 }
@@ -120,8 +120,32 @@ h1, h2, h3 {
   background: transparent;
 }
 
-input::placeholder {
-  color: #6b7b74;
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
+
+/* Focus ring on dark surfaces (sidebar, dark cards): lime, 13:1 on navy. */
+.on-dark :focus-visible {
+  outline-color: var(--color-brand);
+}
+
+/* Enabled controls read as clickable; disabled ones say so. Tailwind v4 leaves buttons at the default cursor. */
+@layer base {
+  button:not(:disabled):not([aria-disabled="true"]),
+  [role="button"]:not([aria-disabled="true"]),
+  select:not(:disabled),
+  summary,
+  label[for],
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    cursor: pointer;
+  }
+  :disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
 }
 
 /* Settle-in motion for live data: one authored moment, short and from a visible default. */
@@ -134,8 +158,8 @@ input::placeholder {
 }
 
 @keyframes pulse-ring {
-  0% { box-shadow: 0 0 0 0 rgba(10, 127, 97, 0.35); }
-  100% { box-shadow: 0 0 0 7px rgba(10, 127, 97, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(67, 90, 0, 0.35); }
+  100% { box-shadow: 0 0 0 7px rgba(67, 90, 0, 0); }
 }
 .live-dot {
   animation: pulse-ring 1.8s ease-out infinite;

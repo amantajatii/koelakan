@@ -53,7 +53,7 @@ export function ItemCard({ snapshot, qtyLabel, standingLabel = "on your standing
           {above !== null && above > 0 && <span className={cn("mt-0.5 block text-xs font-medium", theme.ink)}>Market is {percent(above)} above HET</span>}
         </p>
         {roundId !== null && (
-          <Link href={`/rounds/${roundId}`} className={buttonClass("onBrand", "min-h-10 shrink-0 gap-1.5 px-3 max-sm:w-full")} aria-label={`Open round #${roundId} for ${itemLabel(item)}`}>
+          <Link href={`/rounds/${roundId}`} className={buttonClass("secondary", "shrink-0 gap-1.5 px-3 max-sm:w-full")} aria-label={`Open round #${roundId} for ${itemLabel(item)}`}>
             Round #{roundId}
             <ArrowRight className="size-4" aria-hidden />
           </Link>
