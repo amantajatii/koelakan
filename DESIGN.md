@@ -2,17 +2,20 @@
 name: Koelakan
 description: Group restocking for warungs, measured against the real market price.
 colors:
-  ground: "#eef6f2"
+  ground: "#f4f4ef"
   surface: "#ffffff"
-  line: "#e3ece8"
-  line-strong: "#c9d8d1"
-  ink: "#0f2a22"
-  muted: "#55665f"
-  brand: "#0a7f61"
-  brand-hover: "#087458"
-  brand-deep: "#08694f"
-  brand-soft: "#e3f4ee"
-  brand-ink: "#066049"
+  line: "#ebebe4"
+  line-strong: "#dcdcd3"
+  control: "#8a8a96"
+  ink: "#1f1f2e"
+  muted: "#686874"
+  night: "#1f1f2e"
+  night-raised: "#2c2c3e"
+  night-muted: "#a3a3b5"
+  brand: "#d6f26b"
+  brand-hover: "#cae85a"
+  brand-soft: "#eef9c4"
+  brand-ink: "#435a00"
   rice: "#ffebdd"
   rice-ink: "#9a4a12"
   sugar: "#fde6ee"
@@ -25,46 +28,46 @@ colors:
   warn-soft: "#fff1d6"
   danger: "#b42318"
   danger-soft: "#fde8e8"
-  info: "#1b5e8c"
-  info-soft: "#e2f1fb"
+  info: "#4b3fa0"
+  info-soft: "#ece8ff"
 typography:
   display:
-    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Plus Jakarta Sans, ui-sans-serif, system-ui, sans-serif"
     fontSize: "2.488rem"
     fontWeight: 800
-    lineHeight: 1.08
-    letterSpacing: "-0.02em"
+    lineHeight: 1.1
+    letterSpacing: "-0.025em"
   headline:
-    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "2.074rem"
-    fontWeight: 800
-    lineHeight: "2.4rem"
+    fontFamily: "Plus Jakarta Sans, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.728rem"
+    fontWeight: 700
+    lineHeight: "2.1rem"
     letterSpacing: "-0.02em"
+  figure:
+    fontFamily: "Plus Jakarta Sans, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "2.488rem"
+    fontWeight: 800
+    lineHeight: "2.8rem"
+    letterSpacing: "-0.025em"
+    fontFeature: "tnum"
   title:
-    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Plus Jakarta Sans, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.2rem"
     fontWeight: 700
     lineHeight: "1.7rem"
-    letterSpacing: "-0.025em"
-  figure:
-    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1.44rem"
-    fontWeight: 800
-    lineHeight: "1.9rem"
-    letterSpacing: "-0.005em"
-    fontFeature: "tnum"
+    letterSpacing: "-0.01em"
   body-lg:
-    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Plus Jakarta Sans, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: "1.6rem"
   body:
-    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Plus Jakarta Sans, ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 400
     lineHeight: "1.35rem"
   label:
-    fontFamily: "Figtree, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Plus Jakarta Sans, ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.75rem"
     fontWeight: 600
     lineHeight: "1.1rem"
@@ -77,6 +80,8 @@ rounded:
   xl: "12px"
   2xl: "16px"
   card: "20px"
+  3xl: "24px"
+  rail: "28px"
   full: "9999px"
 spacing:
   "1": "4px"
@@ -89,50 +94,46 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.brand}"
-    textColor: "{colors.surface}"
+    textColor: "{colors.ink}"
     typography: "{typography.body}"
-    rounded: "{rounded.xl}"
-    padding: "0 16px"
+    rounded: "{rounded.full}"
+    padding: "0 20px"
     height: "44px"
   button-primary-hover:
     backgroundColor: "{colors.brand-hover}"
-  button-primary-active:
-    backgroundColor: "{colors.brand-deep}"
   button-secondary:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.xl}"
-    padding: "0 16px"
+    typography: "{typography.body}"
+    rounded: "{rounded.full}"
+    padding: "0 20px"
     height: "44px"
   button-secondary-hover:
-    backgroundColor: "{colors.brand-soft}"
+    backgroundColor: "{colors.ground}"
   button-soft:
     backgroundColor: "{colors.brand-soft}"
     textColor: "{colors.brand-ink}"
-    rounded: "{rounded.xl}"
-    padding: "0 16px"
+    rounded: "{rounded.full}"
+    padding: "0 20px"
     height: "44px"
   button-ghost:
     textColor: "{colors.muted}"
-    rounded: "{rounded.xl}"
-    padding: "0 16px"
+    rounded: "{rounded.full}"
+    padding: "0 20px"
     height: "44px"
   button-ghost-hover:
-    backgroundColor: "{colors.brand-soft}"
+    backgroundColor: "{colors.ground}"
     textColor: "{colors.ink}"
-  button-on-brand:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.brand-ink}"
-    rounded: "{rounded.xl}"
-    padding: "0 16px"
+  button-on-dark:
+    textColor: "{colors.surface}"
+    rounded: "{rounded.full}"
+    padding: "0 20px"
     height: "44px"
-  button-on-brand-hover:
-    backgroundColor: "{colors.brand-soft}"
   button-danger:
     backgroundColor: "{colors.danger}"
     textColor: "{colors.surface}"
-    rounded: "{rounded.xl}"
-    padding: "0 16px"
+    rounded: "{rounded.full}"
+    padding: "0 20px"
     height: "44px"
   input:
     backgroundColor: "{colors.surface}"
@@ -141,266 +142,260 @@ components:
     rounded: "{rounded.xl}"
     padding: "0 14px"
     height: "44px"
+  chip-neutral:
+    backgroundColor: "{colors.ground}"
+    textColor: "{colors.muted}"
+    typography: "{typography.label}"
+    rounded: "{rounded.full}"
+    padding: "4px 12px"
   chip-good:
     backgroundColor: "{colors.brand-soft}"
     textColor: "{colors.brand-ink}"
     typography: "{typography.label}"
     rounded: "{rounded.full}"
-    padding: "2px 10px"
-  chip-neutral:
-    backgroundColor: "{colors.ground}"
-    textColor: "{colors.muted}"
-    rounded: "{rounded.full}"
-    padding: "2px 10px"
-  chip-warn:
-    backgroundColor: "{colors.warn-soft}"
-    textColor: "{colors.warn}"
-    rounded: "{rounded.full}"
-    padding: "2px 10px"
-  chip-bad:
-    backgroundColor: "{colors.danger-soft}"
-    textColor: "{colors.danger}"
-    rounded: "{rounded.full}"
-    padding: "2px 10px"
+    padding: "4px 12px"
   chip-info:
     backgroundColor: "{colors.info-soft}"
     textColor: "{colors.info}"
+    typography: "{typography.label}"
     rounded: "{rounded.full}"
-    padding: "2px 10px"
+    padding: "4px 12px"
+  chip-warn:
+    backgroundColor: "{colors.warn-soft}"
+    textColor: "{colors.warn}"
+    typography: "{typography.label}"
+    rounded: "{rounded.full}"
+    padding: "4px 12px"
+  chip-bad:
+    backgroundColor: "{colors.danger-soft}"
+    textColor: "{colors.danger}"
+    typography: "{typography.label}"
+    rounded: "{rounded.full}"
+    padding: "4px 12px"
   panel:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     rounded: "{rounded.card}"
     padding: "24px"
-  item-card-rice:
-    backgroundColor: "{colors.rice}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.card}"
-    padding: "20px"
-  item-card-sugar:
-    backgroundColor: "{colors.sugar}"
-    rounded: "{rounded.card}"
-    padding: "20px"
-  item-card-eggs:
-    backgroundColor: "{colors.eggs}"
-    rounded: "{rounded.card}"
-    padding: "20px"
-  item-card-oil:
-    backgroundColor: "{colors.oil}"
-    rounded: "{rounded.card}"
-    padding: "20px"
-  hero-banner:
-    backgroundColor: "{colors.brand-deep}"
+  card-dark:
+    backgroundColor: "{colors.night}"
     textColor: "{colors.surface}"
-    typography: "{typography.display}"
     rounded: "{rounded.card}"
-    padding: "36px"
-  notice:
-    rounded: "{rounded.xl}"
-    padding: "12px 14px"
-  nav-rail-item-active:
-    backgroundColor: "{colors.brand-soft}"
-    textColor: "{colors.brand-ink}"
+    padding: "24px"
+  card-dark-inset:
+    backgroundColor: "{colors.night-raised}"
+    textColor: "{colors.surface}"
     rounded: "{rounded.2xl}"
-    padding: "10px 4px"
-  nav-rail-item:
-    textColor: "{colors.muted}"
-    rounded: "{rounded.2xl}"
-    padding: "10px 4px"
+    padding: "20px"
+  sidebar:
+    backgroundColor: "{colors.night}"
+    textColor: "{colors.surface}"
+    rounded: "{rounded.rail}"
+    padding: "16px"
+    width: "240px"
+  nav-item:
+    textColor: "{colors.night-muted}"
+    typography: "{typography.body}"
+    rounded: "{rounded.full}"
+    padding: "0 16px"
+    height: "44px"
+  nav-item-hover:
+    backgroundColor: "{colors.night-raised}"
+    textColor: "{colors.surface}"
+  nav-item-active:
+    backgroundColor: "{colors.brand}"
+    textColor: "{colors.ink}"
+  demo-card:
+    backgroundColor: "{colors.brand}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.3xl}"
+    padding: "16px"
   filter-tabs:
     backgroundColor: "{colors.ground}"
-    rounded: "{rounded.xl}"
+    rounded: "{rounded.full}"
     padding: "4px"
-  filter-tab-active:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.brand-ink}"
-    rounded: "{rounded.lg}"
+  filter-tab:
+    textColor: "{colors.muted}"
+    rounded: "{rounded.full}"
+    padding: "0 16px"
     height: "40px"
-  chat-bubble-agent:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.2xl}"
-    padding: "10px 14px"
-  chat-bubble-owner:
-    backgroundColor: "{colors.brand-soft}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.2xl}"
-    padding: "10px 14px"
+  filter-tab-active:
+    backgroundColor: "{colors.night}"
+    textColor: "{colors.surface}"
+  chart-tooltip:
+    backgroundColor: "{colors.night}"
+    textColor: "{colors.surface}"
+    typography: "{typography.label}"
+    rounded: "{rounded.lg}"
+    padding: "6px 10px"
 ---
 
 # Design System: Koelakan
 
 ## Overview
 
-**Creative North Star: "The Fresh Grocery Counter"**
+**Creative North Star: "The Navy Desk with a Lime Pen"**
 
-Koelakan reads as a fresh, modern grocery app for warung owners: soft white cards resting on a pale mint ground, one emerald colour that means "act" or "this is live", and a pastel tint for each of the four staples with cut-out produce imagery on it. Money is the hero of every screen. The signature is the savings strip: the PIHPS market price struck through, the price actually paid in emerald, and a thin bar showing how far below the market it landed.
+Koelakan reads as a modern operations dashboard in the Eduplex manner: a warm off-white canvas, white borderless cards, a navy floating sidebar that holds the whole app together, and a single lime accent that marks the one thing that is current, done or worth pressing. Navy is the structure; lime is the highlighter laid on top of it. Money is still the hero of every screen, shown as large tabular figures and as navy bars and rings measured against the PIHPS market price.
 
-Density is calm and phone-first. Cards are generous (20-24px inside), tap targets never drop under 44px, and the structure is one column on a phone that opens into a main column plus a 20-22rem side column on a laptop. The ground carries a faint emerald wash in the top-right corner and a faint sky wash in the bottom-left; everything else is flat colour.
+Density is calm and phone-first. Cards are generous (20-24px inside), tap targets never drop under 44px (40px inside the segmented filter), and the layout is one column on a phone that opens into a main column plus a 22rem side column on wide screens. Everything is flat colour: no gradients, no glow, no radial washes. The four staple pastels from the earlier world survive only on the item tiles, so food still reads as food.
 
-The world was chosen against two looks it replaces: the dark crypto dashboard and the kraft-paper, nostalgic ledger. Chain detail is present but tucked away under disclosures, so the surface stays a shop tool, not a block explorer.
+Dial: ENERGY 2 / RHYTHM 2 / MOTION 1. Quiet surfaces, a steady repeated card rhythm, and motion limited to a short settle-in and state colour transitions.
 
 **Key Characteristics:**
-- Pale mint ground (#eef6f2) with white 20px-radius cards, hairline green-grey border, soft two-layer shadow.
-- One emerald (#0a7f61) for actions, selection, the savings figure and the agent's live state.
-- Four staple pastels, each paired with a darker same-hue text tint.
-- One friendly geometric sans (Figtree) with tabular numerals for every amount, quantity and time.
-- Lucide stroke icons only; produce raster cut-outs for the four items and the hero.
-- Status always pairs a colour with a word or icon.
+- Warm off-white canvas with white 20px-radius cards and no card border.
+- Navy for structure: sidebar, phone tab bar, dark focal cards, chart bars, progress rings, selected filter tabs.
+- One lime accent, used only as a fill with navy ink on it.
+- Plus Jakarta Sans throughout, tabular numerals for every amount, quantity and time.
+- Four food pastels, each with a darker same-hue text tint, kept for the staple tiles.
+- State colours carry fixed meanings: lavender in progress, lime done, amber waiting, red failed.
 
 ## Colors
 
-A cool mint-and-white field, one confident emerald, and four warm-to-cool food pastels that only ever describe an item.
+Warm paper, deep navy and one bright lime, with four food pastels that only ever describe an item.
 
 ### Primary
-- **Market Emerald** (brand): primary buttons, the paid price, the savings bar fill, focus rings, selected states, live dots, checkbox accent and caret.
-- **Emerald Hover** (brand-hover) and **Deep Emerald** (brand-deep): hover and pressed primary; Deep Emerald is also the hero banner field so white text sits on it with room to spare.
-- **Mint Wash** (brand-soft): the selected-state fill (active rail item, active chat thread, owner bubble), the "good" chip and notice, soft buttons, icon discs, the safety callout.
-- **Emerald Ink** (brand-ink): emerald text on light fills (links, chip text, "% below PIHPS", the paid figure).
+- **Highlighter Lime** (brand): primary buttons, the active sidebar pill and tab bar pill, the sidebar demo card, the newest bar in the savings chart, the "% below PIHPS" pill on the result card, done step markers, text selection, and the focus ring on dark surfaces. Navy ink sits on it at 13:1.
+- **Pressed Lime** (brand-hover): hover state of lime fills.
+- **Lime Wash** (brand-soft): the "good" chip and notice, soft buttons, empty-state icon discs.
+- **Olive Ink** (brand-ink): the text form of the accent, 7.8:1 on white. Savings figures, "% below PIHPS" text, chip text, sender labels in chat.
 
-### Secondary (item pastels)
-- **Rice Peach** (rice) with **Rice Clay** text (rice-ink).
-- **Sugar Rose** (sugar) with **Sugar Berry** text (sugar-ink).
-- **Egg Butter** (eggs) with **Egg Ochre** text (eggs-ink).
-- **Oil Sky** (oil) with **Oil Harbour** text (oil-ink).
-These fill the staple cards and the round image discs; the ink tint labels the unit, HET and the struck PIHPS price on that card. Unknown items fall back to Mint Wash with Emerald Ink.
+### Secondary (structure)
+- **Desk Navy** (night, and ink as text): the sidebar, the phone tab bar, dark focal cards (promo, auction result, "Needs you" when it has items), chart bars, progress ring arcs, the active filter tab, the chart tooltip, the default focus ring on light surfaces, checkbox accent and caret.
+- **Raised Navy** (night-raised): insets inside dark cards and the sidebar hover fill.
+- **Dusk Grey** (night-muted): secondary text on navy, 6.5:1 on night and 5.5:1 on night-raised.
 
-### Tertiary (state)
-- **Amber Warn** (warn on warn-soft), **Brick Danger** (danger on danger-soft), **Harbour Info** (info on info-soft). Success has no colour of its own; it is the brand emerald.
+### Tertiary (staples and state)
+- **Rice Peach / Sugar Rose / Egg Butter / Oil Sky** (rice, sugar, eggs, oil) with their inks (rice-ink, sugar-ink, eggs-ink, oil-ink): the produce disc behind each staple image, the warung item cards, and item-specific notes such as "PIHPS is above HET".
+- **Lavender** (info, info-soft): in progress. Live auction rows, "Next up" and "Ready" step chips, info notices.
+- **Amber** (warn, warn-soft): waiting. Awaiting settlement, warnings.
+- **Brick** (danger, danger-soft): failed, refunded, destructive actions and errors.
 
 ### Neutral
-- **Pale Mint Ground** (ground): page background, table row hover, inactive tab track, neutral chip.
-- **Card White** (surface): every panel, input and on-brand button.
-- **Hairline** (line) and **Firm Hairline** (line-strong): card borders and dividers; input and secondary-button borders.
-- **Forest Ink** (ink): all body text; at 40% it is the modal backdrop; as a fill it backs code blocks.
-- **Sage Muted** (muted): secondary text, inactive nav, captions.
+- **Warm Canvas** (ground): the page background, the filter track, neutral chips, hover fill of list rows and secondary buttons.
+- **Card White** (surface): every card, input and the testnet note in the header.
+- **Hairline** (line) and **Firm Hairline** (line-strong): dividers inside cards, ring and chart tracks, the secondary button outline, skeleton fill.
+- **Control Grey** (control): input borders, 3.4:1 on white for non-text contrast.
+- **Navy Ink** (ink): body text and headings.
+- **Slate Muted** (muted): secondary text, 5.5:1 on white and 4.98:1 on the canvas.
 
 ### Named Rules
-**The One Emerald Rule.** Emerald is the only action colour. It marks what to press, what is selected, what was saved and that the agent is alive; it never decorates.
+**The Highlighter Rule.** Lime is a fill, never text and never a ring or stroke on white (1.25:1). Whatever sits on lime is navy ink. When the accent has to be text on a light surface, use Olive Ink. Lime may be text or a ring only on navy, where it reads at 13:1.
 
-**The Pastel Belongs To Food Rule.** Rice, sugar, eggs and oil pastels appear only where that item is the subject (its card, its image disc). They are never used for states, sections or generic decoration.
+**The Navy Spine Rule.** Navy carries structure and selection: the sidebar, dark cards, chart bars, rings and the selected state. Every navy surface carries the `on-dark` class so its focus ring turns lime.
 
-**The Word With Every Colour Rule.** A status colour always ships with text or a drawn icon: chips carry a dot plus a word, notices carry an icon, the savings bar carries "x% below PIHPS".
+**The Fixed Meaning Rule.** Lavender means in progress, lime means done, amber means waiting, red means failed. Colour always comes with a word, number or icon.
 
 ## Typography
 
-**Display Font:** Figtree (with ui-sans-serif, system-ui)
-**Body Font:** Figtree
-**Label/Mono Font:** Figtree for labels; ui-monospace only for code and raw contract payloads.
+**Display Font:** Plus Jakarta Sans (with ui-sans-serif, system-ui)
+**Label/Mono Font:** ui-monospace stack, for account ids and hashes only
 
-**Character:** One rounded geometric sans across the whole product, warm enough for a shop owner, firm enough for money. Hierarchy comes from weight (400 / 600 / 700 / 800) and a 1.2 ratio scale, never from a second family.
+**Character:** One geometric sans drawn for Jakarta, the city this product is about. Heavy weights (700-800) with slight negative tracking for headings and figures; regular weight for reading text. Every amount, quantity and time uses tabular numerals.
 
 ### Hierarchy
-- **Display** (800, 2.488rem from sm up, 2.074rem on phones, 1.08 leading, -0.02em): the hero banner h1, usually a sentence stating the saving.
-- **Headline** (800, 2.074rem to 2.488rem, -0.02em): page header h1 on routes without a banner.
-- **Title** (700, 1.2rem, tight tracking): panel section titles; item card names at 1rem to 1.2rem.
-- **Figure** (800, 1.44rem, tabular): the paid price in the savings strip; 2.488rem in its large variant.
-- **Body** (400, 0.875rem / 1.35rem): the working size for panels, tables and lists. Lead copy and inputs step up to 1rem / 1.6rem; headers cap lead copy at 42rem.
-- **Label** (600, 0.75rem): chips, captions, table heads, field hints. Sentence case, no tracking.
+- **Display** (800, 2.074rem rising to 2.488rem, line-height 1.1): the overview h1. Route headers use the same size at 700.
+- **Headline** (700, 1.728rem): titles inside dark focal cards.
+- **Figure** (800, 1.44rem to 2.488rem, tabular): savings, countdowns, prices. The auction result's winning price goes larger (3rem to 3.75rem, 800, -0.03em) as the single focal number on a round page.
+- **Title** (700, 1.2rem, -0.01em): card section titles.
+- **Body** (400, 0.875rem): the workhorse for card content, list rows and nav labels.
+- **Body large** (400, 1rem): page leads under headings and input text, so phones do not zoom.
+- **Label** (600, 0.75rem): chips, captions, hints. Chart axis labels drop to 11px in muted.
 
 ### Named Rules
-**The Tabular Money Rule.** Every rupiah amount, quantity, round number and clock time is set with tabular numerals (`.num`: tnum, -0.005em) so columns and before/after prices align.
+**The Tabular Money Rule.** Any rupiah amount, quantity, percentage, round number or clock time is set with tabular numerals so columns align and live figures do not jitter.
 
-**The Sentence Case Rule.** Labels, chips and table heads are sentence case at normal tracking. Hierarchy is weight and size, not capitals or letter-spacing.
+**The Sentence Case Rule.** Headings and labels are sentence case at their natural tracking. The system has no uppercase tracked labels above headings.
 
 ## Layout
 
-Phone first. Content sits in a centred column capped at 78rem with 16px side padding (32px from 640px). From 1024px a fixed 92px (5.75rem) icon rail with labels occupies the left edge and the content shifts right of it; below 1024px the rail becomes a six-tab bottom bar (56px targets, safe-area inset) and the brand moves into the top bar.
+On screens 1024px and up, the navy sidebar (240px wide) floats 16px in from the top, left and bottom of the viewport, and the content column starts after it (16.5rem). Content sits in a container up to 84rem wide with 16px side padding, 32px from 640px. Below 1024px the sidebar disappears, the brand moves into the top bar, and a full-width navy tab bar with six labelled items sits at the bottom with the safe-area inset.
 
-Page structure stacks in 24px (space-y-6) to 32px gaps: banner or page header, then the staple cards, then a two-column band. Two-column bands use a fluid main column with a 20-22rem side column at 1024px, or two equal columns. Staple cards sit two across on phones and four across from 1280px with 12-16px gaps. Inside cards the rhythm is 12px (gap-3) between items, 8px for tight pairs, 16-24px between groups.
-
-Wide tables never push the page sideways: they scroll inside their card on tablet and up, and on phones each row becomes a stacked label/value grid.
+The overview uses a main column plus a 22rem side column from 1280px; below that, a single column whose order is set so the promo card comes right after the header on phones. Staple cards form a two-up grid from 640px. Card grids use 16px gaps; sections stack at 24-32px. Spacing follows a 4px base (4, 8, 12, 16, 20, 24, 32).
 
 ## Elevation & Depth
 
-A soft, low hybrid: surfaces are separated by a hairline border plus a diffuse forest-tinted two-layer shadow, and tonal layering (white on mint, mint on white) does the rest. Nothing is lifted far, and nothing uses hard offsets.
+Depth comes from tone, not shadow: white cards on a warm canvas, navy cards on top of that. Cards carry a shadow so faint it reads as a soft edge rather than lift. One stronger shadow exists, for the confirm dialog only.
 
 ### Shadow Vocabulary
-- **Card** (`0 1px 2px rgba(15,42,34,0.04), 0 8px 24px rgba(15,42,34,0.06)`): every panel, item card and the hero banner.
-- **Lift** (`0 2px 4px rgba(15,42,34,0.05), 0 14px 32px rgba(15,42,34,0.1)`): modal dialogs only.
-- **Press** (`0 1px 2px rgba(8,105,79,0.3)`): under the primary button, and a 0 2px 6px emerald glow under the logo tile.
-- **Seat** (`0 1px 3px rgba(15,42,34,0.12)`): the active segment in filter tabs.
+- **Card edge** (`box-shadow: 0 1px 2px rgba(31,31,46,0.04), 0 6px 18px rgba(31,31,46,0.04)`): every white card, the header account button and testnet note, agent chat bubbles.
+- **Dialog lift** (`box-shadow: 0 2px 4px rgba(31,31,46,0.06), 0 14px 32px rgba(31,31,46,0.1)`): the confirm dialog, over a 40% navy backdrop.
 
 ### Named Rules
-**The Flat Panel Rule.** A panel is never nested inside another panel. Inside a card, group with hairline dividers, a mint inset (ground or brand-soft) or spacing.
-
-**The Glass Only For Chrome Rule.** Backdrop blur appears only on the fixed navigation (rail at 90% white, tab bar at 95% white), never on content.
+**The Flat Colour Rule.** No gradients, glows or radial washes on any surface. Contrast between canvas, white and navy does the work.
 
 ## Shapes
 
-Soft, rounded and friendly. Containers take a 20px radius (card); buttons, inputs, notices and logo tile take 12px (xl); conversational and navigational items (chat bubbles, rail items, thread rows, error note) take 16px (2xl); segments inside a tab track take 8px. Chips, pills, the account button, image discs, progress bars and status dots are fully round. Chat bubbles cut one corner to 6px on the speaker's side, the only asymmetric shape in the system. Produce always sits in a circle.
+Everything is rounded and soft. Cards are 20px, the sidebar 28px, the demo card 24px, list rows and dark insets 16px, inputs and notices 12px, tooltips 8px. Every button, chip, nav item, filter tab, icon disc and chart bar is a full pill or circle. Cards have no border; inputs have a 1px control-grey border; notices have a faint inset ring in their own hue.
 
 ## Components
 
 ### Buttons
-Confident, rounded and tall enough for a thumb.
-- **Shape:** gently rounded (12px), min height 44px, 16px side padding, 600 weight at 0.875rem, 8px icon gap.
-- **Primary:** Market Emerald with white text and a small emerald press shadow; hover to Emerald Hover, press to Deep Emerald.
-- **Secondary:** white with a Firm Hairline border; hover tints Mint Wash with a half-emerald border.
-- **Soft:** Mint Wash with Emerald Ink, for secondary actions inside emerald-adjacent content.
-- **Ghost:** muted text, Mint Wash on hover.
-- **On-brand:** white with Emerald Ink, used on the hero banner and on pastel item cards ("Round #7 →").
-- **Danger:** Brick Danger with white text, used only to confirm destructive actions in a dialog.
-- **Busy / disabled:** a spinning stroke loader is prepended to the label and the button disables; disabled drops to 50% opacity with a not-allowed cursor.
-- **Focus:** global 3px emerald outline, 2px offset.
+- **Shape:** full pill (9999px), 44px tall, 20px side padding, 600 weight body text.
+- **Primary:** lime fill with navy ink; hover goes to Pressed Lime; press nudges down 1px.
+- **Secondary:** white with a Firm Hairline outline and navy ink; hover fills with canvas and darkens the outline.
+- **Soft:** Lime Wash fill with Olive Ink.
+- **Ghost:** muted text, canvas fill on hover.
+- **On dark:** for navy cards: white text on a 10% white fill with a 25% white inset ring. (The code names this variant `onBrand`.)
+- **Danger:** brick fill with white text.
+- **Disabled:** 50% opacity and a not-allowed cursor.
 
 ### Chips
-- **Style:** fully round, 2px x 10px, 0.75rem 600, a 1px inset ring of the tone at 20%, and a 6px dot.
-- **Tones:** good (Mint Wash / Emerald Ink), neutral (ground / muted), warn, bad, info. The header agent pill is the same form at 36px high and links to Status; its "good" dot pulses (pulse-ring, 1.8s).
+- **Style:** soft fill in the tone's wash with the tone's ink, no border, full pill, 0.75rem semibold, 4px by 12px.
+- **State:** neutral, good (lime wash), info (lavender), warn (amber), bad (brick). An optional dot repeats the ink colour; the word always carries the meaning.
 
 ### Cards / Containers
-- **Corner Style:** 20px.
-- **Background:** Card White on the mint ground; the safety callout uses Mint Wash with a 15% emerald ring.
-- **Shadow Strategy:** Card shadow (see Elevation).
-- **Border:** 1px Hairline.
-- **Internal Padding:** 20px on phones, 24px from 640px. Section title is Title type with a right-aligned aside, 16px above content.
+- **Panel:** white, 20px radius, no border, card-edge shadow, 20px padding rising to 24px. Panels never nest.
+- **Dark card:** navy, 20px radius, white text with Dusk Grey secondary text, carries `on-dark`. Used for the promo card, the auction result, and "Needs you" when actions are waiting. Insets inside use Raised Navy at 16px radius.
 
 ### Inputs / Fields
-- **Style:** white, 1px Firm Hairline, 12px radius, 44px min height, 14px side padding, 1rem tabular text; label above at 0.875rem 600, hint below at 0.75rem muted.
-- **Hover / Focus:** border goes half-emerald on hover, full emerald with the emerald outline on focus.
-- **Error / Disabled:** `aria-invalid` turns the border Brick Danger; disabled sits on the ground colour at 60% opacity.
-
-### Notices
-Inline messages on the soft state fill with a 1px inset ring and a leading stroke icon (check, alert, triangle, info), 12px radius. Chain-load errors use the 16px-radius error note with a retry button.
+- **Style:** white, 1px control-grey border, 12px radius, 44px tall, 1rem tabular text, label above in 600 body text, hint below in muted label text.
+- **Focus:** navy 2px outline and navy border. Hover darkens the border.
+- **Error / Disabled:** brick border when invalid; canvas fill at 60% opacity when disabled.
 
 ### Navigation
-- **Desktop rail:** 92px white-glass column, logo tile on top, six icon-over-label items (22px stroke icons, 0.72rem 600). Active: Mint Wash fill, Emerald Ink, stroke weight 2.2 versus 1.8.
-- **Phone tab bar:** fixed bottom, six columns, 56px targets; active item gets a 28x48px Mint Wash pill behind the icon and Emerald Ink label.
-- **Top bar:** testnet note on desktop, brand on phones, agent pill and a round Sign in / account button on the right.
+- **Logo:** a lime price tag turned 45 degrees with a navy arrow pointing down (prices below the market), on a navy rounded tile. One SVG source (`components/logo.tsx`, shared with `app/icon.svg` and the OG image); on the navy sidebar the tile lifts to Raised Navy so it still reads.
+- **Sidebar:** navy floating card with the logo and wordmark at the top, six pill links with stroke icons, and the demo card at the foot. Inactive links are Dusk Grey at 500 weight; hover fills Raised Navy with white text; the current page is a lime pill with navy 700 text and a slightly heavier icon stroke.
+- **Demo card:** a lime card (24px radius) at the sidebar foot with a navy circle holding a lime arrow; the arrow turns 45 degrees and the card lifts 2px on hover.
+- **Phone tab bar:** navy, six columns, icon over a short label; the current item puts its icon in a lime pill and turns its label lime.
 
 ### Filter Tabs
-A ground-coloured 12px track with 4px padding holding 40px segments; the active segment turns white with Emerald Ink and a Seat shadow, and carries a Mint Wash count bubble. They filter in place (aria-pressed), they do not navigate.
+A canvas-coloured pill track with 4px padding; options are 40px pills in muted text. The selected option is navy with white bold text, and its count badge turns lime with navy ink.
 
-### Savings Strip (signature)
-The proof of the product, on every item card and in large form on round pages: the PIHPS price struck through in the item's ink tint (or muted on white), the paid price in Emerald Ink at Figure weight with a small "/kg", a 6px (10px large) fully round bar whose emerald fill width is the percent below PIHPS (min 2%), and "x% below PIHPS" beneath. With nothing settled it shows the PIHPS price and an empty track with a plain sentence saying the first round will fill it.
+### Savings Chart (signature)
+Thin full-round navy bars, one per settled round, on a hairline baseline with round numbers beneath in 11px muted text. The newest bar is lime and carries a navy tooltip with the percentage and round number. Plain markup, no chart library; a visually hidden table carries the data for screen readers.
 
-### Staple Item Card
-A pastel card in the item's tint with a faint inner ring, a round produce disc (44px on phones, 80px from 640px), the item name and a "per kg · HET" line in the item ink, the savings strip, then a divider and the quantity line with an on-brand button to the round behind the numbers.
+### Progress Ring
+A 48px ring with a 5px stroke: hairline track, navy arc with round caps, the percentage in 11px bold at the centre. Decorative; the row text repeats the number.
 
-### Hero Banner
-A Deep Emerald 20px card with a white highlight wash top-right and a dark wash bottom-left, Display h1 and pale-mint lead copy on the left half, and the produce hero cut-out anchored bottom-right from 640px. Actions are on-brand primary plus a translucent white secondary. It is each page's h1.
+### Staple Tiles
+Each staple's cut-out image sits on a circular disc in its own pastel. On the overview the card is white with a three-up PIHPS / last price / below-PIHPS readout; on the warung page the whole item card takes the pastel with a faint inset ring and a savings strip (PIHPS struck through, paid price in Olive Ink, a thin navy progress bar).
+
+### Notices and Status Rows
+Notices are 12px-radius soft fills in their tone with a drawn icon and a faint inset ring. Round status rows pair a 44px circular icon tile in the tone's wash with a title, a muted sub-line and a count chip.
 
 ### Chat Bubbles
-WhatsApp-style thread on a ground-tinted well. Agent bubbles are white with a hairline border, owner bubbles are Mint Wash; both 16px radius with the speaker-side bottom corner cut to 6px, 0.94rem text, an optional event chip, and a tabular timestamp with a read tick.
+Owner messages sit right on a 45% lime fill with navy text; agent messages sit left on white with the card-edge shadow. Both are 16px radius with the corner nearest the speaker tightened.
 
-### Produce Imagery
-Photographic cut-out rasters (rice, sugar, eggs, oil, hero) with embedded provenance, always on a round disc (white 70% on the item pastel, or the pastel itself). A Lucide stroke icon in the item ink stands in until the image decodes.
+### Motion
+Colour and border transitions run 150-200ms ease-out. Live data settles in once (240ms, 6px rise, expo ease-out). A live dot pulses an olive ring. All motion collapses under reduced-motion.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep emerald (#0a7f61) for actions, selection, the paid price and live state; use Mint Wash (#e3f4ee) for selected fills.
-- **Do** show a saving as the savings strip: PIHPS struck, paid in emerald, bar, "% below PIHPS".
-- **Do** set every amount, quantity and time with tabular numerals.
-- **Do** keep tap targets at 44px or more (56px in the tab bar) and keep the 3px emerald focus outline.
-- **Do** pair every status colour with a word or a drawn stroke icon.
-- **Do** turn wide tables into stacked label/value rows on phones.
-- **Do** keep motion short and from a visible default: 150-200ms ease-out for state, a 240ms rise for arriving live data, and honour reduced motion.
+- **Do** put navy ink on every lime fill; lime on navy is 13:1.
+- **Do** use Olive Ink (#435a00) whenever the accent has to be text on a light surface.
+- **Do** add the `on-dark` class to every navy surface so the focus ring turns lime.
+- **Do** keep cards white and borderless on the warm canvas, at 20px radius.
+- **Do** use navy for chart bars, ring arcs and selected states, and reserve lime for the single newest or current item.
+- **Do** keep the four food pastels on staple tiles and item cards only.
+- **Do** pair every state colour with a word or icon: lavender in progress, lime done, amber waiting, red failed.
+- **Do** keep tap targets at 44px or more.
 
 ### Don't:
-- **Don't** drift toward the dark crypto dashboard or the kraft-paper, nostalgic ledger look this world replaces.
-- **Don't** use the item pastels for anything other than their item.
-- **Don't** nest a white panel inside another panel.
-- **Don't** introduce a second typeface, uppercase tracked labels, or a second icon library.
-- **Don't** use hard offset shadows or heavy lifts; modals are the only Lift.
-- **Don't** put raw chain detail (hashes, tx payloads) in the first read; reveal it in a disclosure.
+- **Don't** set lime as text, a ring or a stroke on white or the canvas.
+- **Don't** use gradients, glows or radial washes.
+- **Don't** add borders to cards or chips.
+- **Don't** nest a panel inside a panel.
+- **Don't** set muted text on a fill darker than the canvas; it is already down to 4.98:1 there.
+- **Don't** use a pastel to mean a state; pastels mean an item.

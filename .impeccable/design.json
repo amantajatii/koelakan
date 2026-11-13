@@ -1,22 +1,22 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-12T11:19:41+00:00",
+  "generatedAt": "2026-11-13T05:47:15+00:00",
   "title": "Design System: Koelakan",
   "extensions": {
     "colorMeta": {
       "ground": {
         "role": "neutral",
-        "displayName": "Pale Mint Ground",
-        "canonical": "#eef6f2",
+        "displayName": "Warm Canvas",
+        "canonical": "#f4f4ef",
         "tonalRamp": [
-          "#1f2d26",
-          "#335142",
-          "#45775e",
-          "#569f7a",
-          "#7db599",
-          "#a7c8b8",
-          "#ceded6",
-          "#f0f4f2"
+          "#2b2b22",
+          "#4b4b39",
+          "#6d6d4f",
+          "#919164",
+          "#aaaa88",
+          "#c2c2ae",
+          "#dbdbd1",
+          "#f3f3f1"
         ]
       },
       "surface": {
@@ -37,140 +37,185 @@
       "line": {
         "role": "neutral",
         "displayName": "Hairline",
-        "canonical": "#e3ece8",
+        "canonical": "#ebebe4",
         "tonalRamp": [
-          "#222b27",
-          "#394c43",
-          "#4f6e60",
-          "#63917d",
-          "#88aa9b",
-          "#adc2b9",
-          "#d1dbd7",
-          "#f1f3f2"
+          "#2a2a23",
+          "#4a4a3b",
+          "#6a6a52",
+          "#8c8c69",
+          "#a7a78b",
+          "#c0c0b0",
+          "#dadad2",
+          "#f3f3f1"
         ]
       },
       "line-strong": {
         "role": "neutral",
         "displayName": "Firm Hairline",
-        "canonical": "#c9d8d1",
+        "canonical": "#dcdcd3",
         "tonalRamp": [
-          "#222a27",
-          "#3a4a43",
-          "#516b5f",
-          "#678e7c",
-          "#8aa89a",
-          "#afc0b8",
-          "#d2dad6",
-          "#f1f3f2"
+          "#292924",
+          "#48483d",
+          "#686855",
+          "#88886d",
+          "#a3a38f",
+          "#bebeb1",
+          "#d9d9d3",
+          "#f3f3f2"
+        ]
+      },
+      "control": {
+        "role": "neutral",
+        "displayName": "Control Grey",
+        "canonical": "#8a8a96",
+        "tonalRamp": [
+          "#252528",
+          "#404045",
+          "#5a5a63",
+          "#747481",
+          "#94949e",
+          "#b5b5bb",
+          "#d5d5d8",
+          "#f2f2f3"
         ]
       },
       "ink": {
         "role": "neutral",
-        "displayName": "Forest Ink",
-        "canonical": "#0f2a22",
+        "displayName": "Navy Ink",
+        "canonical": "#1f1f2e",
         "tonalRamp": [
-          "#1b312b",
-          "#2b594c",
-          "#38856e",
-          "#42b392",
-          "#6ec4ab",
-          "#9ed1c2",
-          "#cae2db",
-          "#eff5f3"
+          "#22222b",
+          "#39394c",
+          "#4f4f6e",
+          "#636392",
+          "#8787ab",
+          "#adadc2",
+          "#d1d1db",
+          "#f1f1f4"
         ]
       },
       "muted": {
         "role": "neutral",
-        "displayName": "Sage Muted",
-        "canonical": "#55665f",
+        "displayName": "Slate Muted",
+        "canonical": "#686874",
         "tonalRamp": [
-          "#242827",
-          "#3e4743",
-          "#576660",
-          "#70857c",
-          "#91a19a",
-          "#b3bdb8",
-          "#d4d9d7",
-          "#f2f3f2"
+          "#252528",
+          "#404045",
+          "#5a5a63",
+          "#747481",
+          "#94949e",
+          "#b5b5bb",
+          "#d5d5d8",
+          "#f2f2f3"
+        ]
+      },
+      "night": {
+        "role": "secondary",
+        "displayName": "Desk Navy",
+        "canonical": "#1f1f2e",
+        "tonalRamp": [
+          "#22222b",
+          "#39394c",
+          "#4f4f6e",
+          "#636392",
+          "#8787ab",
+          "#adadc2",
+          "#d1d1db",
+          "#f1f1f4"
+        ]
+      },
+      "night-raised": {
+        "role": "secondary",
+        "displayName": "Raised Navy",
+        "canonical": "#2c2c3e",
+        "tonalRamp": [
+          "#22222a",
+          "#3a3a4b",
+          "#51516c",
+          "#66668f",
+          "#8a8aa8",
+          "#aeaec1",
+          "#d2d2db",
+          "#f1f1f3"
+        ]
+      },
+      "night-muted": {
+        "role": "secondary",
+        "displayName": "Dusk Grey",
+        "canonical": "#a3a3b5",
+        "tonalRamp": [
+          "#242429",
+          "#3d3d48",
+          "#565667",
+          "#6d6d87",
+          "#8f8fa3",
+          "#b2b2bd",
+          "#d3d3d9",
+          "#f2f2f3"
         ]
       },
       "brand": {
         "role": "primary",
-        "displayName": "Market Emerald",
-        "canonical": "#0a7f61",
+        "displayName": "Highlighter Lime",
+        "canonical": "#d6f26b",
         "tonalRamp": [
-          "#033427",
-          "#066049",
-          "#08694f",
-          "#087458",
-          "#0a7f61",
-          "#5fb89c",
-          "#bfe6d7",
-          "#e3f4ee"
+          "#323a13",
+          "#5a6b19",
+          "#86a21b",
+          "#b5df16",
+          "#c6e54d",
+          "#d2e58a",
+          "#e3ecc1",
+          "#f5f8ed"
         ]
       },
       "brand-hover": {
         "role": "primary",
-        "displayName": "Emerald Hover",
-        "canonical": "#087458",
+        "displayName": "Pressed Lime",
+        "canonical": "#cae85a",
         "tonalRamp": [
-          "#033427",
-          "#066049",
-          "#08694f",
-          "#087458",
-          "#0a7f61",
-          "#5fb89c",
-          "#bfe6d7",
-          "#e3f4ee"
-        ]
-      },
-      "brand-deep": {
-        "role": "primary",
-        "displayName": "Deep Emerald",
-        "canonical": "#08694f",
-        "tonalRamp": [
-          "#033427",
-          "#066049",
-          "#08694f",
-          "#087458",
-          "#0a7f61",
-          "#5fb89c",
-          "#bfe6d7",
-          "#e3f4ee"
+          "#313814",
+          "#58671d",
+          "#829b21",
+          "#afd520",
+          "#c1de54",
+          "#cfe08f",
+          "#e1e9c3",
+          "#f5f7ed"
         ]
       },
       "brand-soft": {
         "role": "primary",
-        "displayName": "Mint Wash",
-        "canonical": "#e3f4ee",
+        "displayName": "Lime Wash",
+        "canonical": "#eef9c4",
         "tonalRamp": [
-          "#033427",
-          "#066049",
-          "#08694f",
-          "#087458",
-          "#0a7f61",
-          "#5fb89c",
-          "#bfe6d7",
-          "#e3f4ee"
+          "#313913",
+          "#5a6a1b",
+          "#85a01c",
+          "#b3dc19",
+          "#c4e34f",
+          "#d1e48b",
+          "#e2ebc1",
+          "#f5f8ed"
         ]
       },
       "brand-ink": {
         "role": "primary",
-        "displayName": "Emerald Ink",
-        "canonical": "#066049",
+        "displayName": "Olive Ink",
+        "canonical": "#435a00",
         "tonalRamp": [
-          "#033427",
-          "#066049",
-          "#08694f",
-          "#087458",
-          "#0a7f61",
-          "#5fb89c",
-          "#bfe6d7",
-          "#e3f4ee"
+          "#323e0f",
+          "#5a7312",
+          "#86af0d",
+          "#b5f203",
+          "#c5f43e",
+          "#d2ee81",
+          "#e3f0bd",
+          "#f5f9ec"
         ]
       },
       "rice": {
-        "role": "secondary",
+        "role": "tertiary",
         "displayName": "Rice Peach",
         "canonical": "#ffebdd",
         "tonalRamp": [
@@ -185,8 +230,8 @@
         ]
       },
       "rice-ink": {
-        "role": "secondary",
-        "displayName": "Rice Clay",
+        "role": "tertiary",
+        "displayName": "Rice Ink",
         "canonical": "#9a4a12",
         "tonalRamp": [
           "#392314",
@@ -200,7 +245,7 @@
         ]
       },
       "sugar": {
-        "role": "secondary",
+        "role": "tertiary",
         "displayName": "Sugar Rose",
         "canonical": "#fde6ee",
         "tonalRamp": [
@@ -215,8 +260,8 @@
         ]
       },
       "sugar-ink": {
-        "role": "secondary",
-        "displayName": "Sugar Berry",
+        "role": "tertiary",
+        "displayName": "Sugar Ink",
         "canonical": "#9b2c55",
         "tonalRamp": [
           "#331923",
@@ -230,7 +275,7 @@
         ]
       },
       "eggs": {
-        "role": "secondary",
+        "role": "tertiary",
         "displayName": "Egg Butter",
         "canonical": "#fff6d6",
         "tonalRamp": [
@@ -245,8 +290,8 @@
         ]
       },
       "eggs-ink": {
-        "role": "secondary",
-        "displayName": "Egg Ochre",
+        "role": "tertiary",
+        "displayName": "Egg Ink",
         "canonical": "#8a6a00",
         "tonalRamp": [
           "#3e330f",
@@ -260,7 +305,7 @@
         ]
       },
       "oil": {
-        "role": "secondary",
+        "role": "tertiary",
         "displayName": "Oil Sky",
         "canonical": "#e2f1fb",
         "tonalRamp": [
@@ -275,8 +320,8 @@
         ]
       },
       "oil-ink": {
-        "role": "secondary",
-        "displayName": "Oil Harbour",
+        "role": "tertiary",
+        "displayName": "Oil Ink",
         "canonical": "#1b5e8c",
         "tonalRamp": [
           "#162936",
@@ -291,7 +336,7 @@
       },
       "warn": {
         "role": "tertiary",
-        "displayName": "Amber Warn",
+        "displayName": "Amber",
         "canonical": "#8a5a00",
         "tonalRamp": [
           "#3e2d0f",
@@ -306,7 +351,7 @@
       },
       "warn-soft": {
         "role": "tertiary",
-        "displayName": "Amber Warn Soft",
+        "displayName": "Amber Wash",
         "canonical": "#fff1d6",
         "tonalRamp": [
           "#3e2e0f",
@@ -321,7 +366,7 @@
       },
       "danger": {
         "role": "tertiary",
-        "displayName": "Brick Danger",
+        "displayName": "Brick",
         "canonical": "#b42318",
         "tonalRamp": [
           "#381714",
@@ -336,7 +381,7 @@
       },
       "danger-soft": {
         "role": "tertiary",
-        "displayName": "Brick Danger Soft",
+        "displayName": "Brick Wash",
         "canonical": "#fde8e8",
         "tonalRamp": [
           "#3a1212",
@@ -351,127 +396,128 @@
       },
       "info": {
         "role": "tertiary",
-        "displayName": "Harbour Info",
-        "canonical": "#1b5e8c",
+        "displayName": "Lavender Ink",
+        "canonical": "#4b3fa0",
         "tonalRamp": [
-          "#162936",
-          "#214863",
-          "#286995",
-          "#2989cb",
-          "#5ca4d6",
-          "#93bedc",
-          "#c5d9e7",
-          "#eef3f7"
+          "#1f1c30",
+          "#322d58",
+          "#443b82",
+          "#5346ae",
+          "#7b72c0",
+          "#a6a0cf",
+          "#cecbe1",
+          "#f0eff5"
         ]
       },
       "info-soft": {
         "role": "tertiary",
-        "displayName": "Harbour Info Soft",
-        "canonical": "#e2f1fb",
+        "displayName": "Lavender",
+        "canonical": "#ece8ff",
         "tonalRamp": [
-          "#142a38",
-          "#1d4a67",
-          "#216b9c",
-          "#208dd5",
-          "#54a7de",
-          "#8fc0e1",
-          "#c3daea",
-          "#edf3f7"
+          "#170f3e",
+          "#221273",
+          "#2a0daf",
+          "#2c03f2",
+          "#5e3ef4",
+          "#9481ee",
+          "#c6bdf0",
+          "#eeecf9"
         ]
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Hero banner h1; 2.074rem on phones, 2.488rem from 640px."
+        "purpose": "Overview h1; route headers use the same size at 700."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Page header h1 on routes without a banner."
-      },
-      "title": {
-        "displayName": "Title",
-        "purpose": "Panel section titles and item card names."
+        "purpose": "Titles inside dark focal cards."
       },
       "figure": {
         "displayName": "Figure",
-        "purpose": "Paid price in the savings strip; 2.488rem in the large variant."
+        "purpose": "Savings, countdowns and prices, tabular numerals."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card section titles."
       },
       "body-lg": {
-        "displayName": "Body Large",
-        "purpose": "Lead copy and input text."
+        "displayName": "Body large",
+        "purpose": "Page leads and input text."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Working size for panels, tables and lists."
+        "purpose": "Card content, list rows, nav labels."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Chips, captions, table heads, field hints. Sentence case."
+        "purpose": "Chips, captions, hints."
       },
       "mono": {
         "displayName": "Mono",
-        "purpose": "Code blocks and raw contract payloads only."
+        "purpose": "Account ids and hashes only."
       }
     },
     "shadows": [
       {
         "name": "card",
-        "value": "0 1px 2px rgba(15,42,34,0.04), 0 8px 24px rgba(15,42,34,0.06)",
-        "purpose": "Every panel, item card and the hero banner."
+        "value": "0 1px 2px rgba(31, 31, 46, 0.04), 0 6px 18px rgba(31, 31, 46, 0.04)",
+        "purpose": "Soft edge under white cards, header pills and agent chat bubbles."
       },
       {
         "name": "lift",
-        "value": "0 2px 4px rgba(15,42,34,0.05), 0 14px 32px rgba(15,42,34,0.1)",
-        "purpose": "Modal dialogs only."
-      },
-      {
-        "name": "press",
-        "value": "0 1px 2px rgba(8,105,79,0.3)",
-        "purpose": "Under the primary button."
-      },
-      {
-        "name": "seat",
-        "value": "0 1px 3px rgba(15,42,34,0.12)",
-        "purpose": "Active segment in filter tabs."
+        "value": "0 2px 4px rgba(31, 31, 46, 0.06), 0 14px 32px rgba(31, 31, 46, 0.1)",
+        "purpose": "Confirm dialog only."
       }
     ],
     "motion": [
       {
         "name": "ease-out-expo",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "The 240ms rise of arriving live data."
+        "purpose": "The rise settle-in for live data."
+      },
+      {
+        "name": "rise",
+        "value": "240ms ease-out-expo, from opacity 0 and translateY(6px)",
+        "purpose": "One settle-in when live data arrives."
       },
       {
         "name": "state",
         "value": "150-200ms ease-out",
-        "purpose": "Background, border and colour changes on controls and nav."
+        "purpose": "Colour, border and press transitions on controls and nav."
       },
       {
-        "name": "rise",
-        "value": "240ms, translateY(6px) to 0, opacity 0.001 to 1",
-        "purpose": "Settle-in for live data only."
-      },
-      {
-        "name": "pulse-ring",
-        "value": "1.8s ease-out infinite, 0 to 7px emerald ring at 35%",
-        "purpose": "The agent-online dot only."
-      },
-      {
-        "name": "savings-bar",
-        "value": "width 500ms ease-out",
-        "purpose": "Savings strip fill."
-      },
-      {
-        "name": "reduced-motion",
-        "value": "all animation and transition durations 0.01ms",
-        "purpose": "prefers-reduced-motion: reduce."
+        "name": "live-dot",
+        "value": "1.8s ease-out infinite, olive ring 0 to 7px",
+        "purpose": "Pulse on the agent live indicator."
       }
     ],
+    "focus": [
+      {
+        "name": "light",
+        "value": "2px solid #1f1f2e, offset 2px",
+        "purpose": "Default focus ring on light surfaces."
+      },
+      {
+        "name": "on-dark",
+        "value": "2px solid #d6f26b, offset 2px",
+        "purpose": "Any navy surface with the on-dark class."
+      }
+    ],
+    "dials": {
+      "energy": 2,
+      "rhythm": 2,
+      "motion": 1
+    },
     "breakpoints": [
       {
         "name": "sm",
         "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
       },
       {
         "name": "lg",
@@ -488,139 +534,143 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The one emerald action per context.",
-      "html": "<button class=\"ds-btn-primary\">Sign in with a NEAR wallet</button>",
-      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border:0;border-radius:12px;background:#0a7f61;color:#fff;font:600 0.875rem/1.35rem Figtree,ui-sans-serif,system-ui,sans-serif;box-shadow:0 1px 2px rgba(8,105,79,0.3);cursor:pointer;transition:background-color 200ms ease-out}.ds-btn-primary:hover{background:#087458}.ds-btn-primary:active{background:#08694f}.ds-btn-primary:focus-visible{outline:3px solid #0a7f61;outline-offset:2px}"
+      "description": "Lime pill with navy ink: the main action on any light or dark surface.",
+      "html": "<button class=\"ds-btn-primary\">Set up my warung</button>",
+      "css": ".ds-btn-primary { font-family: var(--font-sans, 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif); display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:0 20px; border-radius:9999px; font-size:0.875rem; font-weight:600; border:none; transition: background-color .2s ease-out, border-color .2s ease-out, color .2s ease-out, transform .2s ease-out; background:#d6f26b; color:#1f1f2e; } .ds-btn-primary:hover { background:#cae85a; } .ds-btn-primary:active { transform:translateY(1px); } .ds-btn-primary:focus-visible { outline:2px solid #1f1f2e; outline-offset:2px; }"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Quiet companion action on white.",
-      "html": "<button class=\"ds-btn-secondary\">Try again</button>",
-      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border:1px solid #c9d8d1;border-radius:12px;background:#fff;color:#0f2a22;font:600 0.875rem/1.35rem Figtree,ui-sans-serif,system-ui,sans-serif;cursor:pointer;transition:background-color 200ms ease-out,border-color 200ms ease-out}.ds-btn-secondary:hover{background:#e3f4ee;border-color:rgba(10,127,97,0.5)}.ds-btn-secondary:focus-visible{outline:3px solid #0a7f61;outline-offset:2px}"
+      "description": "White pill with a firm hairline outline, for secondary actions on cards.",
+      "html": "<button class=\"ds-btn-secondary\">Latest round #12</button>",
+      "css": ".ds-btn-secondary { font-family: var(--font-sans, 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif); display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:0 20px; border-radius:9999px; font-size:0.875rem; font-weight:600; border:none; transition: background-color .2s ease-out, border-color .2s ease-out, color .2s ease-out, transform .2s ease-out; background:#ffffff; color:#1f1f2e; border:1px solid #dcdcd3; } .ds-btn-secondary:hover { background:#f4f4ef; border-color:rgba(31,31,46,0.3); } .ds-btn-secondary:active { transform:translateY(1px); } .ds-btn-secondary:focus-visible { outline:2px solid #1f1f2e; outline-offset:2px; }"
     },
     {
-      "name": "On-brand Button",
+      "name": "On-dark Button",
       "kind": "button",
-      "refersTo": "button-on-brand",
-      "description": "White action on the emerald banner and on pastel item cards.",
-      "html": "<div class=\"ds-onbrand-wrap\"><button class=\"ds-btn-onbrand\">Round #7 <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button></div>",
-      "css": ".ds-onbrand-wrap{background:#08694f;padding:20px;border-radius:20px}.ds-btn-onbrand{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border:0;border-radius:12px;background:#fff;color:#066049;font:600 0.875rem/1.35rem Figtree,ui-sans-serif,system-ui,sans-serif;box-shadow:0 1px 2px rgba(0,0,0,0.12);cursor:pointer;transition:background-color 200ms ease-out}.ds-btn-onbrand:hover{background:#e3f4ee}.ds-btn-onbrand:focus-visible{outline:3px solid #0a7f61;outline-offset:2px}"
+      "refersTo": "button-on-dark",
+      "description": "Translucent white pill for secondary actions inside navy cards (code variant onBrand).",
+      "html": "<div class=\"ds-dark-wrap\"><button class=\"ds-btn-ondark\">See a warung in action</button></div>",
+      "css": ".ds-dark-wrap { background:#1f1f2e; padding:20px; border-radius:20px; } .ds-btn-ondark { font-family: var(--font-sans, 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif); display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:0 20px; border-radius:9999px; font-size:0.875rem; font-weight:600; border:none; transition: background-color .2s ease-out, border-color .2s ease-out, color .2s ease-out, transform .2s ease-out; background:rgba(255,255,255,0.1); color:#ffffff; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25); } .ds-btn-ondark:hover { background:rgba(255,255,255,0.15); } .ds-btn-ondark:focus-visible { outline:2px solid #d6f26b; outline-offset:2px; }"
     },
     {
       "name": "Number Input",
       "kind": "input",
       "refersTo": "input",
-      "description": "Labelled field with hint; tabular digits.",
-      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-amt\">Withdraw to your wallet (Rp)</label><input id=\"ds-amt\" class=\"ds-input\" inputmode=\"numeric\" placeholder=\"100,000\"><p class=\"ds-field-hint\">Money held in open rounds cannot be withdrawn.</p></div>",
-      "css": ".ds-field{font-family:Figtree,ui-sans-serif,system-ui,sans-serif;color:#0f2a22;max-width:320px}.ds-field-label{display:block;margin-bottom:6px;font-size:0.875rem;font-weight:600}.ds-input{width:100%;min-height:44px;padding:0 14px;border:1px solid #c9d8d1;border-radius:12px;background:#fff;color:#0f2a22;font:400 1rem/1.6rem inherit;font-variant-numeric:tabular-nums;transition:border-color 150ms}.ds-input::placeholder{color:#6b7b74}.ds-input:hover{border-color:rgba(10,127,97,0.5)}.ds-input:focus-visible{border-color:#0a7f61;outline:3px solid #0a7f61;outline-offset:0}.ds-field-hint{margin-top:6px;font-size:0.75rem;color:#55665f}"
+      "description": "White field with a control-grey border, 12px radius, tabular 1rem text.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Weekly budget (tIDR)</span><input class=\"ds-input\" inputmode=\"numeric\" value=\"500000\"></label>",
+      "css": ".ds-field { font-family: var(--font-sans, 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif); display:block; color:#1f1f2e; } .ds-field-label { display:block; margin-bottom:6px; font-size:0.875rem; font-weight:600; } .ds-input { font:inherit; font-variant-numeric:tabular-nums; width:100%; min-height:44px; padding:0 14px; border:1px solid #8a8a96; border-radius:12px; background:#ffffff; color:#1f1f2e; font-size:1rem; transition: border-color .15s; } .ds-input:hover { border-color:rgba(31,31,46,0.6); } .ds-input:focus-visible { outline:2px solid #1f1f2e; outline-offset:0; border-color:#1f1f2e; }"
     },
     {
-      "name": "Status Chip",
+      "name": "Status Chips",
       "kind": "chip",
-      "refersTo": "chip-good",
-      "description": "Dot plus word; colour never alone.",
-      "html": "<span class=\"ds-chip ds-chip-good\"><span class=\"ds-chip-dot\"></span>Counts as received</span> <span class=\"ds-chip ds-chip-warn\"><span class=\"ds-chip-dot\"></span>Dispute</span> <span class=\"ds-chip ds-chip-neutral\"><span class=\"ds-chip-dot\"></span>Locked</span>",
-      "css": ".ds-chip{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:9999px;font:600 0.75rem/1.1rem Figtree,ui-sans-serif,system-ui,sans-serif;white-space:nowrap}.ds-chip-dot{width:6px;height:6px;border-radius:9999px;background:currentColor}.ds-chip-good{background:#e3f4ee;color:#066049;box-shadow:inset 0 0 0 1px rgba(10,127,97,0.2)}.ds-chip-good .ds-chip-dot{background:#0a7f61}.ds-chip-warn{background:#fff1d6;color:#8a5a00;box-shadow:inset 0 0 0 1px rgba(138,90,0,0.2)}.ds-chip-neutral{background:#eef6f2;color:#55665f;box-shadow:inset 0 0 0 1px #c9d8d1}"
+      "refersTo": "chip-info",
+      "description": "Soft fills without borders; lavender in progress, lime done, amber waiting, red failed.",
+      "html": "<span class=\"ds-chip ds-chip-info\">Live auction</span> <span class=\"ds-chip ds-chip-good\">Closed and paid</span> <span class=\"ds-chip ds-chip-warn\">Awaiting settlement</span> <span class=\"ds-chip ds-chip-bad\">Failed, refunded</span>",
+      "css": ".ds-chip { font-family: var(--font-sans, 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif); display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:9999px; font-size:0.75rem; font-weight:600; white-space:nowrap; } .ds-chip-info { background:#ece8ff; color:#4b3fa0; } .ds-chip-good { background:#eef9c4; color:#435a00; } .ds-chip-warn { background:#fff1d6; color:#8a5a00; } .ds-chip-bad { background:#fde8e8; color:#b42318; }"
     },
     {
       "name": "Panel",
       "kind": "card",
       "refersTo": "panel",
-      "description": "White card on the mint ground; never nested.",
-      "html": "<div class=\"ds-ground\"><section class=\"ds-panel\"><h2 class=\"ds-panel-title\">Next round</h2><p class=\"ds-panel-body\">Rounds open every 60 min. Next round in <span class=\"ds-num\">38:56</span>.</p></section></div>",
-      "css": ".ds-ground{background:#eef6f2;padding:24px}.ds-panel{background:#fff;border:1px solid #e3ece8;border-radius:20px;padding:24px;box-shadow:0 1px 2px rgba(15,42,34,0.04),0 8px 24px rgba(15,42,34,0.06);font-family:Figtree,ui-sans-serif,system-ui,sans-serif;color:#0f2a22}.ds-panel-title{margin:0 0 16px;font-size:1.2rem;line-height:1.7rem;font-weight:700;letter-spacing:-0.025em}.ds-panel-body{margin:0;font-size:0.875rem;line-height:1.35rem;color:#55665f}.ds-num{font-variant-numeric:tabular-nums;font-weight:600;color:#0f2a22}"
+      "description": "White borderless card on the warm canvas, 20px radius, barely-there shadow.",
+      "html": "<div class=\"ds-canvas\"><section class=\"ds-panel\"><h2 class=\"ds-panel-title\">Round status</h2><p class=\"ds-panel-muted\">Latest: round #12 · Rice</p></section></div>",
+      "css": ".ds-canvas { background:#f4f4ef; padding:20px; } .ds-panel { font-family: var(--font-sans, 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif); background:#ffffff; color:#1f1f2e; border-radius:20px; padding:24px; box-shadow:0 1px 2px rgba(31,31,46,0.04), 0 6px 18px rgba(31,31,46,0.04); } .ds-panel-title { margin:0 0 8px; font-size:1.2rem; font-weight:700; letter-spacing:-0.01em; } .ds-panel-muted { margin:0; font-size:0.875rem; color:#686874; }"
     },
     {
-      "name": "Staple Item Card with Savings Strip",
-      "kind": "custom",
-      "refersTo": "item-card-rice",
-      "description": "Signature: PIHPS struck, paid in emerald, bar of % below PIHPS.",
-      "html": "<article class=\"ds-item\"><div class=\"ds-item-head\"><span class=\"ds-item-disc\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 22 16 8\"/><path d=\"M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\"/><path d=\"M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\"/><path d=\"M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z\"/></svg></span><div><h3 class=\"ds-item-name\">Medium rice (type II)</h3><p class=\"ds-item-sub\">per kg · HET Rp13,500</p></div></div><div class=\"ds-strip\"><p class=\"ds-strip-row\"><span class=\"ds-strip-ref\">Rp16,650</span><span class=\"ds-strip-paid\">Rp11,924<small>/kg</small></span></p><div class=\"ds-strip-track\"><div class=\"ds-strip-fill\" style=\"width:28.4%\"></div></div><p class=\"ds-strip-pct\">28.4% below PIHPS</p></div></article>",
-      "css": ".ds-item{max-width:300px;background:#ffebdd;border-radius:20px;padding:20px;box-shadow:0 1px 2px rgba(15,42,34,0.04),0 8px 24px rgba(15,42,34,0.06),inset 0 0 0 1px rgba(0,0,0,0.04);font-family:Figtree,ui-sans-serif,system-ui,sans-serif;color:#0f2a22}.ds-item-head{display:flex;align-items:center;gap:14px}.ds-item-disc{display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:9999px;background:rgba(255,255,255,0.7);color:#9a4a12}.ds-item-name{margin:0;font-size:1.2rem;line-height:1.2;font-weight:700;letter-spacing:-0.025em}.ds-item-sub{margin:2px 0 0;font-size:0.75rem;font-weight:500;color:#9a4a12;font-variant-numeric:tabular-nums}.ds-strip{margin-top:20px}.ds-strip-row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 12px;margin:0;font-variant-numeric:tabular-nums}.ds-strip-ref{font-size:0.875rem;color:#9a4a12;text-decoration:line-through;text-decoration-thickness:1px}.ds-strip-paid{font-size:1.44rem;font-weight:800;color:#066049}.ds-strip-paid small{font-size:0.75rem;font-weight:600}.ds-strip-track{margin-top:8px;height:6px;border-radius:9999px;background:rgba(255,255,255,0.7);overflow:hidden}.ds-strip-fill{height:100%;border-radius:9999px;background:#0a7f61;transition:width 500ms ease-out}.ds-strip-pct{margin:6px 0 0;font-size:0.75rem;font-weight:600;color:#066049;font-variant-numeric:tabular-nums}"
+      "name": "Dark Result Card",
+      "kind": "card",
+      "refersTo": "card-dark",
+      "description": "Navy focal card: big tabular figure, lime pill, raised-navy inset; carries on-dark.",
+      "html": "<section class=\"ds-dark\"><p class=\"ds-dark-muted\">Winning price</p><p class=\"ds-dark-figure\">Rp11.924<span class=\"ds-dark-unit\">/kg</span></p><span class=\"ds-dark-pill\">8.3% below PIHPS</span><div class=\"ds-dark-inset\"><p class=\"ds-dark-muted\">Saved vs PIHPS</p><p class=\"ds-dark-save\">Rp1.422.526</p></div></section>",
+      "css": ".ds-dark { font-family: var(--font-sans, 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif); background:#1f1f2e; color:#ffffff; border-radius:20px; padding:24px; } .ds-dark-muted { margin:0; font-size:0.875rem; color:#a3a3b5; } .ds-dark-figure { margin:4px 0 12px; font-size:3rem; font-weight:800; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; } .ds-dark-unit { font-size:1.2rem; font-weight:600; color:#a3a3b5; } .ds-dark-pill { display:inline-flex; padding:4px 12px; border-radius:9999px; background:#d6f26b; color:#1f1f2e; font-size:0.75rem; font-weight:700; } .ds-dark-inset { margin-top:20px; background:#2c2c3e; border-radius:16px; padding:20px; } .ds-dark-save { margin:4px 0 0; font-size:1.728rem; font-weight:800; color:#d6f26b; font-variant-numeric:tabular-nums; }"
     },
     {
-      "name": "Icon Rail",
+      "name": "Navy Sidebar",
       "kind": "nav",
-      "refersTo": "nav-rail-item-active",
-      "description": "Desktop icon-over-label rail; becomes a bottom tab bar on phones.",
-      "html": "<nav class=\"ds-rail\"><a class=\"ds-rail-item\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/></svg>Overview</a><a class=\"ds-rail-item ds-on\" aria-current=\"page\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7\"/><path d=\"M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8\"/><path d=\"M2 7h20\"/></svg>My warung</a></nav>",
-      "css": ".ds-rail{display:flex;flex-direction:column;gap:6px;width:92px;padding:20px 8px;background:rgba(255,255,255,0.9);border-right:1px solid #e3ece8;font-family:Figtree,ui-sans-serif,system-ui,sans-serif}.ds-rail-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:16px;font-size:0.72rem;font-weight:600;line-height:1.2;color:#55665f;text-decoration:none;transition:background-color 150ms,color 150ms}.ds-rail-item:hover{background:#eef6f2;color:#0f2a22}.ds-rail-item.ds-on{background:#e3f4ee;color:#066049}.ds-rail-item:focus-visible{outline:3px solid #0a7f61;outline-offset:2px}"
+      "refersTo": "sidebar",
+      "description": "Floating navy sidebar: lime pill on the current page, lime demo card at the foot.",
+      "html": "<aside class=\"ds-side\"><a class=\"ds-nav ds-nav-on\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/></svg>Overview</a><a class=\"ds-nav\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 9l1-5h16l1 5\"/><path d=\"M4 9v11h16V9\"/><path d=\"M9 20v-6h6v6\"/></svg>My warung</a><a class=\"ds-demo\" href=\"#\"><span class=\"ds-demo-arrow\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 17L17 7\"/><path d=\"M7 7h10v10\"/></svg></span><strong>Open the demo warung</strong><small>Read only. No wallet needed.</small></a></aside>",
+      "css": ".ds-side { font-family: var(--font-sans, 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif); width:240px; background:#1f1f2e; color:#ffffff; border-radius:28px; padding:16px; display:flex; flex-direction:column; gap:4px; } .ds-nav { display:flex; align-items:center; gap:12px; min-height:44px; padding:0 16px; border-radius:9999px; font-size:0.875rem; font-weight:500; color:#a3a3b5; text-decoration:none; transition: background-color .15s, color .15s; } .ds-nav:hover { background:#2c2c3e; color:#ffffff; } .ds-nav-on, .ds-nav-on:hover { background:#d6f26b; color:#1f1f2e; font-weight:700; } .ds-nav:focus-visible, .ds-demo:focus-visible { outline:2px solid #d6f26b; outline-offset:2px; } .ds-demo { position:relative; margin-top:24px; display:block; padding:48px 16px 16px; border-radius:24px; background:#d6f26b; color:#1f1f2e; text-decoration:none; transition: transform .2s ease-out; } .ds-demo:hover { transform:translateY(-2px); } .ds-demo strong { display:block; font-size:0.875rem; } .ds-demo small { display:block; margin-top:4px; font-size:0.75rem; font-weight:500; color:rgba(31,31,46,0.75); } .ds-demo-arrow { position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:9999px; background:#1f1f2e; color:#d6f26b; display:flex; align-items:center; justify-content:center; transition: transform .2s ease-out; } .ds-demo:hover .ds-demo-arrow { transform:rotate(45deg); }"
     },
     {
-      "name": "Chat Bubbles",
+      "name": "Filter Tabs",
+      "kind": "nav",
+      "refersTo": "filter-tab-active",
+      "description": "Canvas pill track; the selected option is navy with a lime count badge.",
+      "html": "<div class=\"ds-tabs\" role=\"group\" aria-label=\"Filter rounds\"><button class=\"ds-tab\" aria-pressed=\"true\">All <span class=\"ds-count\">24</span></button><button class=\"ds-tab\" aria-pressed=\"false\">Live <span class=\"ds-count\">1</span></button><button class=\"ds-tab\" aria-pressed=\"false\">Closed <span class=\"ds-count\">20</span></button></div>",
+      "css": ".ds-tabs { font-family: var(--font-sans, 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif); display:inline-flex; gap:4px; padding:4px; border-radius:9999px; background:#f4f4ef; } .ds-tab { font:inherit; display:inline-flex; align-items:center; gap:6px; min-height:40px; padding:0 16px; border:none; border-radius:9999px; background:transparent; color:#686874; font-size:0.875rem; font-weight:600; cursor:pointer; transition: background-color .2s ease-out, color .2s ease-out; } .ds-tab:hover { color:#1f1f2e; } .ds-tab[aria-pressed=true] { background:#1f1f2e; color:#ffffff; font-weight:700; } .ds-tab:focus-visible { outline:2px solid #1f1f2e; outline-offset:2px; } .ds-count { padding:0 6px; border-radius:9999px; background:#ebebe4; font-size:0.75rem; font-variant-numeric:tabular-nums; } .ds-tab[aria-pressed=true] .ds-count { background:#d6f26b; color:#1f1f2e; }"
+    },
+    {
+      "name": "Savings Chart",
       "kind": "custom",
-      "refersTo": "chat-bubble-agent",
-      "description": "WhatsApp-style agent/owner thread on a ground well.",
-      "html": "<ul class=\"ds-thread\"><li class=\"ds-b ds-b-agent\"><p class=\"ds-b-from\">Agent warung-01</p><p>Bu Sri, round #7 is settled. grosir-1 won at Rp11,924/kg.</p><p class=\"ds-b-time\">17:59</p></li><li class=\"ds-b ds-b-owner\"><p class=\"ds-b-from\">Bu Sri</p><p>Goods arrived, thank you.</p><p class=\"ds-b-time\">18:04</p></li></ul>",
-      "css": ".ds-thread{list-style:none;margin:0;padding:16px;display:flex;flex-direction:column;gap:8px;background:rgba(238,246,242,0.7);font-family:Figtree,ui-sans-serif,system-ui,sans-serif;color:#0f2a22}.ds-b{max-width:85%;padding:10px 14px;border-radius:16px;font-size:0.94rem;line-height:1.375}.ds-b p{margin:0}.ds-b-agent{align-self:flex-start;border-bottom-left-radius:6px;background:#fff;border:1px solid #e3ece8;box-shadow:0 1px 2px rgba(15,42,34,0.05)}.ds-b-owner{align-self:flex-end;border-bottom-right-radius:6px;background:#e3f4ee}.ds-b .ds-b-from{margin-bottom:4px;font-size:0.75rem;font-weight:700;color:#066049}.ds-b .ds-b-time{margin-top:4px;text-align:right;font-size:0.7rem;color:#55665f;font-variant-numeric:tabular-nums}"
+      "refersTo": "chart-tooltip",
+      "description": "Thin navy bars per settled round; the newest is lime with a navy tooltip.",
+      "html": "<div class=\"ds-chart\"><div class=\"ds-plot\"><span class=\"ds-col\"><span class=\"ds-bar\" style=\"height:40%\"></span></span><span class=\"ds-col\"><span class=\"ds-bar\" style=\"height:55%\"></span></span><span class=\"ds-col\"><span class=\"ds-bar\" style=\"height:35%\"></span></span><span class=\"ds-col\"><span class=\"ds-bar\" style=\"height:62%\"></span></span><span class=\"ds-col\"><span class=\"ds-bar\" style=\"height:48%\"></span></span><span class=\"ds-col\"><span class=\"ds-bar\" style=\"height:70%\"></span></span><span class=\"ds-col\"><span class=\"ds-bar ds-bar-new\" style=\"height:82%\"><span class=\"ds-tip\">9.1% · Round #24</span></span></span></div></div>",
+      "css": ".ds-chart { font-family: var(--font-sans, 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif); background:#ffffff; border-radius:20px; padding:24px; } .ds-plot { display:flex; align-items:flex-end; gap:8px; height:160px; padding:48px 4px 0; border-bottom:1px solid #ebebe4; } .ds-col { flex:1; height:100%; display:flex; align-items:flex-end; justify-content:center; } .ds-bar { position:relative; width:12px; border-radius:9999px; background:#1f1f2e; } .ds-bar-new { background:#d6f26b; box-shadow: inset 0 0 0 1px rgba(31,31,46,0.1); } .ds-tip { position:absolute; bottom:100%; right:0; margin-bottom:8px; white-space:nowrap; border-radius:8px; background:#1f1f2e; color:#ffffff; padding:6px 10px; font-size:0.75rem; font-weight:600; font-variant-numeric:tabular-nums; }"
     }
   ],
   "narrative": {
-    "northStar": "The Fresh Grocery Counter",
-    "overview": "Koelakan reads as a fresh, modern grocery app for warung owners: soft white cards resting on a pale mint ground, one emerald colour that means \"act\" or \"this is live\", and a pastel tint for each of the four staples with cut-out produce imagery on it. Money is the hero of every screen. The signature is the savings strip: the PIHPS market price struck through, the price actually paid in emerald, and a thin bar showing how far below the market it landed.\n\nDensity is calm and phone-first. Cards are generous (20-24px inside), tap targets never drop under 44px, and the structure is one column on a phone that opens into a main column plus a 20-22rem side column on a laptop. The ground carries a faint emerald wash in the top-right corner and a faint sky wash in the bottom-left; everything else is flat colour.\n\nThe world was chosen against two looks it replaces: the dark crypto dashboard and the kraft-paper, nostalgic ledger. Chain detail is present but tucked away under disclosures, so the surface stays a shop tool, not a block explorer.",
+    "northStar": "The Navy Desk with a Lime Pen",
+    "overview": "Koelakan reads as a modern operations dashboard in the Eduplex manner: a warm off-white canvas, white borderless cards, a navy floating sidebar that holds the whole app together, and a single lime accent that marks the one thing that is current, done or worth pressing. Navy is the structure; lime is the highlighter laid on top of it. Money is still the hero of every screen, shown as large tabular figures and as navy bars and rings measured against the PIHPS market price.\n\nDensity is calm and phone-first. Cards are generous (20-24px inside), tap targets never drop under 44px (40px inside the segmented filter), and the layout is one column on a phone that opens into a main column plus a 22rem side column on wide screens. Everything is flat colour: no gradients, no glow, no radial washes. The four staple pastels from the earlier world survive only on the item tiles, so food still reads as food.\n\nDial: ENERGY 2 / RHYTHM 2 / MOTION 1. Quiet surfaces, a steady repeated card rhythm, and motion limited to a short settle-in and state colour transitions.",
     "keyCharacteristics": [
-      "Pale mint ground (#eef6f2) with white 20px-radius cards, hairline green-grey border, soft two-layer shadow.",
-      "One emerald (#0a7f61) for actions, selection, the savings figure and the agent's live state.",
-      "Four staple pastels, each paired with a darker same-hue text tint.",
-      "One friendly geometric sans (Figtree) with tabular numerals for every amount, quantity and time.",
-      "Lucide stroke icons only; produce raster cut-outs for the four items and the hero.",
-      "Status always pairs a colour with a word or icon."
+      "Warm off-white canvas with white 20px-radius cards and no card border.",
+      "Navy for structure: sidebar, phone tab bar, dark focal cards, chart bars, progress rings, selected filter tabs.",
+      "One lime accent, used only as a fill with navy ink on it.",
+      "Plus Jakarta Sans throughout, tabular numerals for every amount, quantity and time.",
+      "Four food pastels, each with a darker same-hue text tint, kept for the staple tiles.",
+      "State colours carry fixed meanings: lavender in progress, lime done, amber waiting, red failed."
     ],
     "rules": [
       {
-        "name": "The One Emerald Rule",
-        "body": "Emerald is the only action colour. It marks what to press, what is selected, what was saved and that the agent is alive; it never decorates.",
+        "name": "The Highlighter Rule",
+        "body": "Lime is a fill, never text and never a ring or stroke on white (1.25:1). Whatever sits on lime is navy ink. When the accent has to be text on a light surface, use Olive Ink. Lime may be text or a ring only on navy, where it reads at 13:1.",
         "section": "colors"
       },
       {
-        "name": "The Pastel Belongs To Food Rule",
-        "body": "Rice, sugar, eggs and oil pastels appear only where that item is the subject (its card, its image disc). They are never used for states, sections or generic decoration.",
+        "name": "The Navy Spine Rule",
+        "body": "Navy carries structure and selection: the sidebar, dark cards, chart bars, rings and the selected state. Every navy surface carries the `on-dark` class so its focus ring turns lime.",
         "section": "colors"
       },
       {
-        "name": "The Word With Every Colour Rule",
-        "body": "A status colour always ships with text or a drawn icon: chips carry a dot plus a word, notices carry an icon, the savings bar carries \"x% below PIHPS\".",
+        "name": "The Fixed Meaning Rule",
+        "body": "Lavender means in progress, lime means done, amber means waiting, red means failed. Colour always comes with a word, number or icon.",
         "section": "colors"
       },
       {
         "name": "The Tabular Money Rule",
-        "body": "Every rupiah amount, quantity, round number and clock time is set with tabular numerals (`.num`: tnum, -0.005em) so columns and before/after prices align.",
+        "body": "Any rupiah amount, quantity, percentage, round number or clock time is set with tabular numerals so columns align and live figures do not jitter.",
         "section": "typography"
       },
       {
         "name": "The Sentence Case Rule",
-        "body": "Labels, chips and table heads are sentence case at normal tracking. Hierarchy is weight and size, not capitals or letter-spacing.",
+        "body": "Headings and labels are sentence case at their natural tracking. The system has no uppercase tracked labels above headings.",
         "section": "typography"
       },
       {
-        "name": "The Flat Panel Rule",
-        "body": "A panel is never nested inside another panel. Inside a card, group with hairline dividers, a mint inset (ground or brand-soft) or spacing.",
-        "section": "elevation"
-      },
-      {
-        "name": "The Glass Only For Chrome Rule",
-        "body": "Backdrop blur appears only on the fixed navigation (rail at 90% white, tab bar at 95% white), never on content.",
+        "name": "The Flat Colour Rule",
+        "body": "No gradients, glows or radial washes on any surface. Contrast between canvas, white and navy does the work.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Do keep emerald (#0a7f61) for actions, selection, the paid price and live state; use Mint Wash (#e3f4ee) for selected fills.",
-      "Do show a saving as the savings strip: PIHPS struck, paid in emerald, bar, \"% below PIHPS\".",
-      "Do set every amount, quantity and time with tabular numerals.",
-      "Do keep tap targets at 44px or more (56px in the tab bar) and keep the 3px emerald focus outline.",
-      "Do pair every status colour with a word or a drawn stroke icon.",
-      "Do turn wide tables into stacked label/value rows on phones.",
-      "Do keep motion short and from a visible default: 150-200ms ease-out for state, a 240ms rise for arriving live data, and honour reduced motion."
+      "**Do** put navy ink on every lime fill; lime on navy is 13:1.",
+      "**Do** use Olive Ink (#435a00) whenever the accent has to be text on a light surface.",
+      "**Do** add the `on-dark` class to every navy surface so the focus ring turns lime.",
+      "**Do** keep cards white and borderless on the warm canvas, at 20px radius.",
+      "**Do** use navy for chart bars, ring arcs and selected states, and reserve lime for the single newest or current item.",
+      "**Do** keep the four food pastels on staple tiles and item cards only.",
+      "**Do** pair every state colour with a word or icon: lavender in progress, lime done, amber waiting, red failed.",
+      "**Do** keep tap targets at 44px or more."
     ],
     "donts": [
-      "Don't drift toward the dark crypto dashboard or the kraft-paper, nostalgic ledger look this world replaces.",
-      "Don't use the item pastels for anything other than their item.",
-      "Don't nest a white panel inside another panel.",
-      "Don't introduce a second typeface, uppercase tracked labels, or a second icon library.",
-      "Don't use hard offset shadows or heavy lifts; modals are the only Lift.",
-      "Don't put raw chain detail (hashes, tx payloads) in the first read; reveal it in a disclosure."
+      "**Don't** set lime as text, a ring or a stroke on white or the canvas.",
+      "**Don't** use gradients, glows or radial washes.",
+      "**Don't** add borders to cards or chips.",
+      "**Don't** nest a panel inside a panel.",
+      "**Don't** set muted text on a fill darker than the canvas; it is already down to 4.98:1 there.",
+      "**Don't** use a pastel to mean a state; pastels mean an item."
     ]
   }
 }
