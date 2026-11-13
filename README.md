@@ -75,6 +75,25 @@ curl -s https://rpc.testnet.near.org -H 'content-type: application/json' \
 
 You see `{'id': 1, 'item': 'beras-medium', 'state': 'Closed', 'ref_price': '16650', 'clearing_price': '11924', 'total_qty': 301}`.
 
+## Tracks and NEAR features used
+
+**AI Swarms (`swarms`).** A market where agents coordinate: 20 warung agents pool demand, 5 grosir agents bid against each other, and a koordinator and an arbiter keep rounds moving. These are collective purchasing and sealed bidding between agents.
+- *Multi-agent systems:* about 30 independent agents, each with its own NEAR account and key, coordinating only through the contract.
+- *Sub-accounts:* every agent is a sub-account of `koelakan.testnet` (`warung-07.koelakan.testnet`, `grosir-3.koelakan.testnet`, ...), created by `pnpm run setup`.
+
+**Real-World Money (`realworld`).** Group restocking for real shops, with every rupiah held in escrow and priced against a public reference.
+- *Stablecoins:* tIDR is a rupiah-pegged NEP-141 token for testnet. A real deployment would swap in a regulated rupiah stablecoin; the contract only needs NEP-141.
+
+**Other NEAR features in use:**
+- *Function-call access keys:* the agent's key on an owner's account can call only `join_round` on the market, with a gas allowance, so it cannot move funds.
+- *NEP-141 `ft_transfer_call`:* deposits and grosir bonds.
+- *NEP-413 signed messages:* standing orders, signed by the owner's wallet without a transaction.
+- *NEP-297 events:* for every state change, read by the agents and the dashboard.
+
+**Not used, and why:**
+- *NEAR Intents:* there is no Intents testnet, and this entry stays on testnet with test money.
+- *Meta transactions:* owners sign their few actions (limits, confirm, withdraw) themselves, and the agents pay their own gas.
+
 ## How a round works
 
 1. **Open.** The `koordinator` agent calls `open_round` on `market.koelakan.testnet` for one staple. The round ceiling can never exceed the item's PIHPS reference price stored on-chain.
