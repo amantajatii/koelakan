@@ -84,13 +84,15 @@ Koelakan is asset-light: it never holds inventory. KitaBeli, Ula and GudangAda h
 
 ## Build the contracts
 
-One-time setup on macOS:
+`cargo test` needs only Rust. Building the wasm also needs the wasm target and cargo-near. One-time setup on macOS or Linux (on Windows, use WSL):
 
 ```sh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh   # Rust (skip if installed)
 rustup target add wasm32-unknown-unknown
 cargo install cargo-near --locked
 ```
+
+On Debian or Ubuntu, install the build dependencies first if `cargo install` fails: `sudo apt install build-essential pkg-config libssl-dev libudev-dev`.
 
 Then build:
 
