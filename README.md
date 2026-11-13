@@ -11,6 +11,27 @@ A *warung* is a small Indonesian shop. It buys in small quantities at retail pri
 - Rules (single source of truth): [RULES.md](RULES.md)
 - Reference prices (real PIHPS data, with sources): [data/prices.json](data/prices.json)
 
+## On-chain (NEAR testnet)
+
+| Account | Role | Explorer |
+|---|---|---|
+| `market.koelakan.testnet` | Market contract: rounds, limits, commit-reveal, escrow | [NearBlocks](https://testnet.nearblocks.io/address/market.koelakan.testnet) |
+| `tidr.koelakan.testnet` | tIDR, NEP-141 test rupiah | [NearBlocks](https://testnet.nearblocks.io/address/tidr.koelakan.testnet) |
+| `koordinator.koelakan.testnet` | Opens, settles and finalizes rounds | [NearBlocks](https://testnet.nearblocks.io/address/koordinator.koelakan.testnet) |
+| `arbiter.koelakan.testnet` | Resolves delivery disputes | [NearBlocks](https://testnet.nearblocks.io/address/arbiter.koelakan.testnet) |
+| `warung-01..20.koelakan.testnet` | Seeded warung agents (e.g. the demo warung) | [warung-20](https://testnet.nearblocks.io/address/warung-20.koelakan.testnet) |
+| `grosir-1..5.koelakan.testnet` | Seeded grosir agents | [grosir-1](https://testnet.nearblocks.io/address/grosir-1.koelakan.testnet) |
+
+Read any round straight from the contract over public RPC (no keys, no explorer). Round 1 shown here; change `round_id` for others:
+
+```sh
+curl -s https://rpc.testnet.near.org -H 'content-type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"query","params":{"request_type":"call_function","finality":"final","account_id":"market.koelakan.testnet","method_name":"get_round","args_base64":"'$(printf '{"round_id":1}' | base64)'"}}' \
+  | python3 -c 'import sys,json; r=json.loads(bytes(json.load(sys.stdin)["result"]["result"])); print({k: r[k] for k in ("id","item","state","ref_price","clearing_price","total_qty")})'
+```
+
+You see `{'id': 1, 'item': 'beras-medium', 'state': 'Closed', 'ref_price': '16650', 'clearing_price': '11924', 'total_qty': 301}`.
+
 ## How a round works
 
 1. **Open.** The `koordinator` agent calls `open_round` on `market.koelakan.testnet` for one staple. The round ceiling can never exceed the item's PIHPS reference price stored on-chain.
