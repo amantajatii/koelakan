@@ -1,6 +1,8 @@
 # Koelakan
 
 > A NEAR Hackathon 2026 entry (tracks `swarms` and `realworld`): warung agents pool orders, grosir agents bid in a sealed-bid auction, and a NEAR testnet contract holds the money. Live: https://koelakan.vercel.app (landing) and https://koelakan.vercel.app/overview (dashboard)
+>
+> Demo video (61 s, includes a live testnet round): https://x.com/azzgjlss/status/2121257271955235090
 
 **Koelakan** (from *kulakan*: what Indonesian shop owners call restocking from a wholesaler) lets warungs restock together.
 
