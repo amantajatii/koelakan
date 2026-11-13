@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Eye } from "lucide-react";
-import { HeroArt } from "@/components/produce-art";
+import { HeroArt } from "@/components/shared/produce-art";
 import { buttonClass } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/states";
 import { demoHref } from "@/lib/demo";

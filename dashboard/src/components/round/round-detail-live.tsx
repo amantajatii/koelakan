@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { ChevronRight, MessageCircle } from "lucide-react";
-import { PhaseBadge } from "@/components/phase-badge";
-import { ItemImage } from "@/components/produce-art";
+import { PhaseBadge } from "@/components/shared/phase-badge";
+import { ItemImage } from "@/components/shared/produce-art";
 import { BidsTable } from "@/components/round/bids-table";
 import { ForfeitBox } from "@/components/round/forfeit-box";
 import { ParticipantsTable } from "@/components/round/participants-table";

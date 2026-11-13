@@ -6,17 +6,12 @@ import type { WalletSelectorModal } from "@near-wallet-selector/modal-ui";
 import { Buffer } from "buffer";
 import { config } from "./config";
 import type { AddKeySpec, DeleteKeySpec } from "./delegation";
-import { SIGN_MESSAGE_HINT, type SignRequest, type SignedResult } from "./nep413";
-import { explainFailure, outcomeFailure, outcomeHash, type OutcomeLike } from "./outcome";
-import type { ActionSpec, TxSpec } from "./batch";
+import type { SignRequest } from "./nep413";
+import type { TxSpec } from "./batch";
 import type { FunctionCallSpec } from "./tx";
+import { sendBatch, sendFunctionCall, sendKeyAction, signNep413, type CallResult, type SignOutcome } from "./wallet-calls";
 
-export interface CallResult {
-  ok: boolean;
-  hash: string | null;
-  /** English message when `ok` is false. */
-  error: string | null;
-}
+export type { CallResult, SignOutcome };
 
 interface WalletState {
   ready: boolean;
@@ -37,19 +32,9 @@ interface WalletState {
   callBatch: (txs: TxSpec[]) => Promise<CallResult>;
 }
 
-export type SignOutcome =
-  | { status: "signed"; signed: SignedResult }
-  | { status: "redirected" }
-  | { status: "failed"; error: string };
-
 const WalletContext = createContext<WalletState | null>(null);
 
 const KEY_METHODS = ["join_round"];
-
-function errorMessage(e: unknown): string {
-  if (e instanceof Error) return explainFailure(e.message);
-  return "Something unexpected went wrong.";
-}
 
 export function WalletProvider({ children }: { children: ReactNode }) {
   const selectorRef = useRef<WalletSelector | null>(null);
@@ -117,97 +102,10 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     await wallet.signOut();
   }, []);
 
-  const call = useCallback(async (spec: FunctionCallSpec): Promise<CallResult> => {
-    const selector = selectorRef.current;
-    if (!selector || !accountId) return { ok: false, hash: null, error: "Sign in with a NEAR wallet first." };
-    try {
-      const { actionCreators } = await import("@near-wallet-selector/core");
-      const wallet = await selector.wallet();
-      const outcome = (await wallet.signAndSendTransaction({
-        signerId: accountId,
-        receiverId: spec.receiverId,
-        actions: [actionCreators.functionCall(spec.methodName, spec.args, BigInt(spec.gas), BigInt(spec.deposit))],
-      })) as OutcomeLike | void;
-      const failure = outcomeFailure(outcome ?? null);
-      if (failure) return { ok: false, hash: outcomeHash(outcome ?? null), error: explainFailure(failure) };
-      return { ok: true, hash: outcomeHash(outcome ?? null), error: null };
-    } catch (e) {
-      return { ok: false, hash: null, error: errorMessage(e) };
-    }
-  }, [accountId]);
-
-  const keyAction = useCallback(async (spec: AddKeySpec | DeleteKeySpec): Promise<CallResult> => {
-    const selector = selectorRef.current;
-    if (!selector || !accountId) return { ok: false, hash: null, error: "Sign in with a NEAR wallet first." };
-    try {
-      const [{ actionCreators }, { utils }] = await Promise.all([import("@near-wallet-selector/core"), import("near-api-js")]);
-      const publicKey = utils.PublicKey.from(spec.publicKey) as unknown as Parameters<typeof actionCreators.addKey>[0];
-      const action =
-        spec.type === "AddKey"
-          ? actionCreators.addKey(publicKey, actionCreators.functionCallAccessKey(spec.receiverId, spec.methodNames, BigInt(spec.allowanceYocto)))
-          : actionCreators.deleteKey(publicKey);
-      const wallet = await selector.wallet();
-      const outcome = (await wallet.signAndSendTransaction({ signerId: accountId, receiverId: accountId, actions: [action] })) as OutcomeLike | void;
-      const failure = outcomeFailure(outcome ?? null);
-      if (failure) return { ok: false, hash: outcomeHash(outcome ?? null), error: explainFailure(failure) };
-      return { ok: true, hash: outcomeHash(outcome ?? null), error: null };
-    } catch (e) {
-      return { ok: false, hash: null, error: errorMessage(e) };
-    }
-  }, [accountId]);
-
-  const callBatch = useCallback(async (txs: TxSpec[]): Promise<CallResult> => {
-    const selector = selectorRef.current;
-    if (!selector || !accountId) return { ok: false, hash: null, error: "Sign in with a NEAR wallet first." };
-    if (txs.length === 0) return { ok: false, hash: null, error: "There is nothing to approve." };
-    try {
-      const [{ actionCreators }, { utils }] = await Promise.all([import("@near-wallet-selector/core"), import("near-api-js")]);
-      const toAction = (spec: ActionSpec) =>
-        spec.type === "FunctionCall"
-          ? actionCreators.functionCall(spec.methodName, spec.args, BigInt(spec.gas), BigInt(spec.deposit))
-          : actionCreators.addKey(
-              utils.PublicKey.from(spec.publicKey) as unknown as Parameters<typeof actionCreators.addKey>[0],
-              actionCreators.functionCallAccessKey(spec.receiverId, spec.methodNames, BigInt(spec.allowanceYocto)),
-            );
-      const transactions = txs.map((t) => ({ signerId: accountId, receiverId: t.receiverId, actions: t.actions.map(toAction) }));
-      const wallet = await selector.wallet();
-      let outcomes: Array<OutcomeLike | void>;
-      if (typeof wallet.signAndSendTransactions === "function") {
-        const sent = (await wallet.signAndSendTransactions({ transactions, callbackUrl: `${window.location.origin}/warung` } as Parameters<typeof wallet.signAndSendTransactions>[0])) as Array<OutcomeLike> | void;
-        outcomes = Array.isArray(sent) ? sent : [];
-      } else {
-        outcomes = [];
-        for (const tx of transactions) outcomes.push((await wallet.signAndSendTransaction(tx)) as OutcomeLike | void);
-      }
-      for (const o of outcomes) {
-        const failure = outcomeFailure(o ?? null);
-        if (failure) return { ok: false, hash: outcomeHash(o ?? null), error: explainFailure(failure) };
-      }
-      const last = outcomes[outcomes.length - 1];
-      return { ok: true, hash: outcomeHash(last ?? null), error: null };
-    } catch (e) {
-      return { ok: false, hash: null, error: errorMessage(e) };
-    }
-  }, [accountId]);
-
-  const signMessage = useCallback(async (req: SignRequest): Promise<SignOutcome> => {
-    const selector = selectorRef.current;
-    if (!selector || !accountId) return { status: "failed", error: "Sign in with a NEAR wallet first." };
-    try {
-      const wallet = await selector.wallet();
-      if (!wallet.signMessage) return { status: "failed", error: SIGN_MESSAGE_HINT };
-      const result = await wallet.signMessage({
-        message: req.message,
-        recipient: req.recipient,
-        nonce: Buffer.from(req.nonce),
-        callbackUrl: `${window.location.origin}/warung`,
-      });
-      if (!result) return { status: "redirected" };
-      return { status: "signed", signed: { accountId: result.accountId, publicKey: result.publicKey, signature: result.signature } };
-    } catch (e) {
-      return { status: "failed", error: e instanceof Error && /reject|cancel|closed|denied/i.test(e.message) ? "Signing was cancelled in the wallet." : errorMessage(e) };
-    }
-  }, [accountId]);
+  const call = useCallback((spec: FunctionCallSpec) => sendFunctionCall(selectorRef.current, accountId, spec), [accountId]);
+  const keyAction = useCallback((spec: AddKeySpec | DeleteKeySpec) => sendKeyAction(selectorRef.current, accountId, spec), [accountId]);
+  const callBatch = useCallback((txs: TxSpec[]) => sendBatch(selectorRef.current, accountId, txs), [accountId]);
+  const signMessage = useCallback((req: SignRequest) => signNep413(selectorRef.current, accountId, req), [accountId]);
 
   const value = useMemo<WalletState>(
     () => ({ ready, initError, accountId, walletId, signIn, signOut, call, callBatch, keyAction, signMessage }),

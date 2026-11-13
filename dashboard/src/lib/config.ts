@@ -2,7 +2,6 @@
 
 const DEFAULT_AGENT_API = "https://agent.43-157-202-28.sslip.io";
 
-/** Read an env var, falling back to `fallback` when it is unset or blank. */
 function env(value: string | undefined, fallback: string): string {
   const v = value?.trim();
   return v ? v : fallback;

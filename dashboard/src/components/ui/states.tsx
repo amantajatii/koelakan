@@ -17,8 +17,15 @@ export function LoadingRegion({ label, className, children }: { label: string; c
   );
 }
 
+interface EmptyStateProps {
+  title: string;
+  children?: ReactNode;
+  icon?: LucideIcon;
+  className?: string;
+}
+
 /** Empty states teach: say what belongs here and what to do next. */
-export function EmptyState({ title, children, icon: Icon = Inbox, className }: { title: string; children?: ReactNode; icon?: LucideIcon; className?: string }) {
+export function EmptyState({ title, children, icon: Icon = Inbox, className }: EmptyStateProps) {
   return (
     <div className={cn("flex flex-col items-center px-6 py-10 text-center", className)}>
       <span aria-hidden className="mb-3 flex size-11 items-center justify-center rounded-full bg-brand-soft text-brand-ink"><Icon className="size-5" /></span>

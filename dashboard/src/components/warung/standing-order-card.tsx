@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ItemImage } from "@/components/produce-art";
+import { ItemImage } from "@/components/shared/produce-art";
 import { Chip } from "@/components/ui/chip";
 import { cn } from "@/components/ui/cn";
 import { inputBase } from "@/components/ui/field";

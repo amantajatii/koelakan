@@ -1,4 +1,4 @@
-import { StatusView } from "@/components/status-view";
+import { StatusView } from "@/components/status/status-view";
 import { PageHeader } from "@/components/ui/page-header";
 
 export const metadata = {

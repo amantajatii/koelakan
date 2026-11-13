@@ -5,7 +5,7 @@ import { cn } from "@/components/ui/cn";
 import { Panel, SectionTitle } from "@/components/ui/panel";
 import { itemTheme } from "@/lib/item-theme";
 import type { RoundView } from "@/lib/types";
-import { bucketRounds, type StatusBucket } from "./series";
+import { bucketRounds, type StatusBucket } from "@/lib/home-series";
 
 interface Meta { title: string; icon: LucideIcon; tone: Tone; tile: string; ink: string }
 

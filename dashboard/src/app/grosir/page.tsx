@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Coins, EyeOff, PackageCheck, TriangleAlert, type LucideIcon } from "lucide-react";
-import { GrosirTable } from "@/components/grosir-table";
+import { GrosirTable } from "@/components/grosir/grosir-table";
 import { PageHeader } from "@/components/ui/page-header";
 import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
 import { AGENTS_README_URL } from "@/lib/config";

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
 import { Chip } from "@/components/ui/chip";
-import { ItemImage } from "@/components/produce-art";
+import { ItemImage } from "@/components/shared/produce-art";
 import { txUrl } from "@/lib/config";
 import { rupiah } from "@/lib/format";
 import { itemLabel } from "@/lib/items";

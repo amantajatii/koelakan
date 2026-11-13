@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { ItemImage } from "@/components/produce-art";
+import { ItemImage } from "@/components/shared/produce-art";
 import { buttonClass } from "@/components/ui/button";
 import { cn } from "@/components/ui/cn";
 import { Panel } from "@/components/ui/panel";
 import { percent, rupiah } from "@/lib/format";
 import { itemTheme } from "@/lib/item-theme";
 import { itemLabel } from "@/lib/items";
-import type { ItemSnapshot } from "@/lib/item-summary";
-import { percentBelow } from "@/components/savings-strip";
+import { percentBelow, type ItemSnapshot } from "@/lib/item-summary";
 import { aboveHetPercent } from "@/lib/stats";
 
 function Pair({ label, value, className }: { label: string; value: string; className?: string }) {

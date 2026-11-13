@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Countdown } from "@/components/countdown";
+import { Countdown } from "@/components/shared/countdown";
 import { Button } from "@/components/ui/button";
 import { Field, StepCard, TxResult, inputClass, type StepState } from "@/components/judge/step-card";
 import { Notice } from "@/components/ui/notice";

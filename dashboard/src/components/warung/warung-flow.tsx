@@ -3,18 +3,17 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
-import { ArrowRight, ChevronDown, Eye, LogIn } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { AccountSummary } from "@/components/judge/account-summary";
 import { JoinStep } from "@/components/judge/join-step";
 import { OpenStep } from "@/components/judge/open-step";
 import { SecurityNote } from "@/components/judge/security-note";
-import { BannerLine, HeroBanner } from "@/components/hero-banner";
-import { ItemCard } from "@/components/item-card";
-import { OfflineNote } from "@/components/offline-note";
-import { ServicePulse } from "@/components/service-pulse";
-import { Button, buttonClass } from "@/components/ui/button";
+import { ItemCard } from "@/components/warung/item-card";
+import { OfflineNote } from "@/components/shared/offline-note";
+import { ServicePulse } from "@/components/warung/service-pulse";
 import { Notice } from "@/components/ui/notice";
-import { SectionTitle } from "@/components/ui/panel";
+import { cn } from "@/components/ui/cn";
+import { SectionTitle, panelClass } from "@/components/ui/panel";
 import { ErrorNote, LoadingRegion, Skeleton } from "@/components/ui/states";
 import { ActivityPanel } from "@/components/warung/activity-panel";
 import { AgentFeed } from "@/components/warung/agent-feed";
@@ -22,26 +21,18 @@ import { PendingActions } from "@/components/warung/pending-actions";
 import { SetupComplete } from "@/components/warung/setup-complete";
 import { SetupStepper } from "@/components/warung/setup-stepper";
 import { StandingOrderCard } from "@/components/warung/standing-order-card";
+import { WarungBanner } from "@/components/warung/warung-banner";
 import { useAgentStatus } from "@/hooks/use-agent-status";
 import { useJudge } from "@/hooks/use-judge";
 import { useNow } from "@/hooks/use-now";
 import { useWarung } from "@/hooks/use-warung";
 import { latestAgentMessages } from "@/lib/agent-feed";
-import { demoHref, parseDemoParam } from "@/lib/demo";
-import { ownerName, rupiah, shortAccount } from "@/lib/format";
+import { parseDemoParam } from "@/lib/demo";
+import { ownerName } from "@/lib/format";
 import { ownerSnapshots, weeklySaving } from "@/lib/item-summary";
 import { myParticipations, pendingActions } from "@/lib/owner-actions";
-import { computeSteps, isReady, nextStep, type StepId } from "@/lib/steps";
+import { computeSteps, isReady, nextStep } from "@/lib/steps";
 import { useWallet } from "@/lib/wallet";
-
-const NEXT_ACTION_LABEL: Record<StepId, string> = {
-  signin: "Sign in",
-  funds: "Add test money",
-  limits: "Set your limits",
-  order: "Choose what to buy",
-};
-
-const ghostOnBrand = buttonClass("ghost", "bg-white/10 px-5 text-white hover:bg-white/20 hover:text-white");
 
 export function WarungFlow() {
   const { accountId: walletAccount, ready, signIn } = useWallet();
@@ -92,58 +83,17 @@ export function WarungFlow() {
   const spent = account?.spent ?? 0n;
   const stateOrder = stepList.find((s) => s.id === "order")?.status ?? "locked";
 
-  const savedLine = (who: string): string => (week.rounds > 0 ? `${who} saved ${rupiah(week.saving)} test rupiah this week.` : "");
-  const banner = readOnly ? (
-    <HeroBanner
-      title={week.rounds > 0 ? savedLine(`${ownerName(demo)}'s warung`) : `${ownerName(demo)}'s demo warung.`}
-      actions={
-        <>
-          <Button variant="onBrand" onClick={signIn} disabled={!ready} busy={!ready} className="gap-2 px-5"><LogIn className="size-4" aria-hidden /> Sign in to run your own</Button>
-          <Link href="/#how-it-works" className={ghostOnBrand}>How it works</Link>
-        </>
-      }
-    >
-      <BannerLine loading={!overview}>
-        {week.rounds > 0
-          ? <>Against the PIHPS market price, across {week.rounds} {week.rounds === 1 ? "round" : "rounds"} this agent bought in. Everything below is read from the testnet blockchain. The demo warung is seeded.</>
-          : <>This agent shops for the warung on its own inside the owner&apos;s limits. Once a round settles, the saving against the PIHPS market price shows up here.</>}
-      </BannerLine>
-    </HeroBanner>
-  ) : accountId ? (
-    <HeroBanner
-      title={week.rounds > 0 ? `You saved ${rupiah(week.saving)} test rupiah this week.` : `Welcome back, ${shortAccount(accountId)}.`}
-      actions={
-        allDone ? (
-          <a href="#standing-order" className={buttonClass("onBrand", "gap-2 px-5")}>Edit standing order</a>
-        ) : (
-          <a href={next ? `#step-${next}` : "#setup"} className={buttonClass("onBrand", "gap-2 px-5")}>
-            {next ? NEXT_ACTION_LABEL[next] : "Continue setup"} <ArrowRight className="size-4" aria-hidden />
-          </a>
-        )
-      }
-    >
-      <BannerLine loading={!overview}>
-        {week.rounds > 0
-          ? <>Against the PIHPS market price, across {week.rounds} {week.rounds === 1 ? "round" : "rounds"} your agent bought in.</>
-          : allDone
-            ? <>You are set. Your agent joins every round that fits your limits and standing order. Once a round settles, your saving against the PIHPS market price shows up here.</>
-            : <>Finish the steps below and your agent starts buying with you. Your saving against the PIHPS market price shows up here after your first settled round.</>}
-      </BannerLine>
-    </HeroBanner>
-  ) : (
-    <HeroBanner
-      title="Run your warung."
-      actions={
-        <>
-          <Button variant="onBrand" onClick={signIn} disabled={!ready} busy={!ready} className="gap-2 px-5"><LogIn className="size-4" aria-hidden /> Sign in with a NEAR wallet</Button>
-          <Link href={demoHref()} className={`${ghostOnBrand} gap-2`}><Eye className="size-4" aria-hidden /> See a warung in action</Link>
-        </>
-      }
-    >
-      <p>
-        Set up once: add test money, set your limits, choose what to buy. Then the Koelakan agent joins group buys for you around the clock, and the contract keeps it inside your limits. No wallet yet? Look at a live demo warung first.
-      </p>
-    </HeroBanner>
+  const banner = (
+    <WarungBanner
+      demo={demo}
+      accountId={accountId}
+      week={week}
+      loading={!overview}
+      allDone={allDone}
+      next={next}
+      ready={ready}
+      signIn={signIn}
+    />
   );
 
   const setup = (
@@ -240,7 +190,7 @@ export function WarungFlow() {
       )}
 
       {overview && !readOnly && (
-        <details className="group rounded-card bg-surface p-5 shadow-card sm:p-6">
+        <details className={cn("group", panelClass)}>
           <summary className="flex list-none min-h-11 cursor-pointer items-center justify-between gap-3 text-lg font-bold tracking-tight">
             Advanced: join or open a round by hand
             <ChevronDown className="size-5 shrink-0 text-muted transition-transform duration-200 group-open:rotate-180" aria-hidden />

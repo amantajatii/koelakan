@@ -50,3 +50,10 @@ export function weeklySaving(participations: readonly Participation[], nowMs: nu
   }
   return { saving, rounds };
 }
+
+/** Percentage the paid price sits below the reference price (0-100); null when not computable. */
+export function percentBelow(refPrice: bigint | string, paid: bigint | string | null): number | null {
+  if (paid === null) return null;
+  const ref = Number(refPrice);
+  return ref === 0 ? null : ((ref - Number(paid)) / ref) * 100;
+}

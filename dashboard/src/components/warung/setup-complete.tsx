@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { CircleCheck, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/components/ui/cn";
+import { panelClass } from "@/components/ui/panel";
 import { TxResult } from "@/components/judge/step-card";
 import { LimitsForm } from "@/components/warung/limits-form";
 import { revokeDelegationKey } from "@/lib/delegation";
@@ -39,7 +41,7 @@ export function SetupComplete({ accountId, items, policy, servicePublicKey, allo
   }
 
   return (
-    <details id="setup" className="group scroll-mt-6 rounded-card bg-surface p-5 shadow-card sm:p-6">
+    <details id="setup" className={cn("group scroll-mt-6", panelClass)}>
       <summary className="flex min-h-11 cursor-pointer list-none items-center gap-3">
         <span aria-hidden className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-ink"><CircleCheck className="size-4" /></span>
         <span className="min-w-0 flex-1">

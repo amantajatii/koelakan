@@ -1,4 +1,4 @@
-import { RoundsLive } from "@/components/rounds-live";
+import { RoundsLive } from "@/components/round/rounds-live";
 import { PageHeader } from "@/components/ui/page-header";
 import { loadOverview } from "@/lib/overview";
 

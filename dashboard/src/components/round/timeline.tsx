@@ -1,5 +1,5 @@
 import { Check, Minus } from "lucide-react";
-import { Countdown } from "@/components/countdown";
+import { Countdown } from "@/components/shared/countdown";
 import { cn } from "@/components/ui/cn";
 import { formatDateTime } from "@/lib/format";
 import { buildTimeline, PHASE_HINT, derivePhase, type StepStatus } from "@/lib/phase";

@@ -11,8 +11,15 @@ const STYLE: Record<NoticeTone, { box: string; icon: string; Icon: LucideIcon }>
   info: { box: "bg-info-soft ring-info/20", icon: "text-info", Icon: Info },
 };
 
+interface NoticeProps {
+  tone: NoticeTone;
+  children: ReactNode;
+  role?: "status" | "alert" | "none";
+  className?: string;
+}
+
 /** Inline message with a drawn icon. Colour never carries the meaning alone. */
-export function Notice({ tone, children, role = "status", className }: { tone: NoticeTone; children: ReactNode; role?: "status" | "alert" | "none"; className?: string }) {
+export function Notice({ tone, children, role = "status", className }: NoticeProps) {
   const { box, icon, Icon } = STYLE[tone];
   return (
     <div role={role === "none" ? undefined : role} className={cn("flex items-start gap-2.5 rounded-xl px-3.5 py-3 text-sm ring-1 ring-inset", box, className)}>

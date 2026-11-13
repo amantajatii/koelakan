@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { ItemImage } from "@/components/produce-art";
-import { PhaseBadge } from "@/components/phase-badge";
+import { ItemImage } from "@/components/shared/produce-art";
+import { PhaseBadge } from "@/components/shared/phase-badge";
 import { Panel, SectionTitle, linkClass } from "@/components/ui/panel";
 import { EmptyState } from "@/components/ui/states";
 import { int, percent, rupiah } from "@/lib/format";

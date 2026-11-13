@@ -8,8 +8,14 @@ import { parseAmount } from "@/lib/amount";
 import { rupiah } from "@/lib/format";
 import { withdrawCall } from "@/lib/owner-actions";
 
+interface WithdrawRowProps {
+  available: bigint;
+  onDone: () => void;
+  readOnly?: boolean;
+}
+
 /** Withdraw action that sits directly under the "ready to spend" balance in Your money. */
-export function WithdrawRow({ available, onDone, readOnly = false }: { available: bigint; onDone: () => void; readOnly?: boolean }) {
+export function WithdrawRow({ available, onDone, readOnly = false }: WithdrawRowProps) {
   const tx = useTx(onDone);
   const [raw, setRaw] = useState("");
   const amount = parseAmount(raw);

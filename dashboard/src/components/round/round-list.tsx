@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { Countdown } from "@/components/countdown";
-import { PhaseBadge } from "@/components/phase-badge";
-import { ItemImage } from "@/components/produce-art";
+import { Countdown } from "@/components/shared/countdown";
+import { PhaseBadge } from "@/components/shared/phase-badge";
+import { ItemImage } from "@/components/shared/produce-art";
 import { int, percent, rupiah } from "@/lib/format";
 import { itemLabel } from "@/lib/items";
 import { currentDeadlineMs, derivePhase } from "@/lib/phase";
@@ -46,8 +46,15 @@ function RoundListRow({ round, items, nowMs }: { round: RoundView; items: Item[]
   );
 }
 
+interface RoundListProps {
+  rounds: RoundView[];
+  items: Item[];
+  nowMs: number;
+  label: string;
+}
+
 /** Rounds as soft rows: produce tile, bold title, muted subtitle, status pill on the right. */
-export function RoundList({ rounds, items, nowMs, label }: { rounds: RoundView[]; items: Item[]; nowMs: number; label: string }) {
+export function RoundList({ rounds, items, nowMs, label }: RoundListProps) {
   return (
     <ul aria-label={label} className="-mx-1.5 space-y-1 sm:-mx-2">
       {rounds.map((r) => <RoundListRow key={r.id} round={r} items={items} nowMs={nowMs} />)}

@@ -41,7 +41,7 @@ export function explainApiError(code: string | null, detail?: string | null): st
   return detail ? `The agent service refused the request: ${detail}` : "The agent service returned an unexpected error.";
 }
 
-// ---- runtime validation (handwritten, no dependencies) ----
+// Runtime validation (handwritten, no dependencies)
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => typeof v === "object" && v !== null && !Array.isArray(v);
@@ -95,7 +95,7 @@ export function parseWarung(v: unknown): WarungRecord | null {
   return v as unknown as WarungRecord;
 }
 
-// ---- HTTP client ----
+// HTTP client
 
 const offline = (): ApiFailure => ({ ok: false, kind: "offline", code: null, message: OFFLINE_MESSAGE });
 const invalid = (): ApiFailure => ({ ok: false, kind: "invalid_response", code: null, message: "The agent service sent an unexpected response." });

@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { marketSnapshots, ownerSnapshots, weeklySaving } from "@/lib/item-summary";
-import { percentBelow } from "@/components/savings-strip";
+import { marketSnapshots, ownerSnapshots, percentBelow, weeklySaving } from "@/lib/item-summary";
 import { myParticipations } from "@/lib/owner-actions";
 import { BERAS, closedRound, makeRound, msAt } from "./fixtures";
 

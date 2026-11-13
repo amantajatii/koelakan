@@ -1,10 +1,11 @@
 import { ShieldCheck } from "lucide-react";
+import { panelClass } from "@/components/ui/panel";
 import { TechNote, codeClass } from "@/components/warung/tech-note";
 import { config } from "@/lib/config";
 
 export function SecurityNote() {
   return (
-    <aside aria-labelledby="security" className="rounded-card bg-surface p-5 shadow-card sm:p-6">
+    <aside aria-labelledby="security" className={panelClass}>
       <h2 id="security" className="flex items-center gap-3 text-lg font-bold tracking-tight">
         <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand-ink"><ShieldCheck className="size-5" /></span> What the agent key can and cannot do
       </h2>

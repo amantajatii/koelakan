@@ -1,5 +1,7 @@
-import type { Tone } from "@/components/ui/chip";
 import type { Bid, Delivery, RoundView } from "./types";
+
+/** Visual weight of a status label; the Chip component maps each tone to colours. */
+export type Tone = "neutral" | "good" | "bad" | "warn" | "info";
 
 export function deliveryLabel(d: Delivery): { text: string; tone: Tone } {
   if (typeof d === "object") {

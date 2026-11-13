@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Countdown } from "@/components/countdown";
+import { Countdown } from "@/components/shared/countdown";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { SectionTitle } from "@/components/ui/panel";
+import { SectionTitle, panelClass } from "@/components/ui/panel";
 import { Chip } from "@/components/ui/chip";
-import { ItemImage } from "@/components/produce-art";
+import { ItemImage } from "@/components/shared/produce-art";
 import { Notice } from "@/components/ui/notice";
 import { PackageCheck } from "lucide-react";
 import { TxResult } from "@/components/judge/step-card";
@@ -25,7 +25,15 @@ type Pending = { kind: "confirm" | "dispute"; action: PendingAction } | null;
 const receivedAt = (deadlineMs: number, nowMs: number): string =>
   dayKey(deadlineMs) === dayKey(nowMs) ? `${formatClock(deadlineMs)} WIB` : formatDateTime(deadlineMs);
 
-export function PendingActions({ actions, items, nowMs, onDone, readOnly = false }: { actions: PendingAction[]; items: Item[]; nowMs: number; onDone: () => void; readOnly?: boolean }) {
+interface PendingActionsProps {
+  actions: PendingAction[];
+  items: Item[];
+  nowMs: number;
+  onDone: () => void;
+  readOnly?: boolean;
+}
+
+export function PendingActions({ actions, items, nowMs, onDone, readOnly = false }: PendingActionsProps) {
   const tx = useTx(onDone);
   const [asking, setAsking] = useState<Pending>(null);
 
@@ -38,7 +46,7 @@ export function PendingActions({ actions, items, nowMs, onDone, readOnly = false
 
   const hasAny = actions.length > 0;
   return (
-    <section aria-labelledby="needs-action" className={hasAny ? "on-dark rounded-card bg-night p-5 text-white sm:p-6" : "rounded-card bg-surface p-5 shadow-card sm:p-6"}>
+    <section aria-labelledby="needs-action" className={hasAny ? "on-dark rounded-card bg-night p-5 text-white sm:p-6" : panelClass}>
       <SectionTitle aside={hasAny ? <Chip tone="warn">{actions.length} waiting</Chip> : null}>
         <span id="needs-action">Needs you</span>
       </SectionTitle>

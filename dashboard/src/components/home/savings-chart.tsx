@@ -5,7 +5,7 @@ import { int, percent, rupiah } from "@/lib/format";
 import { itemTheme } from "@/lib/item-theme";
 import { aggregate } from "@/lib/stats";
 import type { RoundView } from "@/lib/types";
-import { savingsSeries, type SavingsPoint } from "./series";
+import { savingsSeries, type SavingsPoint } from "@/lib/home-series";
 
 const PLOT_REM = 11;
 const MIN_BAR_PCT = 3;

@@ -1,4 +1,4 @@
-import { HomeLive } from "@/components/home-live";
+import { HomeLive } from "@/components/home/home-live";
 import { loadOverview } from "@/lib/overview";
 
 export const revalidate = 15;

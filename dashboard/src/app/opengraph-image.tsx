@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { MARK_ARROW_PATH, MARK_TAG_PATH } from "@/components/logo";
+import { MARK_ARROW_PATH, MARK_TAG_PATH } from "@/components/layout/logo";
 
 export const alt = "Koelakan: Warungs pool orders. Grosirs bid for them.";
 export const size = { width: 1200, height: 630 };

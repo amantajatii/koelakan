@@ -7,12 +7,10 @@ export function rupiah(value: bigint | number | string): string {
   return `${n < 0n ? "-" : ""}Rp${digits}`;
 }
 
-/** Plain integer with en-US grouping, e.g. `1,422,526`. */
 export function int(value: bigint | number | string): string {
   return BigInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-/** Percentage with one decimal, e.g. `28.4%`. */
 export function percent(value: number): string {
   return `${value.toFixed(1)}%`;
 }
@@ -26,6 +24,7 @@ const dateTimeFmt = new Intl.DateTimeFormat("en-GB", {
   hour12: false,
 });
 const timeFmt = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false });
+const dayKeyFmt = new Intl.DateTimeFormat("en-CA", { timeZone: TZ });
 const dayFmt = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, weekday: "long", day: "numeric", month: "long", year: "numeric" });
 
 /** e.g. `12 Nov, 15:23 WIB`. */
@@ -35,7 +34,7 @@ export const formatDay = (ms: number): string => dayFmt.format(ms);
 
 /** Jakarta calendar day key (YYYY-MM-DD) for grouping chat messages. */
 export function dayKey(ms: number): string {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(ms);
+  return dayKeyFmt.format(ms);
 }
 
 /** Countdown text: `02:05`, `1:02:05` or `2d 3h`. Negative values read as zero. */
@@ -51,7 +50,6 @@ export function formatCountdown(ms: number): string {
   return `${pad(mins)}:${pad(secs)}`;
 }
 
-/** `warung-01.koelakan.testnet` -> `warung-01`. */
 export const shortAccount = (account: string): string => account.split(".")[0] ?? account;
 
 /** Short hex for hashes, e.g. `5d8e9d...cb804`. */

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { Countdown } from "@/components/countdown";
-import { ItemImage } from "@/components/produce-art";
+import { Countdown } from "@/components/shared/countdown";
+import { ItemImage } from "@/components/shared/produce-art";
 import { Panel, SectionTitle } from "@/components/ui/panel";
 import { EmptyState } from "@/components/ui/states";
 import { itemTheme } from "@/lib/item-theme";

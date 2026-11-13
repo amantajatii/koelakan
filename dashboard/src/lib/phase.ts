@@ -48,9 +48,6 @@ export const PHASE_HINT: Record<Phase, string> = {
   Closed: "Payment has been released to the grosir.",
 };
 
-/** A phase is "live" while the clock can still change what actions are possible. */
-export const isActivePhase = (p: Phase): boolean => p === "Join" || p === "Commit" || p === "Reveal";
-
 export type StepStatus = "done" | "current" | "upcoming" | "skipped";
 
 export interface TimelineStep {

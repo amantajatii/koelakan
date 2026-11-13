@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bucketRounds, savingsSeries } from "@/components/home/series";
+import { bucketRounds, savingsSeries } from "@/lib/home-series";
 import { closedRound, makeRound, msAt } from "./fixtures";
 
 describe("savingsSeries", () => {
