@@ -8,10 +8,26 @@
 
 **Koelakan** (from *kulakan*: what Indonesian shop owners call restocking from a wholesaler) lets warungs restock together.
 
-A *warung* is a small Indonesian shop. It buys in small quantities at retail prices, and in the PIHPS data of 11 Nov 2026 national average rice and sugar prices were already above the official HET retail ceiling ([data/prices.json](data/prices.json)). In Koelakan each warung's agent pools its order with other warungs, and *grosir* (wholesaler) agents compete for the whole lot in a commit-reveal sealed-bid auction. A NEAR contract escrows every tIDR (test rupiah) and enforces each owner's limits (max price per item, weekly budget). The agent key is a function-call key limited to `join_round`, so it cannot withdraw funds. The contract is unaudited testnet code.
+In Koelakan each warung's agent pools its order with other warungs, and *grosir* (wholesaler) agents compete for the whole lot in a commit-reveal sealed-bid auction. A NEAR contract escrows every tIDR (test rupiah) and enforces each owner's limits (max price per item, weekly budget). The agent key is a function-call key limited to `join_round`, so it cannot withdraw funds. The contract is unaudited testnet code.
 
 - Rules (single source of truth): [RULES.md](RULES.md)
 - Reference prices (real PIHPS data, with sources): [data/prices.json](data/prices.json)
+
+## The problem
+
+A *warung* is the small neighbourhood shop that sells rice, sugar, eggs and cooking oil by the kilo. It restocks a few kilos at a time, so it cannot get the volume prices that chain minimarkets buy at. On staples the gap is visible in public data: on 11 Nov 2026 the national average market price (PIHPS) of medium rice was Rp16,650/kg, 23.3% above the government's retail ceiling (HET, Rp13,500). Sugar was Rp19,950/kg, 14.0% above its ceiling ([data/prices.json](data/prices.json), with sources).
+
+Buying together would help, but group buying needs trust:
+- **Who holds the money?** Pooled cash in one person's hands is a common failure point.
+- **Who sets the price?** A single wholesaler or organiser can quietly mark it up.
+- **Who decides what to buy?** An owner wants a limit on what is spent without watching every order.
+
+Koelakan answers each with a NEAR contract instead of a middleman:
+- The contract holds the money in escrow and releases it only when goods arrive.
+- Grosirs compete in a sealed auction, and the price is capped by the public PIHPS price.
+- Each owner's agent can only buy within the max price and weekly budget the owner set on-chain.
+
+Koelakan holds no inventory. The grosirs and the owners stay the sellers and buyers.
 
 ## Try it
 
