@@ -9,6 +9,23 @@ A *warung* is a small Indonesian shop. It buys in small quantities at retail pri
 - Rules (single source of truth): [RULES.md](RULES.md)
 - Reference prices (real PIHPS data, with sources): [data/prices.json](data/prices.json)
 
+## How a round works
+
+1. **Open.** The `koordinator` agent calls `open_round` on `market.koelakan.testnet` for one staple. The round ceiling can never exceed the item's PIHPS reference price stored on-chain.
+2. **Join (5 min).** Each warung agent calls `join_round` with its owner's quantity, using a function-call key that can call nothing else. The contract checks the owner's limits (max price per item, weekly budget) and holds `ceiling x qty` of the owner's tIDR.
+3. **Sealed bids (90 s).** Grosir agents commit `sha256("{round_id}:{seller}:{unit_price}:{salt}")` with a 5% bond through `ft_transfer_call` on tIDR.
+4. **Reveal (90 s), then settle.** Grosirs reveal. `settle` picks the lowest valid price (earlier commit wins ties), refunds every warung the gap to the ceiling, and splits the bonds of grosirs that never revealed among the buyers.
+5. **Delivery (10 min).** Owners `confirm_delivery` or `dispute`. Silence counts as acceptance at `finalize`, and the `arbiter` rules on disputes. Only then is the grosir paid.
+
+## Repo layout
+
+- `contracts/market`: rounds, owner limits, commit-reveal, escrow, disputes, events and views (Rust, near-sdk).
+- `contracts/tidr`: NEP-141 test rupiah with an hourly faucet.
+- `sim/`: deterministic TypeScript model of the market, used for golden tests and the cross-check.
+- `agents/`: warung, grosir, koordinator and arbiter agents, plus the 24/7 service in `agents/src/service` (Docker, `agents/deploy`).
+- `dashboard/`: Next.js app with the landing page, the owner flow (`/warung`), rounds, agent chat, grosir guide and service status.
+- `data/prices.json`: PIHPS and HET reference prices with sources.
+
 ## Status
 
 | Part | State | Evidence |
@@ -16,10 +33,10 @@ A *warung* is a small Indonesian shop. It buys in small quantities at retail pri
 | `contracts/tidr`: NEP-141 test rupiah plus faucet | deployed on testnet | `tidr.koelakan.testnet`, 3 unit tests |
 | `contracts/market`: rounds, limits, commit-reveal, escrow, disputes | deployed on testnet | `market.koelakan.testnet`, 41 unit tests incl. conservation invariant |
 | Simulation (20 warungs, 5 grosir, no LLM) | done | `sim/`, 42 tests, 7 golden scenarios replayed by the contract tests |
-| Agents (20 warung, 5 grosir, koordinator, arbiter) | live on testnet | accounts `warung-01..20`, `grosir-1..5`, `koordinator`, `arbiter` under `.koelakan.testnet` |
-| Live rounds | 2 closed | #1 beras: clearing Rp11,924, saving Rp1,422,526. #2 gula: Rp15,683, saving Rp1,514,785. Both matched the sim engine |
+| Agents (20 warung, 5 grosir, koordinator, arbiter) | live on testnet | accounts `warung-01..20`, `grosir-1..5`, `koordinator`, `arbiter` under `.koelakan.testnet`; `agents/`, 121 tests |
+| Live rounds | 34 run since 12 Nov (30 closed, 4 failed and refunded), as of 13 Nov | #1 medium rice cleared Rp11,924/kg vs PIHPS Rp16,650 (saving Rp1,422,526, cross-checked against the sim engine: MATCH). #33 bulk cooking oil cleared Rp14,801/kg vs PIHPS Rp20,800. Every round is on [`/rounds`](https://koelakan.vercel.app/rounds) |
 | Agent service | running, one round every 60 min | https://agent.43-157-202-28.sslip.io/status |
-| Dashboard | deployed on Vercel | landing https://koelakan.vercel.app, app https://koelakan.vercel.app/overview (`dashboard/`) |
+| Dashboard | deployed on Vercel | landing https://koelakan.vercel.app, app https://koelakan.vercel.app/overview; `dashboard/`, 189 tests |
 
 ## Try it
 

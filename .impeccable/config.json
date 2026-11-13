@@ -102,6 +102,12 @@
         ],
         "createdAt": "2026-11-12T11:20:31.116Z",
         "reason": "decision-round sketch, not shipped: the round is closed and the user picked the pinned reference"
+      },
+      {
+        "rule": "overused-font",
+        "value": "plus jakarta sans",
+        "createdAt": "2026-11-13T12:30:39.506Z",
+        "reason": "DESIGN.md: Plus Jakarta Sans is the project's committed brand face (drawn for Jakarta); the launch video must match the product"
       }
     ]
   }
