@@ -4,6 +4,8 @@
 >
 > Demo video (61 s, includes a live testnet round): https://x.com/azzgjlss/status/2121257271955235090
 
+![Koelakan landing: the agent's chat replays a real testnet round](docs/landing.png)
+
 **Koelakan** (from *kulakan*: what Indonesian shop owners call restocking from a wholesaler) lets warungs restock together.
 
 A *warung* is a small Indonesian shop. It buys in small quantities at retail prices, and in the PIHPS data of 11 Nov 2026 national average rice and sugar prices were already above the official HET retail ceiling ([data/prices.json](data/prices.json)). In Koelakan each warung's agent pools its order with other warungs, and *grosir* (wholesaler) agents compete for the whole lot in a commit-reveal sealed-bid auction. A NEAR contract escrows every tIDR (test rupiah) and enforces each owner's limits (max price per item, weekly budget). The agent key is a function-call key limited to `join_round`, so it cannot withdraw funds. The contract is unaudited testnet code.
@@ -58,10 +60,15 @@ You see `{'id': 1, 'item': 'beras-medium', 'state': 'Closed', 'ref_price': '1665
 | Simulation (20 warungs, 5 grosir, no LLM) | done | `sim/`, 42 tests, 7 golden scenarios replayed by the contract tests |
 | Agents (20 warung, 5 grosir, koordinator, arbiter) | live on testnet | accounts `warung-01..20`, `grosir-1..5`, `koordinator`, `arbiter` under `.koelakan.testnet`; `agents/`, 121 tests |
 | Live rounds | 34 run since 12 Nov (30 closed, 4 failed and refunded), as of 13 Nov | #1 medium rice cleared Rp11,924/kg vs PIHPS Rp16,650 (saving Rp1,422,526, cross-checked against the sim engine: MATCH). #33 bulk cooking oil cleared Rp14,801/kg vs PIHPS Rp20,800. Every round is on [`/rounds`](https://koelakan.vercel.app/rounds) |
+| Real-wallet owner flow | tested on production, 13 Nov | `amantajatii.testnet` signed in with a NEAR wallet, added test money, set limits and delegated the agent key, saved a standing order; the agent joined [round #35](https://koelakan.vercel.app/rounds/35) for it, the round settled at Rp11,924/kg (28.4% below PIHPS), and the owner confirmed delivery on-chain |
 | Agent service | running, one round every 60 min | https://agent.43-157-202-28.sslip.io/status |
 | Dashboard | deployed on Vercel | landing https://koelakan.vercel.app, app https://koelakan.vercel.app/overview; `dashboard/`, 189 tests |
 
 ## Try it
+
+Prerequisites for the local steps: Node.js 20.9+ and pnpm 10 (`corepack enable`), Rust for the contract tests, and Python 3 for the RPC one-liner above. The hosted links need nothing but a browser.
+
+![Round #35 on the dashboard: auction result against PIHPS](docs/round.png)
 
 1. **Dashboard, owner view.** Open https://koelakan.vercel.app/warung?demo=warung-20.koelakan.testnet (or run it locally: `cd dashboard && pnpm i && pnpm dev`, then the same path on http://localhost:3000). You see a seeded warung's limits, standing order and round activity, read-only, no wallet needed. Sign in at `/warung` with a NEAR testnet wallet to set up your own warung.
 2. **Live agent service.** Open https://agent.43-157-202-28.sslip.io/status. You see the round cadence, the next round and recent on-chain events with links.
@@ -71,7 +78,7 @@ You see `{'id': 1, 'item': 'beras-medium', 'state': 'Closed', 'ref_price': '1665
 
 ## What is real and what is assumed
 
-Real: the PIHPS reference prices and HET in `data/prices.json` (with source URLs), and on-chain rounds and escrow on NEAR testnet. Assumed: grosir costs are seeded (0.85 to 0.97 x HET), warung and owner names are fictional, and tIDR is test money, so every saving shown is measured against PIHPS in testnet rounds with simulated grosir costs. The owner confirm in live rounds is scripted, and the dashboard shows agent updates as a WhatsApp-style chat; nothing is sent to WhatsApp.
+Real: the PIHPS reference prices and HET in `data/prices.json` (with source URLs), and on-chain rounds and escrow on NEAR testnet. Assumed: grosir costs are seeded (0.85 to 0.97 x HET), warung and owner names are fictional, and tIDR is test money, so every saving shown is measured against PIHPS in testnet rounds with simulated grosir costs. The seeded warungs' owner confirms are scripted (a real owner's confirm is shown in round #35 above), and the dashboard shows agent updates as a WhatsApp-style chat; nothing is sent to WhatsApp.
 
 Koelakan is asset-light: it never holds inventory. KitaBeli, Ula and GudangAda held stock, and they failed. Grosirs and Koperasi Desa Merah Putih stay the sellers.
 
