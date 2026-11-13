@@ -25,3 +25,4 @@ agents/deploy/.env
 # Local design-tool and audit artifacts (not part of the product)
 .impeccable/
 anti-slop/
+.DS_Store
