@@ -1,9 +1,14 @@
 //! Golden test: replays sim/golden/scenarios.json against the contract and checks
 //! the same `expected` snapshot that the TypeScript engine (sim/) is tested against.
 
-use super::*;
+use near_contract_standards::fungible_token::receiver::FungibleTokenReceiver;
+use near_sdk::json_types::U128;
+use near_sdk::serde_json::{self, json, Value};
 use near_sdk::test_utils::VMContextBuilder;
 use near_sdk::testing_env;
+use near_sdk::{AccountId, NearToken, PromiseOrValue};
+
+use crate::*;
 
 const SCENARIOS: &str = include_str!("../../../sim/golden/scenarios.json");
 
@@ -21,7 +26,9 @@ fn ctx(who: &AccountId, ts: u64, yocto: u128) {
 }
 
 fn s(v: &Value, k: &str) -> String {
-    v[k].as_str().unwrap_or_else(|| panic!("missing string {k}")).to_string()
+    v[k].as_str()
+        .unwrap_or_else(|| panic!("missing string {k}"))
+        .to_string()
 }
 
 fn num(v: &Value, k: &str) -> u128 {
@@ -135,7 +142,11 @@ fn apply(m: &mut Market, sc: &Value, act: &Value) {
         }
         "resolve_dispute" => {
             ctx(&who, now, 0);
-            m.resolve_dispute(id(a), acc(&s(a, "buyer")), a["refund_buyer"].as_bool().unwrap());
+            m.resolve_dispute(
+                id(a),
+                acc(&s(a, "buyer")),
+                a["refund_buyer"].as_bool().unwrap(),
+            );
         }
         "withdraw" => {
             ctx(&who, now, 1);
@@ -213,7 +224,11 @@ fn snapshot(m: &Market, expected: &Value) -> Value {
             (name.clone(), v)
         })
         .collect();
-    let rounds: Vec<Value> = m.list_rounds(Some(0), Some(50)).into_iter().map(round_snapshot).collect();
+    let rounds: Vec<Value> = m
+        .list_rounds(Some(0), Some(50))
+        .into_iter()
+        .map(round_snapshot)
+        .collect();
     json!({
         "token_held": m.get_config().token_held.0.to_string(),
         "balances": balances,
@@ -231,10 +246,18 @@ fn run_scenario(sc: &Value) {
     assert!(!expected.is_null(), "{name}: run `pnpm golden:gen` in sim/");
     let last = sc["actions"].as_array().unwrap().last().unwrap();
     ctx(&acc(&s(sc, "admin")), s(last, "now").parse().unwrap(), 0);
-    assert_eq!(&snapshot(&m, expected), expected, "golden mismatch in scenario {name}");
+    assert_eq!(
+        &snapshot(&m, expected),
+        expected,
+        "golden mismatch in scenario {name}"
+    );
 
-    let mut accounts: Vec<AccountId> =
-        expected["balances"].as_object().unwrap().keys().map(|k| acc(k)).collect();
+    let mut accounts: Vec<AccountId> = expected["balances"]
+        .as_object()
+        .unwrap()
+        .keys()
+        .map(|k| acc(k))
+        .collect();
     accounts.extend([acc(&s(sc, "admin")), acc(&s(sc, "arbiter"))]);
     m.check_invariant(&accounts);
 }

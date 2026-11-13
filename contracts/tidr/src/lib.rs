@@ -23,9 +23,14 @@ use near_sdk::{
     env, log, near, require, AccountId, BorshStorageKey, NearToken, PanicOnDefault, PromiseOrValue,
 };
 
-pub const FAUCET_AMOUNT: u128 = 1_000_000;
-pub const FAUCET_COOLDOWN_NS: u64 = 3_600 * 1_000_000_000;
+const NS_PER_SEC: u64 = 1_000_000_000;
 
+/// tIDR minted per faucet claim (0 decimals, so Rp1,000,000).
+pub const FAUCET_AMOUNT: u128 = 1_000_000;
+/// Minimum time between two claims by the same account.
+pub const FAUCET_COOLDOWN_NS: u64 = 3_600 * NS_PER_SEC;
+
+/// Storage prefixes. Variant order is part of the on-chain layout.
 #[derive(BorshSerialize, BorshStorageKey)]
 #[borsh(crate = "near_sdk::borsh")]
 enum StorageKey {
@@ -34,6 +39,7 @@ enum StorageKey {
     LastClaim,
 }
 
+/// Contract state. Field order and types are part of the on-chain layout.
 #[derive(PanicOnDefault)]
 #[near(contract_state)]
 pub struct Contract {
