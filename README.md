@@ -1,6 +1,6 @@
 # Koelakan
 
-> A NEAR Hackathon 2026 entry (tracks `swarms` and `realworld`): warung agents pool orders, grosir agents bid in a sealed-bid auction, and a NEAR testnet contract holds the money. Live dashboard: https://koelakan.vercel.app
+> A NEAR Hackathon 2026 entry (tracks `swarms` and `realworld`): warung agents pool orders, grosir agents bid in a sealed-bid auction, and a NEAR testnet contract holds the money. Live: https://koelakan.vercel.app (landing) and https://koelakan.vercel.app/overview (dashboard)
 
 **Koelakan** (from *kulakan*: what Indonesian shop owners call restocking from a wholesaler) lets warungs restock together.
 
@@ -19,7 +19,7 @@ A *warung* is a small Indonesian shop. It buys in small quantities at retail pri
 | Agents (20 warung, 5 grosir, koordinator, arbiter) | live on testnet | accounts `warung-01..20`, `grosir-1..5`, `koordinator`, `arbiter` under `.koelakan.testnet` |
 | Live rounds | 2 closed | #1 beras: clearing Rp11,924, saving Rp1,422,526. #2 gula: Rp15,683, saving Rp1,514,785. Both matched the sim engine |
 | Agent service | running, one round every 60 min | https://agent.43-157-202-28.sslip.io/status |
-| Dashboard | deployed on Vercel | https://koelakan.vercel.app (`dashboard/`) |
+| Dashboard | deployed on Vercel | landing https://koelakan.vercel.app, app https://koelakan.vercel.app/overview (`dashboard/`) |
 
 ## Try it
 

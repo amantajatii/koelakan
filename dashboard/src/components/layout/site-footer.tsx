@@ -1,8 +1,9 @@
 import { accountUrl, config } from "@/lib/config";
 
-export function SiteFooter() {
+/** `overTabBar` keeps room for the phone tab bar inside the dashboard shell. */
+export function SiteFooter({ overTabBar = true }: { overTabBar?: boolean }) {
   return (
-    <footer className="mx-auto w-full max-w-[84rem] px-4 pb-28 pt-4 text-xs text-muted sm:px-8 lg:pb-10">
+    <footer className={`mx-auto w-full max-w-[84rem] px-4 pt-4 text-xs text-muted sm:px-8 lg:pb-10 ${overTabBar ? "pb-28" : "pb-10"}`}>
       <div className="space-y-1.5 border-t border-line pt-5">
         <p className="max-w-3xl">
           Koelakan runs on <strong className="font-semibold text-ink">NEAR testnet</strong>. tIDR is test rupiah, not real money. Reference prices come from PIHPS (national food price monitor); costs of the service&apos;s own grosirs are assumptions.

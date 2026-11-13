@@ -13,7 +13,7 @@ export function SiteHeader() {
   const { accountId, ready, signIn } = useWallet();
   return (
     <header className="mx-auto flex w-full max-w-[84rem] items-center justify-between gap-3 px-4 py-3 sm:px-8 sm:py-5">
-      <Link href="/" className="flex items-center gap-2.5 rounded-xl lg:hidden" aria-label="Koelakan, go to the overview">
+      <Link href="/" className="flex items-center gap-2.5 rounded-xl lg:hidden" aria-label="Koelakan home">
         <LogoMark className="size-9" />
         <span className="text-lg font-bold tracking-[-0.02em]">Koelakan</span>
       </Link>

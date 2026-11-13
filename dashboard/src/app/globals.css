@@ -165,6 +165,51 @@ textarea::placeholder {
   animation: pulse-ring 1.8s ease-out infinite;
 }
 
+/* Landing phone: the round replays as a chat. JS adds .chat-js and drives data-on; without JS the
+   full chat appears after 2.5s so the hero never stays empty. */
+@keyframes bubble-in {
+  from { opacity: 0.001; transform: translateY(10px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes card-reveal {
+  from { clip-path: inset(100% 0 0 0 round 20px); }
+  to { clip-path: inset(0 0 0 0 round 20px); }
+}
+@keyframes pill-wipe {
+  from { clip-path: inset(0 100% 0 0 round 999px); }
+  to { clip-path: inset(0 0 0 0 round 999px); }
+}
+@keyframes typing-dot {
+  0%, 60%, 100% { opacity: 0.35; transform: none; }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+@keyframes show-late {
+  to { opacity: 1; }
+}
+.chat-stage:not(.chat-js) .beat {
+  opacity: 0;
+  animation: show-late 1ms 2.5s forwards;
+}
+.chat-js .beat:not([data-on="true"]) {
+  display: none;
+}
+.chat-js .beat[data-on="true"] {
+  animation: bubble-in 380ms var(--ease-out-expo) both;
+}
+.chat-js .beat[data-side="owner"] { transform-origin: right bottom; }
+.chat-js .beat[data-side="agent"] { transform-origin: left bottom; }
+.chat-js .beat[data-on="true"][data-kind="result"] {
+  animation: card-reveal 560ms var(--ease-out-expo) both;
+}
+.chat-js .beat[data-on="true"] .pill-wipe {
+  animation: pill-wipe 420ms var(--ease-out-expo) 950ms both;
+}
+.typing-dot {
+  animation: typing-dot 900ms ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 150ms; }
+.typing-dot:nth-child(3) { animation-delay: 300ms; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

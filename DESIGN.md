@@ -380,6 +380,8 @@ Owner messages sit right on a 45% lime fill with navy text; agent messages sit l
 ### Motion
 Colour and border transitions run 150-200ms ease-out. Live data settles in once (240ms, 6px rise, expo ease-out). A live dot pulses an olive ring. All motion collapses under reduced-motion.
 
+The landing page (`/`) owns the one authored sequence: its navy phone replays a real settled round as the agent's chat. A typing indicator precedes each agent bubble, and bubbles settle from their speaker's side (380ms). The result card reveals bottom-up with a clip-path while its price counts down from PIHPS to the winning price, then the lime pill wipes in. It runs once on intersection and offers a Replay. Reduced motion shows the whole chat at once, and without JS it appears after 2.5s. Brief: `.impeccable/surfaces/landing.md`.
+
 ## Do's and Don'ts
 
 ### Do:

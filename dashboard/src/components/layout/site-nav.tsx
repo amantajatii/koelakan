@@ -16,7 +16,7 @@ interface NavItem {
 }
 
 const NAV: readonly NavItem[] = [
-  { href: "/", label: "Overview", short: "Home", icon: LayoutGrid },
+  { href: "/overview", label: "Overview", short: "Home", icon: LayoutGrid },
   { href: "/warung", label: "My warung", short: "Warung", icon: Store },
   { href: "/rounds", label: "Rounds", short: "Rounds", icon: Gavel },
   { href: "/chat", label: "Agent chat", short: "Chat", icon: MessageCircle },
@@ -34,7 +34,7 @@ export function SideRail() {
   const active = useActive();
   return (
     <aside className="on-dark fixed inset-y-4 left-4 z-30 hidden w-60 flex-col rounded-[1.75rem] bg-night p-4 text-white lg:flex">
-      <Link href="/" aria-label="Koelakan, go to the overview" className="mb-8 flex items-center gap-3 rounded-2xl px-2 pt-2">
+      <Link href="/" aria-label="Koelakan home" className="mb-8 flex items-center gap-3 rounded-2xl px-2 pt-2">
         <LogoMark className="size-10" onDark />
         <span className="text-xl font-bold tracking-[-0.02em]">Koelakan</span>
       </Link>

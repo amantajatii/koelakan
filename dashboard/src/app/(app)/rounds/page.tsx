@@ -3,6 +3,9 @@ import { PageHeader } from "@/components/ui/page-header";
 import { loadOverview } from "@/lib/overview";
 
 export const revalidate = 15;
+// ISR every 15 s. The RPC layer fetches with no-store and caches in memory, so without this the build
+// marks whichever page fetches first as dynamic.
+export const dynamic = "force-static";
 export const metadata = { title: "Rounds" };
 
 export default async function RoundsPage() {
